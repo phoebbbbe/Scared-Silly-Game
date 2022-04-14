@@ -41,6 +41,9 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
+#include "CApu.h"
+#include "CGhost.h"
+#include "CGameMap.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -69,31 +72,7 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
 		CMovingBitmap logo;								// csie的logo
-	};
-
-	class CBouncingBall;
-	/////////////////////////////////////////////////////////////////////////////
-	// 這個class提供地圖的構成
-	// 看懂就可以改寫成自己的程式了
-	/////////////////////////////////////////////////////////////////////////////
-	class CGameMap {
-	public:
-		CGameMap();
-		void LoadBitmap();
-		void OnShow();
-		void OnMove();
-		void OnKeyDown(UINT);
-		void RandomBouncingBall();
-		void InitializeBouncingBall(int, int, int);
-		~CGameMap();
-	protected:
-		CMovingBitmap blue, green;
-		int map[14][10];
-		const int X, Y;
-		const int MW, MH;
-		CBouncingBall* bballs;
-		int random_num;
-	};
+	};	
 
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
@@ -114,20 +93,25 @@ namespace game_framework {
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
 		int HasGhost(int x1, int y1, int x2, int y2);
+
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		const int		NUMBALLS;	// 球的總數
+		//const int		NUMBALLS;	// 球的總數
+		const int NUMBALLONS;
 		CMovingBitmap	background;	// 背景圖
 		CMovingBitmap	help;		// 說明圖
-		CBall			*ball;		// 球的陣列
+		//CBall			*ball;		// 球的陣列
 		CMovingBitmap	corner;		// 角落圖
-		CEraser			eraser;		// 拍子
+		//CEraser			eraser;		// 拍子
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
 		int picX, picY;
 		CGameMap gamemap;
+		int curKeyState;
+		CApu            apu; // 阿噗
+		CGhost        *ballon; // 綠色氣球怪
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

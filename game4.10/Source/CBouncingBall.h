@@ -1,3 +1,5 @@
+#ifndef CBOUNCINGBALL_H
+#define CBOUNCINGBALL_H
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class提供會一直彈跳的球
@@ -24,3 +26,5 @@ namespace game_framework {
 	};
 
 }
+
+#endif
