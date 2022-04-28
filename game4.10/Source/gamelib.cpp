@@ -158,9 +158,12 @@ void CAnimation::AddBitmap(char *filename, COLORREF colorkey)
 	Reset();
 }
 
-int CAnimation::GetCurrentBitmapNumber()
-{
+int CAnimation::GetCurrentBitmapNumber() {
 	return bmp_counter;
+}
+
+int CAnimation::GetLastBitmapNumber() {
+	return bmp.size() - 1;
 }
 
 int CAnimation::Height()
