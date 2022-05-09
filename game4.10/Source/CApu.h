@@ -12,11 +12,12 @@ namespace game_framework {
 		int GetX2();					// 阿噗右下角 x 座標
 		int GetY2();					// 阿噗右下角 y 座標
 		int GetMode();
-		int GetDir();
+		int GetState();
 		bool GetMoved();
 		void Initialize();				// 設定阿噗為初始值
 		void LoadBitmap();				// 載入圖形
 		void OnMove();					// 移動阿噗
+		//void Moving(int *map);
 		void OnShow();					// 將阿噗圖形貼到畫面
 
 		void SetMovingDown(bool flag);	// 設定是否正在往下移動
@@ -27,10 +28,11 @@ namespace game_framework {
 		void SetFightDown(bool flag);   // 設定是某正在往下攻擊
 		void SetFightLeft(bool flag);   // 設定是某正在往左攻擊
 		void SetFightRight(bool flag);  // 設定是某正在往右攻擊
+		void SetAllAction(bool flag);
 		void SetXY(int nx, int ny);		// 設定擦子左上角座標
 		void SetXY(int stepSize);
 		void SetMode(int flag);
-		void SetDir(int flag);
+		void SetState(int flag);
 		void SetMoved(bool flag);
 		int GetCurAnimationNum();
 		int GetCurAnimationLastNum();
@@ -47,7 +49,7 @@ namespace game_framework {
 		CAnimation fail;
 		CAnimation success;
 		CMovingBitmap initApu;
-		int curDir;					// 阿噗現在的方向:1(上)2(下)3(左)4(右)5(打上)6(打下)7(打左)8(打右)
+		int curState;				// 阿噗現在的方向:1(上)2(下)3(左)4(右)5(打上)6(打下)7(打左)8(打右)
 		int curMode;				// 阿噗現在的狀態:1(靜止), 2(移動)
 		int x, y;					// 阿噗左上角座標
 		bool isMoved;

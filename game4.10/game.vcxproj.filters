@@ -192,61 +192,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="RES\bitmap3.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap4.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap5.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00002.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\floor.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\返回選單鍵.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\floor2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\bitmap6.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_back.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="RES\floor1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_front.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_down.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_up.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\apu_lose.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\bat.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\clip.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\ghost1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\ghost1_2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\grass.bmp">
@@ -273,15 +228,6 @@
     <Image Include="RES\map5.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\page1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\start.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\page2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="RES\trap.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -292,33 +238,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\backmanu.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="game4.10\RES\grass2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_front1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_front2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_front3.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_front4.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_back1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_back2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_back3.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="RES\apu_back4.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\apu_down1.bmp">
@@ -384,10 +303,79 @@
     <Image Include="RES\fight_front3.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\bitmap8.bmp">
+    <Image Include="res\page_begin1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\test.BMP">
+    <Image Include="res\page_begin2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_begin1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_begin2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_down5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon_die1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon_die2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\balloon_die3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_left5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_up5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_left1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_left2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_left3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_left4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_right5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_right1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_right2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_right3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apu_right4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\clip.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

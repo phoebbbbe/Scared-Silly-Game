@@ -10,9 +10,9 @@
 namespace game_framework {
 
 	CGhost::CGhost() {
-		is_alive = true;
-		is_fighted = false;
-		is_apu_move = false;
+		isAlive = true;
+		isFighted = false;
+		curMode = 1;
 		curState = 0;
 		x = y = dx = dy = index = delay_counter = 0;
 	}
@@ -23,34 +23,39 @@ namespace game_framework {
 	}
 
 	bool CGhost::HitRectangle(int tx1, int ty1, int tx2, int ty2) {
-		int x1 = x + dx;				// 鬼怪的左上角x座標
-		int y1 = y + dy;				// 鬼怪的左上角y座標
-		int x2 = x1 + ghost.Width();	// 鬼怪的右下角x座標
-		int y2 = y1 + ghost.Height();	// 鬼怪的右下角y座標
-
+		int x1 = tx1+5;
+		int y1 = ty1+5;
+		int x2 = tx2-5;
+		int y2 = ty2-5;
+		int x3 = x+5;				// 鬼怪的左上角x座標
+		int y3 = y+5;				// 鬼怪的左上角y座標
+		int x4 = x3 + ghost.Width()-5;	// 鬼怪的右下角x座標
+		int y4 = y3 + ghost.Height()-5;	// 鬼怪的右下角y座標
 		// 檢測鬼怪的矩形與參數矩形是否有交集
-		return (tx2 >= x1 && tx1 <= x2 && ty2 >= y1 && ty1 <= y2);
+		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	}
 
 	bool CGhost::IsAlive() {
-		return is_alive;
+		return isAlive;
 	}
 
 	bool CGhost::IsFighted() {
-		return is_fighted;
-	}
-
-	bool CGhost::IsApuMove() {
-		return is_apu_move;
+		return isFighted;
 	}
 	void CGhost::LoadBitmap() {
-		ghost.AddBitmap(IDB_GHOST1, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_GHOST1_2, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+
+		//fork.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
 	}
 
 	void CGhost::OnMove() {
-		ghost.OnMove();
-		if (!is_alive)
+		//ghost.OnMove();
+		if (!isAlive)
 			return;
 		
 		delay_counter--;
@@ -70,70 +75,21 @@ namespace game_framework {
 	}
 
 	void CGhost::OnMove(CApu *apu) {
-		const int STEP_SIZE = 30;
-		int xUp = x, yUp = y - STEP_SIZE;
-		int xDown = x, yDown = y + STEP_SIZE;
-		int xLeft = x - STEP_SIZE, yLeft = y;
-		int xRight = x + STEP_SIZE, yRight = y;
-		float disUp = (float)sqrt((double)((xUp - apu->GetX1())*(xUp - apu->GetX1()) + (yUp - apu->GetY1())*(yUp - apu->GetY1())));
-		float disDown = (float)sqrt((double)((xDown - apu->GetX1())*(xDown - apu->GetX1()) + (yDown - apu->GetY1())*(yDown - apu->GetY1())));
-		float disLeft = (float)sqrt((double)((xLeft - apu->GetX1())*(xLeft - apu->GetX1()) + (yLeft - apu->GetY1())*(yLeft - apu->GetY1())));
-		float disRight = (float)sqrt((double)((xRight - apu->GetX1())*(xRight - apu->GetX1()) + (xRight - apu->GetY1())*(xRight - apu->GetY1())));
-
-		ghost.OnMove();
-		if (!is_alive)
+		const int STEP_SIZE = 1;
+		if (!isAlive)
 			return;
-		if (is_apu_move) {
-			if (mode == 1) {
-				SetMode(2);
+		if (apu->GetMode() == 2) {
+			//TRACE("%d\n", curMode);
+			if (curMode == 1)
+			{
+				ghost.OnMove();
+				// display fork
 			}
-			else {
-				switch (WhereIsApu(apu)) {
-				case 1:
-					if (disUp <= disRight) {
-						curState = 1;
-						SetXY(xUp, yUp);
-					}
-					else {
-						curState = 4;
-						SetXY(xRight, yRight);
-					}
-					break;
-				case 2:
-					if (disUp <= disLeft) {
-						curState = 1;
-						SetXY(xUp, yUp);
-					}
-					else {
-						curState = 3;
-						SetXY(xLeft, yLeft);
-					}
-					break;
-				case 3:
-					if (disDown <= disLeft) {
-						curState = 2;
-						SetXY(xDown, yDown);
-					}
-					else {
-						curState = 3;
-						SetXY(xLeft, yLeft);
-					}
-					break;
-				case 4:
-					if (disDown <= disRight) {
-						curState = 2;
-						SetXY(xDown, yDown);
-					}
-					else {
-						curState = 4;
-						SetXY(xRight, yRight);
-					}
-					break;
-				}
-				//xx消失
-				SetMode(1);
+			else if (curMode == 2)
+			{
+				FollowApu(apu, STEP_SIZE);
+				// undisplay fork
 			}
-			SetIsApuMove(false);
 		}
 	}
 
@@ -142,9 +98,8 @@ namespace game_framework {
 		int X2 = apu->GetX1(), Y2 = apu->GetY1();
 		float dis = (float)sqrt((double)((X2 - X1)*(X2 - X1) + (Y2 - Y1)*(Y2 - Y1)));
 		if (dis < 0.001)
-		{
 			return 0;
-		}
+	
 		X2 -= X1;
 		Y2 -= Y1;
 		if (X2 >= 0 && Y2 <= 0)
@@ -158,40 +113,78 @@ namespace game_framework {
 		else
 			return 0;
 	}
-
+	void CGhost::FollowApu(CApu *apu, int stepsize) {
+		int xUp = x, yUp = y - stepsize;
+		int xDown = x, yDown = y + stepsize;
+		int xLeft = x - stepsize, yLeft = y;
+		int xRight = x + stepsize, yRight = y;
+		float disUp = (float)sqrt((double)((xUp - apu->GetX1())*(xUp - apu->GetX1()) + (yUp - apu->GetY1())*(yUp - apu->GetY1())));
+		float disDown = (float)sqrt((double)((xDown - apu->GetX1())*(xDown - apu->GetX1()) + (yDown - apu->GetY1())*(yDown - apu->GetY1())));
+		float disLeft = (float)sqrt((double)((xLeft - apu->GetX1())*(xLeft - apu->GetX1()) + (yLeft - apu->GetY1())*(yLeft - apu->GetY1())));
+		float disRight = (float)sqrt((double)((xRight - apu->GetX1())*(xRight - apu->GetX1()) + (xRight - apu->GetY1())*(xRight - apu->GetY1())));
+		if (curState == 0) {
+			switch (WhereIsApu(apu)) {
+			case 1:
+				if (disUp <= disRight) curState = 1;
+				else curState = 4;
+				break;
+			case 2:
+				if (disUp <= disLeft) curState = 1;
+				else curState = 3;
+				break;
+			case 3:
+				if (disDown <= disLeft) curState = 2;
+				else curState = 3;
+				break;
+			case 4:
+				if (disDown <= disRight) curState = 2;
+				else curState = 4;
+				break;
+			}
+		}
+		if (curState == 1)
+			SetXY(xUp, yUp);
+		else if (curState == 2)
+			SetXY(xDown, yDown);
+		else if (curState == 3)
+			SetXY(xLeft, yLeft);
+		else if (curState == 4)
+			SetXY(xRight, yRight);
+	}
 	void CGhost::SetDelay(int d) {
 		delay = d;
 	}
-
 	void CGhost::SetIsAlive(bool alive) {
-		is_alive = alive;
+		isAlive = alive;
 	}
-
 	void CGhost::SetIsFighted(bool fighted) {
-		is_fighted = fighted;
+		isFighted = fighted;
 	}
-
-	void CGhost::SetIsApuMove(bool apu_move) {
-		is_apu_move = apu_move;
-	}
-
 	void CGhost::SetXY(int nx, int ny) {
 		x = nx; y = ny;
 	}
-
 	void CGhost::SetMode(int m) {
-		mode = m;
+		curMode = m;
 	}
-	int CGhost::GetX() {
+	void CGhost::SetState(int s) {
+		curState = s;
+	}
+	void CGhost::SwitchMode() {
+		if (curMode == 1) {
+			SetMode(2);
+		}
+		else if (curMode == 2) {
+			SetMode(1);
+		}
+	}
+	int  CGhost::GetX() {
 		return x;
 	}
-
-	int CGhost::GetY() {
+	int  CGhost::GetY() {
 		return y;
 	}
-
 	void CGhost::OnShow() {
-		if (is_alive) {
+		if (isAlive) {
 			//ghost.SetTopLeft(x + dx, y + dy);
 			ghost.SetTopLeft(x, y);
 			ghost.OnShow();

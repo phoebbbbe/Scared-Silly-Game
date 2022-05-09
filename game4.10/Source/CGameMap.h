@@ -21,6 +21,7 @@ namespace game_framework {
 		void OnKeyDown(UINT);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);
+		int *GetMap();
 		~CGameMap();
 	protected:
 		CMovingBitmap floor, grass;

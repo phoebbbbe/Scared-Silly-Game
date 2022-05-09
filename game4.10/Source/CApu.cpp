@@ -5,6 +5,7 @@
 #include "audio.h"
 #include "gamelib.h"
 #include "CApu.h"
+#include "CGameMap.h"
 
 namespace game_framework {
 
@@ -31,8 +32,8 @@ namespace game_framework {
 	int CApu::GetMode() {
 		return curMode;
 	}
-	int CApu::GetDir() {
-		return curDir;
+	int CApu::GetState() {
+		return curState;
 	}
 	bool CApu::GetMoved() {
 		return isMoved;
@@ -42,7 +43,7 @@ namespace game_framework {
 		const int Y_POS = 180;
 		x = X_POS;
 		y = Y_POS;
-		curDir = 0;  // initApu
+		curState = 0;  // initApu
 		curMode = 1; // still
 		isMoved = false;
 		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
@@ -56,21 +57,29 @@ namespace game_framework {
 		moveUp.AddBitmap(IDB_APU_UP2, RGB(255, 255, 255));
 		moveUp.AddBitmap(IDB_APU_UP3, RGB(255, 255, 255));
 		moveUp.AddBitmap(IDB_APU_UP4, RGB(255, 255, 255));
+		moveUp.AddBitmap(IDB_APU_UP5, RGB(255, 255, 255));
+		moveUp.AddBitmap(IDB_APU_UP5, RGB(255, 255, 255));
 
 		moveDown.AddBitmap(IDB_APU_DOWN1, RGB(255, 255, 255));
 		moveDown.AddBitmap(IDB_APU_DOWN2, RGB(255, 255, 255));
 		moveDown.AddBitmap(IDB_APU_DOWN3, RGB(255, 255, 255));
 		moveDown.AddBitmap(IDB_APU_DOWN4, RGB(255, 255, 255));
+		moveDown.AddBitmap(IDB_APU_DOWN5, RGB(255, 255, 255));
+		moveDown.AddBitmap(IDB_APU_DOWN5, RGB(255, 255, 255));
 
-		moveLeft.AddBitmap(IDB_APU_BACK1, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_BACK2, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_BACK3, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_BACK4, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT1, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT2, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT3, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT4, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT5, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT5, RGB(255, 255, 255));
 
-		moveRight.AddBitmap(IDB_APU_FRONT1, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_FRONT2, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_FRONT3, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_FRONT4, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT1, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT2, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT3, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT4, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT5, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT5, RGB(255, 255, 255));
 
 		fightUp.AddBitmap(IDB_FIGHT_UP1, RGB(255, 255, 255));
 		fightUp.AddBitmap(IDB_FIGHT_UP2, RGB(255, 255, 255));
@@ -88,75 +97,88 @@ namespace game_framework {
 		fightRight.AddBitmap(IDB_FIGHT_FRONT2, RGB(255, 255, 255));
 		fightRight.AddBitmap(IDB_FIGHT_FRONT3, RGB(255, 255, 255));
 
-		initApu.LoadBitmap(IDB_APU_FRONT1, RGB(255, 255, 2555));
+		fail.AddBitmap(IDB_APU_LOSE, RGB(255, 255, 255));
+		initApu.LoadBitmap(IDB_APU_RIGHT1, RGB(255, 255, 2555));
 	}
 
 	void CApu::OnMove() {
+		const int STEP_SIZE = 1;
 		if (curMode == 2) {
-			if (curDir == 1)
+			SetXY(STEP_SIZE);
+			if (curState == 1)
 				moveUp.OnMove();
-			else if (curDir == 2)
+			else if (curState == 2)
 				moveDown.OnMove();
-			else if (curDir == 3)
+			else if (curState == 3)
 				moveLeft.OnMove();
-			else if (curDir == 4)
+			else if (curState == 4)
 				moveRight.OnMove();
-			else if (curDir == 5)
+			else if (curState == 5)
 				fightUp.OnMove();
-			else if (curDir == 6)
+			else if (curState == 6)
 				fightDown.OnMove();
-			else if (curDir == 7)
+			else if (curState == 7)
 				fightLeft.OnMove();
-			else if (curDir == 8)
+			else if (curState == 8)
 				fightRight.OnMove();
+			else if (curState == 9)
+				fail.OnMove();
 		}
 	}
-
 	void CApu::SetMovingUp(bool flag) {
 		isMovingUp = flag;
 		if (flag)
-			curDir = 1;
+			curState = 1;
 	}
 
 	void CApu::SetMovingDown(bool flag) {
 		isMovingDown = flag;
 		if (flag)
-			curDir = 2;
+			curState = 2;
 	}
 
 	void CApu::SetMovingLeft(bool flag) {
 		isMovingLeft = flag;
 		if (flag)
-			curDir = 3;
+			curState = 3;
 	}
 
 	void CApu::SetMovingRight(bool flag) {
 		isMovingRight = flag;
 		if (flag)
-			curDir = 4;
+			curState = 4;
 	}
 
 	void CApu::SetFightUp(bool flag) {
 		isFightUp = flag;
 		if (flag)
-			curDir = 5;
+			curState = 5;
 	}
 	void CApu::SetFightDown(bool flag) {
 		isFightDown = flag;
 		if (flag)
-			curDir = 6;
+			curState = 6;
 	}
 	void CApu::SetFightLeft(bool flag) {
 		isFightLeft = flag;
 		if (flag)
-			curDir = 7;
+			curState = 7;
 	}
 	void CApu::SetFightRight(bool flag) {
 		isFightRight = flag;
 		if (flag)
-			curDir = 8;
+			curState = 8;
 	}
-
+	void CApu::SetAllAction(bool flag) {
+		isMovingUp = flag;
+		isMovingDown = flag;
+		isMovingLeft = flag;
+		isMovingRight = flag;
+		isFightUp = flag;
+		isFightDown = flag;
+		isFightLeft = flag;
+		isFightRight = flag;
+	}
 	void CApu::SetXY(int nx, int ny) {
 		x = nx; y = ny;
 	}
@@ -176,7 +198,7 @@ namespace game_framework {
 	}
 
 	void CApu::OnShow() {
-		switch (curDir) {
+		switch (curState) {
 		case 0:
 			initApu.SetTopLeft(x, y);
 			initApu.ShowBitmap();
@@ -213,73 +235,83 @@ namespace game_framework {
 			fightRight.SetTopLeft(x, y);
 			fightRight.OnShow();
 			break;
+		case 9:
+			fail.SetTopLeft(x, y);
+			fail.OnShow();
+			break;
 		default:
 			break;
 		}
 	}
 	int CApu::GetCurAnimationNum() {
-		if (curDir == 1)
+		if (curState == 1)
 			return moveUp.GetCurrentBitmapNumber();
-		else if (curDir == 2)
+		else if (curState == 2)
 			return moveDown.GetCurrentBitmapNumber();
-		else if (curDir == 3)
+		else if (curState == 3)
 			return moveLeft.GetCurrentBitmapNumber();
-		else if (curDir == 4)
+		else if (curState == 4)
 			return moveRight.GetCurrentBitmapNumber();
-		else if (curDir == 5)
+		else if (curState == 5)
 			return fightUp.GetCurrentBitmapNumber();
-		else if (curDir == 6)
+		else if (curState == 6)
 			return fightDown.GetCurrentBitmapNumber();
-		else if (curDir == 7)
+		else if (curState == 7)
 			return fightLeft.GetCurrentBitmapNumber();
-		else if (curDir == 8)
+		else if (curState == 8)
 			return fightRight.GetCurrentBitmapNumber();
+		else if (curState == 9)
+			return fail.GetCurrentBitmapNumber();
 		else
 			return 1;
 	}
 	int CApu::GetCurAnimationLastNum() {
-		if (curDir == 1)
+		if (curState == 1)
 			return moveUp.GetLastBitmapNumber();
-		else if (curDir == 2)
+		else if (curState == 2)
 			return moveDown.GetLastBitmapNumber();
-		else if (curDir == 3)
+		else if (curState == 3)
 			return moveLeft.GetLastBitmapNumber();
-		else if (curDir == 4)
+		else if (curState == 4)
 			return moveRight.GetLastBitmapNumber();
-		else if (curDir == 5)
+		else if (curState == 5)
 			return fightUp.GetLastBitmapNumber();
-		else if (curDir == 6)
+		else if (curState == 6)
 			return fightDown.GetLastBitmapNumber();
-		else if (curDir == 7)
+		else if (curState == 7)
 			return fightLeft.GetLastBitmapNumber();
-		else if (curDir == 8)
+		else if (curState == 8)
 			return fightRight.GetLastBitmapNumber();
+		else if (curState == 9)
+			return fail.GetLastBitmapNumber();
 		else
 			return 0;
 	}
 	void CApu::ResetCurAnimation() {
-		if (curDir == 1)
+		if (curState == 1)
 			moveUp.Reset();
-		else if (curDir == 2)
+		else if (curState == 2)
 			moveDown.Reset();
-		else if (curDir == 3)
+		else if (curState == 3)
 			moveLeft.Reset();
-		else if (curDir == 4)
+		else if (curState == 4)
 			moveRight.Reset();
-		else if (curDir == 5)
+		else if (curState == 5)
 			fightUp.Reset();
-		else if (curDir == 6)
+		else if (curState == 6)
 			fightDown.Reset();
-		else if (curDir == 7)
+		else if (curState == 7)
 			fightLeft.Reset();
-		else if (curDir == 8)
+		else if (curState == 8)
 			fightRight.Reset();
+		else if (curState == 9)
+			fail.Reset();
 	}
 	void CApu::SetMode(int flag) {
 		curMode = flag;
 	}
-	void CApu::SetDir(int flag) {
-		curDir = flag;
+	void CApu::SetState(int flag) {
+		curState = flag;
 	}
 	void CApu::SetMoved(bool flag) {
 		isMoved = flag;

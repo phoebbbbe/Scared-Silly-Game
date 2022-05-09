@@ -74,7 +74,9 @@ namespace game_framework {
 		bballs[ini_index].SetVelocity(VELOCITY + col);
 		bballs[ini_index].SetXY(X + col * MW + MW / 2, floor);
 	}
-
+	int *CGameMap::GetMap() {
+		return map[0];
+	}
 	void CGameMap::RandomBouncingBall() {
 		const int MAX_RAND_NUM = 10;
 		random_num = (rand() % MAX_RAND_NUM) + 1;

@@ -78,8 +78,12 @@ void CGameStateInit::OnInit()
 	ShowInitProgress(0);	// 一開始的loading進度為0%
 
 	// 開始載入資料
-	logo.LoadBitmap(IDB_PAGE1);
+	page_begin.AddBitmap(IDB_PAGE_BEGIN1);
+	page_begin.AddBitmap(IDB_PAGE_BEGIN2);
+	button_begin.AddBitmap(IDB_BUTTON_BEGIN1);
+	button_begin.AddBitmap(IDB_BUTTON_BEGIN2);
 	/*PAGE1*/
+	isBeginButtonDown = false;
 	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -99,33 +103,57 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0);	// 關閉遊戲
 }
 
-void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point) {
+	int x1 = point.x;
+	int y1 = point.y;
+	int x2 = button_begin.Left();					// button左上角x
+	int y2 = button_begin.Top();					// button左上角y
+	int x3 = x2 + button_begin.Width();					// button右下角x
+	int y3 = x2 + button_begin.Height();					// button右下角y
+	if (x1 >= x2 && x1 <= x3 && y1 >= y2 && y1 <= y3) {
+		//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+		isBeginButtonDown = true;
+		beginButtonHasDown = true;
+	}
+}
+
+void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
+	if (isBeginButtonDown)
+		GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 }
 
 void CGameStateInit::OnShow()
 {
 	// 貼上logo
-	logo.SetTopLeft((SIZE_X - logo.Width())/2, SIZE_Y/8);
-	logo.ShowBitmap();
+	page_begin.SetTopLeft((SIZE_X - page_begin.Width())/2, SIZE_Y/8);
+	page_begin.OnShow();
+	button_begin.SetTopLeft(510, 300);
+	button_begin.OnShow();
 
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
-	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-	CFont f,*fp;
-	f.CreatePointFont(160,"Times New Roman");	// 產生 font f; 160表示16 point的字
-	fp=pDC->SelectObject(&f);					// 選用 font f
-	pDC->SetBkColor(RGB(0,0,0));
-	pDC->SetTextColor(RGB(255,255,0));
-	pDC->TextOut(120,220,"Please click mouse or press SPACE to begin.");
-	pDC->TextOut(5,395,"Press Ctrl-F to switch in between window mode and full screen mode.");
-	if (ENABLE_GAME_PAUSE)
-		pDC->TextOut(5,425,"Press Ctrl-Q to pause the Game.");
-	pDC->TextOut(5,455,"Press Alt-F4 or ESC to Quit.");
-	pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+	//CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+	//CFont f,*fp;
+	//f.CreatePointFont(160,"Times New Roman");	// 產生 font f; 160表示16 point的字
+	//fp=pDC->SelectObject(&f);					// 選用 font f
+	//pDC->SetBkColor(RGB(0,0,0));
+	//pDC->SetTextColor(RGB(255,255,0));
+	//pDC->TextOut(120,220,"Please click mouse or press SPACE to begin.");
+	//pDC->TextOut(5,395,"Press Ctrl-F to switch in between window mode and full screen mode.");
+	//if (ENABLE_GAME_PAUSE)
+	//	pDC->TextOut(5,425,"Press Ctrl-Q to pause the Game.");
+	//pDC->TextOut(5,455,"Press Alt-F4 or ESC to Quit.");
+	//pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+	//CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
 }								
 
+void CGameStateInit::OnMove() {
+	page_begin.OnMove();
+	if (isBeginButtonDown && !(beginButtonHasDown)) {
+		button_begin.OnMove();
+		beginButtonHasDown = true;
+	}
+	
+}
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的結束狀態(Game Over)
 /////////////////////////////////////////////////////////////////////////////
@@ -234,28 +262,28 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	background.SetTopLeft(background.Left(), background.Top() + 1);
 
 	// 移動氣球鬼
-	int i;
-	for (i = 0; i < NUMBALLONS; i++)
+	for (int i = 0; i < NUMBALLONS; i++)
+	{
 		ballon[i].OnMove(&apu);
-
+		ballon[i].OnMove(&apu);
+		// 比照阿噗
+	}
 	// 移動阿噗
-	const int STEP_SIZE = 3;
 	apu.OnMove();
-	apu.SetXY(STEP_SIZE);
+	apu.OnMove();
+	apu.OnMove();
 	apu.OnMove();
 	if (apu.GetCurAnimationNum() == apu.GetCurAnimationLastNum()) {
 		apu.ResetCurAnimation();
 		apu.SetMode(1);
-		apu.SetFightUp(false);
-		apu.SetFightDown(false);
-		apu.SetFightLeft(false);
-		apu.SetFightRight(false);
-		apu.SetMovingUp(false);
-		apu.SetMovingDown(false);
-		apu.SetMovingLeft(false);
-		apu.SetMovingRight(false);
+		apu.SetAllAction(false);
+		for (int i = 0; i < NUMBALLONS; i++)
+		{
+			ballon[i].SwitchMode();
+			ballon[i].SetState(0);
+		}
 	}
-		
+	//apu.Moving(gamemap.GetMap());
 	// 判斷擦子是否碰到球
 	//for (i = 0; i < NUMBALLS; i++) {
 	//	//if (ball[i].IsAlive() && ball[i].HitEraser(&eraser)) {
@@ -273,7 +301,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	//}
 
 	// 判斷Apu是否fight Ghost
-	for (i = 0; i < NUMBALLONS; i++) {
+	for (int i = 0; i < NUMBALLONS; i++) {
 		if (ballon[i].IsAlive() && ballon[i].IsFighted()) {
 			ballon[i].SetIsAlive(false);
 			CAudio::Instance()->Play(AUDIO_DING);
@@ -284,14 +312,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
 				GotoGameState(GAME_STATE_OVER);
 			}
-			// 判斷當Ghost碰到Apu，則跳到Game Over狀態
-			//if (ballon[i].IsAlive() && ballon[i].HitApu(&apu))
-			//{
-			//	// CAudio Stop
-
-			//	// Goto GameOver
-			//	GotoGameState(GAME_STATE_OVER);
-			//}
+		}
+		// 判斷當Ghost碰到Apu，則跳到Game Over狀態
+		if (ballon[i].IsAlive() && ballon[i].HitApu(&apu))
+		{
+			apu.SetState(9);
+			GotoGameState(GAME_STATE_OVER);
 		}
 	}
 	// 移動彈跳的球
@@ -333,7 +359,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	int k = 0;
+	int exist = 0, RANGE = 25;
 	const char KEY_LEFT  = 0x25; // keyboard左箭頭
 	const char KEY_UP    = 0x26; // keyboard上箭頭
 	const char KEY_RIGHT = 0x27; // keyboard右箭頭
@@ -345,54 +371,46 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == KEY_UP) {
 		curKeyState = 1;
-		k = HasGhost(apu.GetX1(), apu.GetY1() - 25, apu.GetX2(), apu.GetY2() - 25);
-		if (k != -1) {
+		exist = HasGhost(apu.GetX1(), apu.GetY1() - RANGE, apu.GetX2(), apu.GetY2() - RANGE);
+		if (exist != -1) {
 			apu.SetFightUp(true);
-			ballon[k].SetIsFighted(true);
+			ballon[exist].SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingUp(true);
-			for (int j = 0; j < NUMBALLONS; j++)
-				ballon[j].SetIsApuMove(true);
 		}
 	}
 	if (nChar == KEY_DOWN) {
 		curKeyState = 2;
-		k = HasGhost(apu.GetX1(), apu.GetY1() + 25, apu.GetX2(), apu.GetY2() + 25);
-		if (k != -1) {
+		exist = HasGhost(apu.GetX1(), apu.GetY1() + RANGE, apu.GetX2(), apu.GetY2() + RANGE);
+		if (exist != -1) {
 			apu.SetFightDown(true);
-			ballon[k].SetIsFighted(true);
+			ballon[exist].SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingDown(true);
-			for (int j = 0; j < NUMBALLONS; j++)
-				ballon[j].SetIsApuMove(true);
 		}
 	}
 	if (nChar == KEY_LEFT) {
 		curKeyState = 3;
-		k = HasGhost(apu.GetX1() - 25, apu.GetY1(), apu.GetX2() - 25, apu.GetY2());
-		if (k != -1) {
+		exist = HasGhost(apu.GetX1() - RANGE, apu.GetY1(), apu.GetX2() - RANGE, apu.GetY2());
+		if (exist != -1) {
 			apu.SetFightLeft(true);
-			ballon[k].SetIsFighted(true);
+			ballon[exist].SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingLeft(true);
-			for (int j = 0; j < NUMBALLONS; j++)
-				ballon[j].SetIsApuMove(true);
 		}
 	}
 	if (nChar == KEY_RIGHT) {
 		curKeyState = 4;
-		k = HasGhost(apu.GetX1() + 25, apu.GetY1(), apu.GetX2() + 25, apu.GetY2());
-		if (k != -1) {
+		exist = HasGhost(apu.GetX1() + RANGE, apu.GetY1(), apu.GetX2() + RANGE, apu.GetY2());
+		if (exist != -1) {
 			apu.SetFightRight(true);
-			ballon[k].SetIsFighted(true);
+			ballon[exist].SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingRight(true);
-			for (int j = 0; j < NUMBALLONS; j++)
-				ballon[j].SetIsApuMove(true);
 		}
 	}
 	gamemap.OnKeyDown(nChar);
