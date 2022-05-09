@@ -237,9 +237,6 @@
     <Image Include="RES\bat2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\backmanu.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="RES\apu_down1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -375,7 +372,115 @@
     <Image Include="res\apu_right4.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\clip.bmp">
+    <Image Include="RES\fork.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\brick3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\brick4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\turf.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\brick2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\brick1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_lose6.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_relive1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_relive2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_relive3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_relive4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\apu_relive5.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fight_left1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fight_left2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fight_left3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fight_right1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fight_right2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\fight_up4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\fight_left4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\fight_down4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\fight_right3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\fight_right4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\tree2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tree1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\grass3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\grass4.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\tree3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\wall1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\wall2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\grass1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

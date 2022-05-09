@@ -104,17 +104,13 @@ IDB_HELP                BITMAP                  "..\\res\\help.bmp"
 
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
 
-IDB_BACKMANU            BITMAP                  "..\\res\\backmanu.bmp"
+IDB_BRICK2              BITMAP                  "..\\res\\brick2.bmp"
 
-IDB_FLOOR2              BITMAP                  "..\\res\\floor2.bmp"
-
-IDB_FLOOR1              BITMAP                  "..\\res\\floor1.bmp"
+IDB_BRICK1              BITMAP                  "..\\res\\brick1.bmp"
 
 IDB_APU_LOSE            BITMAP                  "..\\res\\apu_lose.bmp"
 
-IDB_CLIP                BITMAP                  "..\\res\\clip.bmp"
-
-IDB_GRASS               BITMAP                  "..\\res\\grass.bmp"
+IDB_GRASS1              BITMAP                  "..\\res\\grass1.bmp"
 
 IDB_GRASS2              BITMAP                  "..\\res\\grass2.bmp"
 
@@ -164,7 +160,7 @@ IDB_APU_UP3             BITMAP                  "..\\res\\apu_up3.bmp"
 
 IDB_APU_UP4             BITMAP                  "..\\res\\apu_up4.bmp"
 
-IDB_TREE                BITMAP                  "..\\res\\tree.bmp"
+IDB_TREE1               BITMAP                  "..\\res\\tree1.bmp"
 
 IDB_FIGHT_UP1           BITMAP                  "..\\res\\fight_up1.bmp"
 
@@ -177,18 +173,6 @@ IDB_FIGHT_DOWN1         BITMAP                  "..\\res\\fight_down1.bmp"
 IDB_FIGHT_DOWN2         BITMAP                  "..\\res\\fight_down2.bmp"
 
 IDB_FIGHT_DOWN3         BITMAP                  "..\\res\\fight_down3.bmp"
-
-IDB_FIGHT_BACK1         BITMAP                  "..\\res\\fight_back1.bmp"
-
-IDB_FIGHT_BACK2         BITMAP                  "..\\res\\fight_back2.bmp"
-
-IDB_FIGHT_BACK3         BITMAP                  "..\\res\\fight_back3.bmp"
-
-IDB_FIGHT_FRONT1        BITMAP                  "..\\res\\fight_front1.bmp"
-
-IDB_FIGHT_FRONT2        BITMAP                  "..\\res\\fight_front2.bmp"
-
-IDB_FIGHT_FRONT3        BITMAP                  "..\\res\\fight_front3.bmp"
 
 IDB_PAGE_BEGIN1         BITMAP                  "..\\res\\page_begin1.BMP"
 
@@ -221,6 +205,68 @@ IDB_APU_LEFT5           BITMAP                  "..\\res\\apu_left5.BMP"
 IDB_APU_UP5             BITMAP                  "..\\res\\apu_up5.BMP"
 
 IDB_APU_RIGHT5          BITMAP                  "..\\res\\apu_right5.BMP"
+
+IDB_FORK                BITMAP                  "..\\res\\fork.BMP"
+
+IDB_BRICK3              BITMAP                  "..\\res\\brick3.BMP"
+
+IDB_BRICK4              BITMAP                  "..\\res\\brick4.BMP"
+
+IDB_TURF                BITMAP                  "..\\res\\turf.BMP"
+
+IDB_APU_LOSE1           BITMAP                  "..\\res\\apu_lose1.BMP"
+
+IDB_APU_LOSE2           BITMAP                  "..\\res\\apu_lose2.BMP"
+
+IDB_APU_LOSE3           BITMAP                  "..\\res\\apu_lose3.BMP"
+
+IDB_APU_LOSE4           BITMAP                  "..\\res\\apu_lose4.BMP"
+
+IDB_APU_LOSE5           BITMAP                  "..\\res\\apu_lose5.BMP"
+
+IDB_APU_LOSE6           BITMAP                  "..\\res\\apu_lose6.BMP"
+
+IDB_APU_RELIVE1         BITMAP                  "..\\res\\apu_relive1.BMP"
+
+IDB_APU_RELIVE2         BITMAP                  "..\\res\\apu_relive2.BMP"
+
+IDB_APU_RELIVE3         BITMAP                  "..\\res\\apu_relive3.BMP"
+
+IDB_APU_RELIVE4         BITMAP                  "..\\res\\apu_relive4.BMP"
+
+IDB_APU_RELIVE5         BITMAP                  "..\\res\\apu_relive5.BMP"
+
+IDB_FIGHT_UP4           BITMAP                  "..\\res\\fight_up4.BMP"
+
+IDB_FIGHT_DOWN4         BITMAP                  "..\\res\\fight_down4.BMP"
+
+IDB_FIGHT_LEFT1         BITMAP                  "..\\res\\fight_left1.bmp"
+
+IDB_FIGHT_LEFT2         BITMAP                  "..\\res\\fight_left2.BMP"
+
+IDB_FIGHT_LEFT3         BITMAP                  "..\\res\\fight_left3.bmp"
+
+IDB_FIGHT_LEFT4         BITMAP                  "..\\res\\fight_left4.BMP"
+
+IDB_FIGHT_RIGHT1        BITMAP                  "..\\res\\fight_right1.BMP"
+
+IDB_FIGHT_RIGHT2        BITMAP                  "..\\res\\fight_right2.BMP"
+
+IDB_FIGHT_RIGHT3        BITMAP                  "..\\res\\fight_right3.BMP"
+
+IDB_FIGHT_RIGHT4        BITMAP                  "..\\res\\fight_right4.BMP"
+
+IDB_TREE2               BITMAP                  "..\\res\\tree2.BMP"
+
+IDB_GRASS3              BITMAP                  "..\\res\\grass3.BMP"
+
+IDB_GRASS4              BITMAP                  "..\\res\\grass4.BMP"
+
+IDB_TREE3               BITMAP                  "..\\res\\tree3.BMP"
+
+IDB_WALL1               BITMAP                  "..\\res\\wall1.BMP"
+
+IDB_WALL2               BITMAP                  "..\\res\\wall2.BMP"
 
 
 /////////////////////////////////////////////////////////////////////////////

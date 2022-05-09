@@ -48,6 +48,7 @@ namespace game_framework {
 		CAnimation fightRight;
 		CAnimation fail;
 		CAnimation success;
+		CAnimation relive;
 		CMovingBitmap initApu;
 		int curState;				// 阿噗現在的方向:1(上)2(下)3(左)4(右)5(打上)6(打下)7(打左)8(打右)
 		int curMode;				// 阿噗現在的狀態:1(靜止), 2(移動)

@@ -22,13 +22,14 @@ namespace game_framework {
 		void SetDelay(int d);				// 設定旋轉的速度
 		void SetMode(int m);
 		void SetState(int s);
+		void SetFork();
 		void SwitchMode();
 		int  WhereIsApu(CApu *apu);
 		void FollowApu(CApu *apu, int stepsize);
 	protected:
 		CAnimation ghost;
 		CAnimation ghost_die;
-		CMovingBitmap fork;
+		CMovingBitmap fork1, fork2, fork3, fork4;
 		int x, y;					// 鬼怪的座標
 		int dx, dy;					// 鬼怪距離圓心的位移量
 		int index;					// 鬼怪的「角度」，0-17表示0-360度

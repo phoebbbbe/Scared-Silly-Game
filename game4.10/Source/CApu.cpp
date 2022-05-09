@@ -84,20 +84,42 @@ namespace game_framework {
 		fightUp.AddBitmap(IDB_FIGHT_UP1, RGB(255, 255, 255));
 		fightUp.AddBitmap(IDB_FIGHT_UP2, RGB(255, 255, 255));
 		fightUp.AddBitmap(IDB_FIGHT_UP3, RGB(255, 255, 255));
+		fightUp.AddBitmap(IDB_FIGHT_UP4, RGB(255, 255, 255));
+		fightUp.AddBitmap(IDB_FIGHT_UP4, RGB(255, 255, 255));
 
 		fightDown.AddBitmap(IDB_FIGHT_DOWN1, RGB(255, 255, 255));
 		fightDown.AddBitmap(IDB_FIGHT_DOWN2, RGB(255, 255, 255));
 		fightDown.AddBitmap(IDB_FIGHT_DOWN3, RGB(255, 255, 255));
+		fightDown.AddBitmap(IDB_FIGHT_DOWN4, RGB(255, 255, 255));
+		fightDown.AddBitmap(IDB_FIGHT_DOWN4, RGB(255, 255, 255));
 
-		fightLeft.AddBitmap(IDB_FIGHT_BACK1, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_BACK2, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_BACK3, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT1, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT2, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT3, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, RGB(255, 255, 255));
 
-		fightRight.AddBitmap(IDB_FIGHT_FRONT1, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_FRONT2, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_FRONT3, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT1, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT2, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT3, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, RGB(255, 255, 255));
 
-		fail.AddBitmap(IDB_APU_LOSE, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE1, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE2, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE3, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE4, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE5, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE6, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE6, RGB(255, 255, 255));
+
+		relive.AddBitmap(IDB_APU_RELIVE1, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE2, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE3, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE4, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE5, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE5, RGB(255, 255, 255));
+
 		initApu.LoadBitmap(IDB_APU_RIGHT1, RGB(255, 255, 2555));
 	}
 

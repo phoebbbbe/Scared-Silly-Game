@@ -266,6 +266,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	{
 		ballon[i].OnMove(&apu);
 		ballon[i].OnMove(&apu);
+		ballon[i].OnMove(&apu);
 		// 比照阿噗
 	}
 	// 移動阿噗

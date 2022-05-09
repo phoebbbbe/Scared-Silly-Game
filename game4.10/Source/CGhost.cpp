@@ -50,7 +50,15 @@ namespace game_framework {
 		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
 		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
 
-		//fork.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+
+		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
 	}
 
 	void CGhost::OnMove() {
@@ -77,13 +85,16 @@ namespace game_framework {
 	void CGhost::OnMove(CApu *apu) {
 		const int STEP_SIZE = 1;
 		if (!isAlive)
+		{
+			ghost_die.OnMove();
+			ghost_die.OnMove();
 			return;
+		}
 		if (apu->GetMode() == 2) {
 			//TRACE("%d\n", curMode);
 			if (curMode == 1)
 			{
 				ghost.OnMove();
-				// display fork
 			}
 			else if (curMode == 2)
 			{
@@ -163,6 +174,9 @@ namespace game_framework {
 	void CGhost::SetXY(int nx, int ny) {
 		x = nx; y = ny;
 	}
+	void CGhost::SetFork() {
+
+	}
 	void CGhost::SetMode(int m) {
 		curMode = m;
 	}
@@ -186,8 +200,27 @@ namespace game_framework {
 	void CGhost::OnShow() {
 		if (isAlive) {
 			//ghost.SetTopLeft(x + dx, y + dy);
-			ghost.SetTopLeft(x, y);
-			ghost.OnShow();
+			if (isFighted) {
+				ghost_die.SetTopLeft(x, y);
+				ghost_die.OnShow(); // 改進ghost_die的動畫
+			}
+			else {
+				ghost.SetTopLeft(x, y);
+				ghost.OnShow();
+				if (curMode == 1)
+				{
+					//SetFork();
+					/*fork1.SetTopLeft(x - 30, y);
+					fork2.SetTopLeft(x + 30, y);
+					fork3.SetTopLeft(x, y - 30);
+					fork4.SetTopLeft(x, y + 30);
+					fork1.ShowBitmap();
+					fork2.ShowBitmap();
+					fork3.ShowBitmap();
+					fork4.ShowBitmap();*/
+				}
+
+			}
 		}
 	}
 }
