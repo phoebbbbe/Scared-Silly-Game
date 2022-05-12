@@ -264,6 +264,8 @@
     <ClCompile Include="Source\CBall.cpp" />
     <ClCompile Include="Source\CBouncingBall.cpp" />
     <ClCompile Include="Source\CEraser.cpp" />
+    <ClCompile Include="Source\CItem.cpp" />
+    <ClCompile Include="Source\CLevel.cpp" />
     <ClCompile Include="Source\game.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -306,6 +308,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CData.h" />
     <ClInclude Include="Source\CGameMap.h" />
     <ClInclude Include="Source\CGhost.h" />
     <ClInclude Include="Source\CApu.h" />
@@ -313,6 +316,8 @@
     <ClInclude Include="Source\CBall.h" />
     <ClInclude Include="Source\CBouncingBall.h" />
     <ClInclude Include="Source\CEraser.h" />
+    <ClInclude Include="Source\CItem.h" />
+    <ClInclude Include="Source\CLevel.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gameDoc.h" />
     <ClInclude Include="Source\gameView.h" />
@@ -372,6 +377,8 @@
     <Image Include="RES\balloon_die3.BMP" />
     <Image Include="RES\bat.bmp" />
     <Image Include="RES\bat2.bmp" />
+    <Image Include="res\beginPage.BMP" />
+    <Image Include="res\beginPage2.BMP" />
     <Image Include="res\bitmap3.bmp" />
     <Image Include="res\bitmap4.bmp" />
     <Image Include="res\brick1.bmp" />
@@ -410,6 +417,10 @@
     <Image Include="RES\grass2.bmp" />
     <Image Include="RES\grass3.BMP" />
     <Image Include="RES\grass4.BMP" />
+    <Image Include="RES\level1.BMP" />
+    <Image Include="RES\level2.BMP" />
+    <Image Include="RES\level3.BMP" />
+    <Image Include="RES\levelPage.BMP" />
     <Image Include="RES\map1.bmp" />
     <Image Include="RES\map2.bmp" />
     <Image Include="RES\map3.bmp" />

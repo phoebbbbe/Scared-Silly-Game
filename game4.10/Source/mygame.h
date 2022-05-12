@@ -43,6 +43,8 @@
 #include "CBouncingBall.h"
 #include "CApu.h"
 #include "CGhost.h"
+#include "CItem.h"
+#include "CLevel.h"
 #include "CGameMap.h"
 
 namespace game_framework {
@@ -75,10 +77,12 @@ namespace game_framework {
 		bool isBeginButtonDown;
 		bool beginButtonHasDown;
 	private:
-		//CMovingBitmap logo;								// csieªºlogo
+		//CMovingBitmap logo;							// csieªºlogo
 		CAnimation page_begin;
 		CAnimation button_begin;
 		CMovingBitmap page_level;
+		CMovingBitmap level1, level2, level3;
+		int curState;									// 1(begin) 2(level)
 	};	
 
 	/////////////////////////////////////////////////////////////////////////////

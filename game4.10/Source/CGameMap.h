@@ -1,34 +1,42 @@
-#include "CEraser.h"
-#include "CBall.h"
-#include "CBouncingBall.h"
-#include "CApu.h"
-#include "CGhost.h"
 #ifndef CGAMEMAP_H
 #define CGAMEMAP_H
+#include "CBouncingBall.h"
 
 namespace game_framework {
 
-	/////////////////////////////////////////////////////////////////////////////
-	// 這個class提供地圖的構成
-	// 看懂就可以改寫成自己的程式了
-	/////////////////////////////////////////////////////////////////////////////
+	/* Map : 1248*624  (24*12)
+	Screen : 676*364 (13*7)
+	cell : 52*52 */
+
 	class CGameMap {
 	public:
+		/* Constructor */
 		CGameMap();
-		void LoadBitmap();
-		void OnShow();
-		void OnMove();
+		~CGameMap();
+
+		/* Getter */
+		int *GetMap();
+
+		/* Member Function */
 		void OnKeyDown(UINT);
 		void RandomBouncingBall();
 		void InitializeBouncingBall(int, int, int);
-		int *GetMap();
-		~CGameMap();
+
+		//
+		void LoadBitmap();
+		void OnShow();
+		void OnMove();
+
 	protected:
-		CMovingBitmap floor, grass;
-		int map[14][10];
-		const int X, Y;
-		const int MW, MH;
-		CBouncingBall* bballs;
+		CMovingBitmap brick1;
+		CMovingBitmap brick2;
+		CMovingBitmap brick3;	// 三種地磚
+		CMovingBitmap turf;						// 草皮
+		int map[24][12];						// 地圖
+		int sx, sy;								// 螢幕左上角座標
+		const int X, Y;							// 在地圖上的座標
+		const int MW, MH;						// 每隔長寬大小
+		//CBouncingBall* bballs;
 		int random_num;
 	};
 }

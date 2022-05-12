@@ -108,8 +108,6 @@ IDB_BRICK2              BITMAP                  "..\\res\\brick2.bmp"
 
 IDB_BRICK1              BITMAP                  "..\\res\\brick1.bmp"
 
-IDB_APU_LOSE            BITMAP                  "..\\res\\apu_lose.bmp"
-
 IDB_GRASS1              BITMAP                  "..\\res\\grass1.bmp"
 
 IDB_GRASS2              BITMAP                  "..\\res\\grass2.bmp"
@@ -173,10 +171,6 @@ IDB_FIGHT_DOWN1         BITMAP                  "..\\res\\fight_down1.bmp"
 IDB_FIGHT_DOWN2         BITMAP                  "..\\res\\fight_down2.bmp"
 
 IDB_FIGHT_DOWN3         BITMAP                  "..\\res\\fight_down3.bmp"
-
-IDB_PAGE_BEGIN1         BITMAP                  "..\\res\\page_begin1.BMP"
-
-IDB_PAGE_BEGIN2         BITMAP                  "..\\res\\page_begin2.BMP"
 
 IDB_BUTTON_BEGIN1       BITMAP                  "..\\res\\button_begin1.BMP"
 
@@ -267,6 +261,18 @@ IDB_TREE3               BITMAP                  "..\\res\\tree3.BMP"
 IDB_WALL1               BITMAP                  "..\\res\\wall1.BMP"
 
 IDB_WALL2               BITMAP                  "..\\res\\wall2.BMP"
+
+IDB_BEGIN_PAGE1         BITMAP                  "D:\\phoebe_file\\game4.10\\RES\\beginPage.BMP"
+
+IDB_BEGIN_PAGE2         BITMAP                  "D:\\phoebe_file\\game4.10\\RES\\beginPage2.BMP"
+
+IDB_LEVEL1              BITMAP                  "..\\res\\level1.BMP"
+
+IDB_LEVEL2              BITMAP                  "..\\res\\level2.BMP"
+
+IDB_LEVEL3              BITMAP                  "..\\res\\level3.BMP"
+
+IDB_LEVEL_PAGE          BITMAP                  "..\\res\\levelPage.BMP"
 
 
 /////////////////////////////////////////////////////////////////////////////

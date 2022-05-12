@@ -6,27 +6,55 @@
 #include "gamelib.h"
 #include "CApu.h"
 #include "CGameMap.h"
+#define WHITE RGB(255, 255, 255)
 
 namespace game_framework {
 
 	CApu::CApu() {
 		Initialize();
 	}
+	void CApu::Initialize() {
+		pos.x = 0;
+		pos.y = SIZE_Y/3;
+		curState = 0;			// initApu
+		curMode = 1;			// still
+		isMoved = false;
+		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
+		isFightLeft = isFightRight = isFightUp = isFightDown = false;
 
+	}
+
+	CApu::~CApu() {
+
+	}
 	int CApu::GetX1() {
-		return x;
+		return pos.x;
 	}
 
 	int CApu::GetY1() {
-		return y;
+		return pos.y;
 	}
 
 	int CApu::GetX2() {
-		return x + initApu.Width();
+		switch (curState) {
+		case 1: return pos.x + initUp.Width();
+		case 2: return pos.x + initDown.Width();
+		case 3: return pos.x + initLeft.Width();
+		case 4: return pos.x + initRight.Width();
+		default:
+			return pos.x + initRight.Width();
+		}
 	}
 
 	int CApu::GetY2() {
-		return y + initApu.Height();
+		switch (curState) {
+		case 1: return pos.y + initUp.Height();
+		case 2: return pos.y + initDown.Height();
+		case 3: return pos.y + initLeft.Height();
+		case 4: return pos.y + initRight.Height();
+		default:
+			return pos.y + initRight.Height();
+		}
 	}
 
 	int CApu::GetMode() {
@@ -38,89 +66,81 @@ namespace game_framework {
 	bool CApu::GetMoved() {
 		return isMoved;
 	}
-	void CApu::Initialize() {
-		const int X_POS = 0;
-		const int Y_POS = 180;
-		x = X_POS;
-		y = Y_POS;
-		curState = 0;  // initApu
-		curMode = 1; // still
-		isMoved = false;
-		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
-		isFightLeft = isFightRight = isFightUp = isFightDown = false;
-
-	}
 
 	void CApu::LoadBitmap() {
 
-		moveUp.AddBitmap(IDB_APU_UP1, RGB(255, 255, 255));
-		moveUp.AddBitmap(IDB_APU_UP2, RGB(255, 255, 255));
-		moveUp.AddBitmap(IDB_APU_UP3, RGB(255, 255, 255));
-		moveUp.AddBitmap(IDB_APU_UP4, RGB(255, 255, 255));
-		moveUp.AddBitmap(IDB_APU_UP5, RGB(255, 255, 255));
-		moveUp.AddBitmap(IDB_APU_UP5, RGB(255, 255, 255));
+		moveUp.AddBitmap(IDB_APU_UP1, WHITE);
+		moveUp.AddBitmap(IDB_APU_UP2, WHITE);
+		moveUp.AddBitmap(IDB_APU_UP3, WHITE);
+		moveUp.AddBitmap(IDB_APU_UP4, WHITE);
+		moveUp.AddBitmap(IDB_APU_UP5, WHITE);
+		moveUp.AddBitmap(IDB_APU_UP5, WHITE);
 
-		moveDown.AddBitmap(IDB_APU_DOWN1, RGB(255, 255, 255));
-		moveDown.AddBitmap(IDB_APU_DOWN2, RGB(255, 255, 255));
-		moveDown.AddBitmap(IDB_APU_DOWN3, RGB(255, 255, 255));
-		moveDown.AddBitmap(IDB_APU_DOWN4, RGB(255, 255, 255));
-		moveDown.AddBitmap(IDB_APU_DOWN5, RGB(255, 255, 255));
-		moveDown.AddBitmap(IDB_APU_DOWN5, RGB(255, 255, 255));
+		moveDown.AddBitmap(IDB_APU_DOWN1, WHITE);
+		moveDown.AddBitmap(IDB_APU_DOWN2, WHITE);
+		moveDown.AddBitmap(IDB_APU_DOWN3, WHITE);
+		moveDown.AddBitmap(IDB_APU_DOWN4, WHITE);
+		moveDown.AddBitmap(IDB_APU_DOWN5, WHITE);
+		moveDown.AddBitmap(IDB_APU_DOWN5, WHITE);
 
-		moveLeft.AddBitmap(IDB_APU_LEFT1, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_LEFT2, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_LEFT3, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_LEFT4, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_LEFT5, RGB(255, 255, 255));
-		moveLeft.AddBitmap(IDB_APU_LEFT5, RGB(255, 255, 255));
+		moveLeft.AddBitmap(IDB_APU_LEFT1, WHITE);
+		moveLeft.AddBitmap(IDB_APU_LEFT2, WHITE);
+		moveLeft.AddBitmap(IDB_APU_LEFT3, WHITE);
+		moveLeft.AddBitmap(IDB_APU_LEFT4, WHITE);
+		moveLeft.AddBitmap(IDB_APU_LEFT5, WHITE);
+		moveLeft.AddBitmap(IDB_APU_LEFT5, WHITE);
 
-		moveRight.AddBitmap(IDB_APU_RIGHT1, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_RIGHT2, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_RIGHT3, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_RIGHT4, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_RIGHT5, RGB(255, 255, 255));
-		moveRight.AddBitmap(IDB_APU_RIGHT5, RGB(255, 255, 255));
+		moveRight.AddBitmap(IDB_APU_RIGHT1, WHITE);
+		moveRight.AddBitmap(IDB_APU_RIGHT2, WHITE);
+		moveRight.AddBitmap(IDB_APU_RIGHT3, WHITE);
+		moveRight.AddBitmap(IDB_APU_RIGHT4, WHITE);
+		moveRight.AddBitmap(IDB_APU_RIGHT5, WHITE);
+		moveRight.AddBitmap(IDB_APU_RIGHT5, WHITE);
 
-		fightUp.AddBitmap(IDB_FIGHT_UP1, RGB(255, 255, 255));
-		fightUp.AddBitmap(IDB_FIGHT_UP2, RGB(255, 255, 255));
-		fightUp.AddBitmap(IDB_FIGHT_UP3, RGB(255, 255, 255));
-		fightUp.AddBitmap(IDB_FIGHT_UP4, RGB(255, 255, 255));
-		fightUp.AddBitmap(IDB_FIGHT_UP4, RGB(255, 255, 255));
+		fightUp.AddBitmap(IDB_FIGHT_UP1, WHITE);
+		fightUp.AddBitmap(IDB_FIGHT_UP2, WHITE);
+		fightUp.AddBitmap(IDB_FIGHT_UP3, WHITE);
+		fightUp.AddBitmap(IDB_FIGHT_UP4, WHITE);
+		fightUp.AddBitmap(IDB_FIGHT_UP4, WHITE);
 
-		fightDown.AddBitmap(IDB_FIGHT_DOWN1, RGB(255, 255, 255));
-		fightDown.AddBitmap(IDB_FIGHT_DOWN2, RGB(255, 255, 255));
-		fightDown.AddBitmap(IDB_FIGHT_DOWN3, RGB(255, 255, 255));
-		fightDown.AddBitmap(IDB_FIGHT_DOWN4, RGB(255, 255, 255));
-		fightDown.AddBitmap(IDB_FIGHT_DOWN4, RGB(255, 255, 255));
+		fightDown.AddBitmap(IDB_FIGHT_DOWN1, WHITE);
+		fightDown.AddBitmap(IDB_FIGHT_DOWN2, WHITE);
+		fightDown.AddBitmap(IDB_FIGHT_DOWN3, WHITE);
+		fightDown.AddBitmap(IDB_FIGHT_DOWN4, WHITE);
+		fightDown.AddBitmap(IDB_FIGHT_DOWN4, WHITE);
 
-		fightLeft.AddBitmap(IDB_FIGHT_LEFT1, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_LEFT2, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_LEFT3, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, RGB(255, 255, 255));
-		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, RGB(255, 255, 255));
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT1, WHITE);
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT2, WHITE);
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT3, WHITE);
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, WHITE);
+		fightLeft.AddBitmap(IDB_FIGHT_LEFT4, WHITE);
 
-		fightRight.AddBitmap(IDB_FIGHT_RIGHT1, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_RIGHT2, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_RIGHT3, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, RGB(255, 255, 255));
-		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, RGB(255, 255, 255));
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT1, WHITE);
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT2, WHITE);
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT3, WHITE);
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, WHITE);
+		fightRight.AddBitmap(IDB_FIGHT_RIGHT4, WHITE);
 
-		fail.AddBitmap(IDB_APU_LOSE1, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE2, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE3, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE4, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE5, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE6, RGB(255, 255, 255));
-		fail.AddBitmap(IDB_APU_LOSE6, RGB(255, 255, 255));
+		fail.AddBitmap(IDB_APU_LOSE1, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE2, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE3, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE4, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE5, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE6, WHITE);
+		fail.AddBitmap(IDB_APU_LOSE6, WHITE);
 
-		relive.AddBitmap(IDB_APU_RELIVE1, RGB(255, 255, 255));
-		relive.AddBitmap(IDB_APU_RELIVE2, RGB(255, 255, 255));
-		relive.AddBitmap(IDB_APU_RELIVE3, RGB(255, 255, 255));
-		relive.AddBitmap(IDB_APU_RELIVE4, RGB(255, 255, 255));
-		relive.AddBitmap(IDB_APU_RELIVE5, RGB(255, 255, 255));
-		relive.AddBitmap(IDB_APU_RELIVE5, RGB(255, 255, 255));
+		relive.AddBitmap(IDB_APU_RELIVE1, WHITE);
+		relive.AddBitmap(IDB_APU_RELIVE2, WHITE);
+		relive.AddBitmap(IDB_APU_RELIVE3, WHITE);
+		relive.AddBitmap(IDB_APU_RELIVE4, WHITE);
+		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
+		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
 
-		initApu.LoadBitmap(IDB_APU_RIGHT1, RGB(255, 255, 2555));
+		initApu.LoadBitmap(IDB_APU_RIGHT1, WHITE);
+		initUp.LoadBitmap(IDB_APU_UP1, WHITE);
+		initDown.LoadBitmap(IDB_APU_DOWN1, WHITE);
+		initLeft.LoadBitmap(IDB_APU_LEFT1, WHITE);
+		initRight.LoadBitmap(IDB_APU_RIGHT1, WHITE);
 	}
 
 	void CApu::OnMove() {
@@ -202,112 +222,52 @@ namespace game_framework {
 		isFightRight = flag;
 	}
 	void CApu::SetXY(int nx, int ny) {
-		x = nx; y = ny;
+		pos.x = nx; pos.y = ny;
 	}
 	void CApu::SetXY(int stepSize) {
 		if (isMovingLeft) {
-			x -= stepSize;
+			pos.x -= stepSize;
 		}
 		if (isMovingRight) {
-			x += stepSize;
+			pos.x += stepSize;
 		}
 		if (isMovingUp) {
-			y -= stepSize;
+			pos.y -= stepSize;
 		}
 		if (isMovingDown) {
-			y += stepSize;
+			pos.y += stepSize;
 		}
 	}
 
-	void CApu::OnShow() {
+	int CApu::GetCurAnimationNum() {
 		switch (curState) {
-		case 0:
-			initApu.SetTopLeft(x, y);
-			initApu.ShowBitmap();
-			break;
-		case 1:
-			moveUp.SetTopLeft(x, y);
-			moveUp.OnShow();
-			break;
-		case 2:
-			moveDown.SetTopLeft(x, y);
-			moveDown.OnShow();
-			break;
-		case 3:
-			moveLeft.SetTopLeft(x, y);
-			moveLeft.OnShow();
-			break;
-		case 4:
-			moveRight.SetTopLeft(x, y);
-			moveRight.OnShow();
-			break;
-		case 5:
-			fightUp.SetTopLeft(x, y);
-			fightUp.OnShow();
-			break;
-		case 6:
-			fightDown.SetTopLeft(x, y);
-			fightDown.OnShow();
-			break;
-		case 7:
-			fightLeft.SetTopLeft(x, y);
-			fightLeft.OnShow();
-			break;
-		case 8:
-			fightRight.SetTopLeft(x, y);
-			fightRight.OnShow();
-			break;
-		case 9:
-			fail.SetTopLeft(x, y);
-			fail.OnShow();
-			break;
+		case 1: return moveUp.GetCurrentBitmapNumber();
+		case 2: return moveDown.GetCurrentBitmapNumber();
+		case 3: return moveLeft.GetCurrentBitmapNumber();
+		case 4: return moveRight.GetCurrentBitmapNumber();
+		case 5: return fightUp.GetCurrentBitmapNumber();
+		case 6: return fightDown.GetCurrentBitmapNumber();
+		case 7: return fightLeft.GetCurrentBitmapNumber();
+		case 8: return fightRight.GetCurrentBitmapNumber();
+		case 9: return fail.GetCurrentBitmapNumber();
 		default:
-			break;
+			return 0;
 		}
 	}
-	int CApu::GetCurAnimationNum() {
-		if (curState == 1)
-			return moveUp.GetCurrentBitmapNumber();
-		else if (curState == 2)
-			return moveDown.GetCurrentBitmapNumber();
-		else if (curState == 3)
-			return moveLeft.GetCurrentBitmapNumber();
-		else if (curState == 4)
-			return moveRight.GetCurrentBitmapNumber();
-		else if (curState == 5)
-			return fightUp.GetCurrentBitmapNumber();
-		else if (curState == 6)
-			return fightDown.GetCurrentBitmapNumber();
-		else if (curState == 7)
-			return fightLeft.GetCurrentBitmapNumber();
-		else if (curState == 8)
-			return fightRight.GetCurrentBitmapNumber();
-		else if (curState == 9)
-			return fail.GetCurrentBitmapNumber();
-		else
-			return 1;
-	}
 	int CApu::GetCurAnimationLastNum() {
-		if (curState == 1)
-			return moveUp.GetLastBitmapNumber();
-		else if (curState == 2)
-			return moveDown.GetLastBitmapNumber();
-		else if (curState == 3)
-			return moveLeft.GetLastBitmapNumber();
-		else if (curState == 4)
-			return moveRight.GetLastBitmapNumber();
-		else if (curState == 5)
-			return fightUp.GetLastBitmapNumber();
-		else if (curState == 6)
-			return fightDown.GetLastBitmapNumber();
-		else if (curState == 7)
-			return fightLeft.GetLastBitmapNumber();
-		else if (curState == 8)
-			return fightRight.GetLastBitmapNumber();
-		else if (curState == 9)
-			return fail.GetLastBitmapNumber();
-		else
+		switch (curState) {
+		case 1: return moveUp.GetLastBitmapNumber();
+		case 2: return moveDown.GetLastBitmapNumber();
+		case 3: return moveLeft.GetLastBitmapNumber();
+		case 4: return moveRight.GetLastBitmapNumber();
+		case 5: return fightUp.GetLastBitmapNumber();
+		case 6: return fightDown.GetLastBitmapNumber();
+		case 7: return fightLeft.GetLastBitmapNumber();
+		case 8: return fightRight.GetLastBitmapNumber();
+		case 9: return fail.GetLastBitmapNumber();
+		default:
 			return 0;
+		}
 	}
 	void CApu::ResetCurAnimation() {
 		if (curState == 1)
@@ -337,5 +297,51 @@ namespace game_framework {
 	}
 	void CApu::SetMoved(bool flag) {
 		isMoved = flag;
+	}
+	void CApu::OnShow() {
+		switch (curState) {
+		case 0:
+			initApu.SetTopLeft(pos.x, pos.y);
+			initApu.ShowBitmap();
+			break;
+		case 1:
+			moveUp.SetTopLeft(pos.x, pos.y);
+			moveUp.OnShow();
+			break;
+		case 2:
+			moveDown.SetTopLeft(pos.x, pos.y);
+			moveDown.OnShow();
+			break;
+		case 3:
+			moveLeft.SetTopLeft(pos.x, pos.y);
+			moveLeft.OnShow();
+			break;
+		case 4:
+			moveRight.SetTopLeft(pos.x, pos.y);
+			moveRight.OnShow();
+			break;
+		case 5:
+			fightUp.SetTopLeft(pos.x, pos.y);
+			fightUp.OnShow();
+			break;
+		case 6:
+			fightDown.SetTopLeft(pos.x, pos.y);
+			fightDown.OnShow();
+			break;
+		case 7:
+			fightLeft.SetTopLeft(pos.x, pos.y);
+			fightLeft.OnShow();
+			break;
+		case 8:
+			fightRight.SetTopLeft(pos.x, pos.y);
+			fightRight.OnShow();
+			break;
+		case 9:
+			fail.SetTopLeft(pos.x, pos.y);
+			fail.OnShow();
+			break;
+		default:
+			break;
+		}
 	}
 }

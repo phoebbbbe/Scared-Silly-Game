@@ -138,6 +138,12 @@
     <ClCompile Include="Source\CGameMap.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CLevel.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CItem.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h">
@@ -183,6 +189,15 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\CGameMap.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CLevel.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CData.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CItem.h">
       <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>
@@ -481,6 +496,24 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\grass1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\beginPage.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\beginPage2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\level1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\level2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\level3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\levelPage.BMP">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

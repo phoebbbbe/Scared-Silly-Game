@@ -1,56 +1,3 @@
-/*
- * mygame.cpp: 本檔案儲遊戲本身的class的implementation
- * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
- *
- * This file is part of game, a free game development framework for windows.
- *
- * game is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * game is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * History:
- *   2002-03-04 V3.1
- *          Add codes to demostrate the use of CMovingBitmap::ShowBitmap(CMovingBitmap &).
- *	 2004-03-02 V4.0
- *      1. Add CGameStateInit, CGameStateRun, and CGameStateOver to
- *         demonstrate the use of states.
- *      2. Demo the use of CInteger in CGameStateRun.
- *   2005-09-13
- *      Rewrite the codes for CBall and CEraser.
- *   2005-09-20 V4.2Beta1.
- *   2005-09-29 V4.2Beta2.
- *      1. Add codes to display IDC_GAMECURSOR in GameStateRun.
- *   2006-02-08 V4.2
- *      1. Revise sample screens to display in English only.
- *      2. Add code in CGameStateInit to demo the use of PostQuitMessage().
- *      3. Rename OnInitialUpdate() -> OnInit().
- *      4. Fix the bug that OnBeginState() of GameStateInit is not called.
- *      5. Replace AUDIO_CANYON as AUDIO_NTUT.
- *      6. Add help bitmap to CGameStateRun.
- *   2006-09-09 V4.3
- *      1. Rename Move() and Show() as OnMove and OnShow() to emphasize that they are
- *         event driven.
- *   2006-12-30
- *      1. Bug fix: fix a memory leak problem by replacing PostQuitMessage(0) as
- *         PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0).
- *   2008-02-15 V4.4
- *      1. Add namespace game_framework.
- *      2. Replace the demonstration of animation as a new bouncing ball.
- *      3. Use ShowInitProgress(percent) to display loading progress. 
- *   2010-03-23 V4.6
- *      1. Demo MP3 support: use lake.mp3 to replace lake.wav.
-*/
-
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
@@ -78,12 +25,19 @@ void CGameStateInit::OnInit()
 	ShowInitProgress(0);	// 一開始的loading進度為0%
 
 	// 開始載入資料
-	page_begin.AddBitmap(IDB_PAGE_BEGIN1);
-	page_begin.AddBitmap(IDB_PAGE_BEGIN2);
+	page_begin.AddBitmap(IDB_BEGIN_PAGE1);
+	page_begin.AddBitmap(IDB_BEGIN_PAGE2);
 	button_begin.AddBitmap(IDB_BUTTON_BEGIN1);
 	button_begin.AddBitmap(IDB_BUTTON_BEGIN2);
+	
+	page_level.LoadBitmap(IDB_LEVEL_PAGE, RGB(255, 255, 255));
+	level1.LoadBitmap(IDB_LEVEL1, RGB(255, 255, 255));
+	level2.LoadBitmap(IDB_LEVEL2, RGB(255, 255, 255));
+	level3.LoadBitmap(IDB_LEVEL3, RGB(255, 255, 255));
 	/*PAGE1*/
 	isBeginButtonDown = false;
+	beginButtonHasDown = false;
+	curState = 1;
 	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -91,6 +45,7 @@ void CGameStateInit::OnInit()
 
 void CGameStateInit::OnBeginState()
 {
+
 }
 
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -104,16 +59,35 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point) {
-	int x1 = point.x;
-	int y1 = point.y;
-	int x2 = button_begin.Left();					// button左上角x
-	int y2 = button_begin.Top();					// button左上角y
-	int x3 = x2 + button_begin.Width();					// button右下角x
-	int y3 = x2 + button_begin.Height();					// button右下角y
-	if (x1 >= x2 && x1 <= x3 && y1 >= y2 && y1 <= y3) {
-		//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
-		isBeginButtonDown = true;
-		beginButtonHasDown = true;
+	int x1 = point.x, y1 = point.y;
+	int x2, y2, x3, y3, x4, y4;
+	if (curState == 1) {									// 處於BeginPage
+		x2 = button_begin.Left();							// button左上角x
+		y2 = button_begin.Top();							// button左上角y
+		x3 = x2 + button_begin.Width();						// button右下角x
+		y3 = x2 + button_begin.Height();					// button右下角y
+		if (x1 >= x2 && x1 <= x3 && y1 >= y2 && y1 <= y3) {
+			//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+			isBeginButtonDown = true;
+			beginButtonHasDown = true;
+		}
+	}
+	else if (curState == 2) {								// 處於LevelPage
+		x2 = level1.Left();
+		y2 = level1.Top();
+		x3 = level2.Left();
+		y3 = level2.Top();
+		x4 = level3.Left();
+		y4 = level3.Top();
+		if (x1 >= x2 && x1 <= (x2 + level1.Width()) && y1 >= y2 && y1 <= (y2 + level1.Height())) {
+			//isBeginButtonDown = true;
+			//beginButtonHasDown = true;
+		} else if (x1 >= x3 && x1 <= (x3 + level2.Width()) && y1 >= y3 && y1 <= (y3 + level2.Height())) {
+
+		} else if (x1 >= x4 && x1 <= (x4 + level3.Width()) && y1 >= y4 && y1 <= (y4 + level3.Height())) {
+
+		}
+
 	}
 }
 
@@ -238,7 +212,6 @@ void CGameStateRun::OnBeginState() {
 		int x_pos = 480 - 320 * i;
 		int y_pos = 200;
 		ballon[i].SetXY(x_pos, y_pos);
-		ballon[i].SetDelay(x_pos);
 		ballon[i].SetIsAlive(true);
 	}
 	apu.Initialize();
@@ -539,7 +512,7 @@ void CGameStateRun::OnShow()
 
 int CGameStateRun::HasGhost(int x1, int y1, int x2, int y2) {
 	for (int i = 0; i < NUMBALLONS; i++) {
-		if (ballon[i].GetX() >= x1 && ballon[i].GetX() <= x2 && ballon[i].GetY() >= y1 && ballon[i].GetY() <= y2)
+		if (x2 >= ballon[i].GetX1() && x1 <= ballon[i].GetX2() && y2 >= ballon[i].GetY1()+5 && y1 <= ballon[i].GetY2())
 			if (ballon[i].IsAlive())
 				return i;
 			else

@@ -14,24 +14,23 @@ namespace game_framework {
 		isFighted = false;
 		curMode = 1;
 		curState = 0;
-		x = y = dx = dy = index = delay_counter = 0;
+		pos.x = pos.y = 0;
+		//dx = dy = index = delay_counter = 0;
 	}
 
 	bool CGhost::HitApu(CApu *apu) {
-		// 檢測阿噗所構成的矩形是否碰到鬼怪
 		return HitRectangle(apu->GetX1(), apu->GetY1(), apu->GetX2(), apu->GetY2());
 	}
 
 	bool CGhost::HitRectangle(int tx1, int ty1, int tx2, int ty2) {
-		int x1 = tx1+5;
-		int y1 = ty1+5;
-		int x2 = tx2-5;
-		int y2 = ty2-5;
-		int x3 = x+5;				// 鬼怪的左上角x座標
-		int y3 = y+5;				// 鬼怪的左上角y座標
-		int x4 = x3 + ghost.Width()-5;	// 鬼怪的右下角x座標
-		int y4 = y3 + ghost.Height()-5;	// 鬼怪的右下角y座標
-		// 檢測鬼怪的矩形與參數矩形是否有交集
+		int x1 = tx1;
+		int y1 = ty1;
+		int x2 = tx2;
+		int y2 = ty2;
+		int x3 = pos.x;				// 鬼怪的左上角pos.x座標
+		int y3 = pos.y+5;				// 鬼怪的左上角pos.y座標
+		int x4 = pos.x + ghost.Width();	// 鬼怪的右下角pos.x座標
+		int y4 = pos.y + ghost.Height();	// 鬼怪的右下角pos.y座標
 		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	}
 
@@ -62,24 +61,7 @@ namespace game_framework {
 	}
 
 	void CGhost::OnMove() {
-		//ghost.OnMove();
-		if (!isAlive)
-			return;
-		
-		delay_counter--;
-		if (delay_counter < 0) {
-			delay_counter = delay;
 
-			// 計算球向對於圓心的位移量dx, dy
-			const int STEPS = 18;
-			static const int DIFFX[] = { 35, 32, 26, 17, 6, -6, -17, -26, -32, -34, -32, -26, -17, -6, 6, 17, 26, 32, };
-			static const int DIFFY[] = { 0, 11, 22, 30, 34, 34, 30, 22, 11, 0, -11, -22, -30, -34, -34, -30, -22, -11, };
-			index++;
-			if (index >= STEPS)
-				index = 0;
-			//dx = DIFFX[index];
-			//dy = DIFFY[index];
-		}
 	}
 
 	void CGhost::OnMove(CApu *apu) {
@@ -105,7 +87,7 @@ namespace game_framework {
 	}
 
 	int CGhost::WhereIsApu(CApu *apu) {
-		int X1 = x, Y1 = y;
+		int X1 = pos.x, Y1 = pos.y;
 		int X2 = apu->GetX1(), Y2 = apu->GetY1();
 		float dis = (float)sqrt((double)((X2 - X1)*(X2 - X1) + (Y2 - Y1)*(Y2 - Y1)));
 		if (dis < 0.001)
@@ -113,22 +95,17 @@ namespace game_framework {
 	
 		X2 -= X1;
 		Y2 -= Y1;
-		if (X2 >= 0 && Y2 <= 0)
-			return 1;
-		else if (X2 <= 0 && Y2 <= 0)
-			return 2;
-		else if (X2 <= 0 && Y2 >= 0)
-			return 3;
-		else if (X2 >= 0 && Y2 >= 0)
-			return 4;
-		else
-			return 0;
+		if (X2 >= 0 && Y2 <= 0) return 1;
+		else if (X2 <= 0 && Y2 <= 0) return 2;
+		else if (X2 <= 0 && Y2 >= 0) return 3;
+		else if (X2 >= 0 && Y2 >= 0) return 4;
+		else return 0;
 	}
 	void CGhost::FollowApu(CApu *apu, int stepsize) {
-		int xUp = x, yUp = y - stepsize;
-		int xDown = x, yDown = y + stepsize;
-		int xLeft = x - stepsize, yLeft = y;
-		int xRight = x + stepsize, yRight = y;
+		int xUp = pos.x, yUp = pos.y - stepsize;
+		int xDown = pos.x, yDown = pos.y + stepsize;
+		int xLeft = pos.x - stepsize, yLeft = pos.y;
+		int xRight = pos.x + stepsize, yRight = pos.y;
 		float disUp = (float)sqrt((double)((xUp - apu->GetX1())*(xUp - apu->GetX1()) + (yUp - apu->GetY1())*(yUp - apu->GetY1())));
 		float disDown = (float)sqrt((double)((xDown - apu->GetX1())*(xDown - apu->GetX1()) + (yDown - apu->GetY1())*(yDown - apu->GetY1())));
 		float disLeft = (float)sqrt((double)((xLeft - apu->GetX1())*(xLeft - apu->GetX1()) + (yLeft - apu->GetY1())*(yLeft - apu->GetY1())));
@@ -162,9 +139,7 @@ namespace game_framework {
 		else if (curState == 4)
 			SetXY(xRight, yRight);
 	}
-	void CGhost::SetDelay(int d) {
-		delay = d;
-	}
+
 	void CGhost::SetIsAlive(bool alive) {
 		isAlive = alive;
 	}
@@ -172,7 +147,7 @@ namespace game_framework {
 		isFighted = fighted;
 	}
 	void CGhost::SetXY(int nx, int ny) {
-		x = nx; y = ny;
+		pos.x = nx; pos.y = ny;
 	}
 	void CGhost::SetFork() {
 
@@ -191,29 +166,28 @@ namespace game_framework {
 			SetMode(1);
 		}
 	}
-	int  CGhost::GetX() {
-		return x;
-	}
-	int  CGhost::GetY() {
-		return y;
-	}
+	int  CGhost::GetX1() { return pos.x; }
+	int  CGhost::GetY1() { return pos.y; }
+	int  CGhost::GetX2() { return pos.x + ghost.Width(); }
+	int  CGhost::GetY2() { return pos.y + ghost.Height(); }
+	
 	void CGhost::OnShow() {
 		if (isAlive) {
-			//ghost.SetTopLeft(x + dx, y + dy);
+			//ghost.SetTopLeft(pos.x + dx, pos.y + dy);
 			if (isFighted) {
-				ghost_die.SetTopLeft(x, y);
+				ghost_die.SetTopLeft(pos.x, pos.y);
 				ghost_die.OnShow(); // 改進ghost_die的動畫
 			}
 			else {
-				ghost.SetTopLeft(x, y);
+				ghost.SetTopLeft(pos.x, pos.y);
 				ghost.OnShow();
 				if (curMode == 1)
 				{
 					//SetFork();
-					/*fork1.SetTopLeft(x - 30, y);
-					fork2.SetTopLeft(x + 30, y);
-					fork3.SetTopLeft(x, y - 30);
-					fork4.SetTopLeft(x, y + 30);
+					/*fork1.SetTopLeft(pos.x - 30, pos.y);
+					fork2.SetTopLeft(pos.x + 30, pos.y);
+					fork3.SetTopLeft(pos.x, pos.y - 30);
+					fork4.SetTopLeft(pos.x, pos.y + 30);
 					fork1.ShowBitmap();
 					fork2.ShowBitmap();
 					fork3.ShowBitmap();

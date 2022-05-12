@@ -39,7 +39,6 @@
 #define IDB_BRICK2                      164
 #define IDB_FLOOR1                      167
 #define IDB_BRICK1                      167
-#define IDB_APU_LOSE                    171
 #define IDB_GRASS                       176
 #define IDB_GRASS1                      176
 #define IDB_GRASS2                      177
@@ -93,8 +92,6 @@
 #define IDB_FIGHT_FRONT1                216
 #define IDB_FIGHT_FRONT2                217
 #define IDB_BITMAP9                     218
-#define IDB_PAGE_BEGIN1                 222
-#define IDB_PAGE_BEGIN2                 223
 #define IDB_BUTTON_BEGIN1               226
 #define IDB_BUTTON_BEGIN2               227
 #define IDB_APU_DOWN5                   229
@@ -140,8 +137,14 @@
 #define IDB_GRASS4                      273
 #define IDB_TREE3                       274
 #define IDB_WALL1                       275
-#define IDB_BITMAP3                     277
 #define IDB_WALL2                       277
+#define IDB_BEGIN_PAGE1                 283
+#define IDB_BEGIN_PAGE2                 284
+#define IDB_LEVEL1                      285
+#define IDB_LEVEL2                      286
+#define IDB_LEVEL3                      287
+#define IDB_BITMAP3                     288
+#define IDB_LEVEL_PAGE                  288
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -154,7 +157,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        278
+#define _APS_NEXT_RESOURCE_VALUE        289
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101
