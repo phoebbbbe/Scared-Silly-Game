@@ -8,6 +8,7 @@ namespace game_framework {
 	public:
 		/* Constructor */
 		CGhost();
+		~CGhost();
 
 		/* Getter */
 		int  GetX1();
@@ -22,7 +23,7 @@ namespace game_framework {
 		void SetMode(int m);
 		void SetState(int s);
 		void SetFork();
-		
+
 		/* judge */
 		bool IsAlive();						// 是否活著
 		bool IsFighted();					// 是否被攻擊
@@ -38,7 +39,7 @@ namespace game_framework {
 		void OnMove();						// 移動
 		void OnMove(CApu *apu);
 		void OnShow();						// 將圖形貼到畫面
-	
+
 	protected:
 		CAnimation ghost;
 		CAnimation ghost_die;

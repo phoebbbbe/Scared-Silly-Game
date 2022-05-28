@@ -265,7 +265,6 @@
     <ClCompile Include="Source\CBouncingBall.cpp" />
     <ClCompile Include="Source\CEraser.cpp" />
     <ClCompile Include="Source\CItem.cpp" />
-    <ClCompile Include="Source\CLevel.cpp" />
     <ClCompile Include="Source\game.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,7 +316,6 @@
     <ClInclude Include="Source\CBouncingBall.h" />
     <ClInclude Include="Source\CEraser.h" />
     <ClInclude Include="Source\CItem.h" />
-    <ClInclude Include="Source\CLevel.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gameDoc.h" />
     <ClInclude Include="Source\gameView.h" />
@@ -335,6 +333,8 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\game4.10\RES\beginPage.BMP" />
+    <Image Include="..\..\game4.10\RES\beginPage2.BMP" />
     <Image Include="RES\apu_down1.bmp" />
     <Image Include="RES\apu_down2.bmp" />
     <Image Include="RES\apu_down3.bmp" />
@@ -362,6 +362,11 @@
     <Image Include="res\apu_right3.bmp" />
     <Image Include="res\apu_right4.bmp" />
     <Image Include="RES\apu_right5.BMP" />
+    <Image Include="RES\apu_success1.BMP" />
+    <Image Include="RES\apu_success2.BMP" />
+    <Image Include="RES\apu_success3.BMP" />
+    <Image Include="RES\apu_success4.BMP" />
+    <Image Include="RES\apu_success5.BMP" />
     <Image Include="RES\apu_up1.bmp" />
     <Image Include="RES\apu_up2.bmp" />
     <Image Include="RES\apu_up3.bmp" />
@@ -385,8 +390,11 @@
     <Image Include="res\brick2.bmp" />
     <Image Include="RES\brick3.BMP" />
     <Image Include="RES\brick4.BMP" />
+    <Image Include="RES\brick5.BMP" />
+    <Image Include="RES\brick6.BMP" />
     <Image Include="RES\button_begin1.BMP" />
     <Image Include="RES\button_begin2.BMP" />
+    <Image Include="RES\explination.BMP" />
     <Image Include="RES\fight_back1.bmp" />
     <Image Include="RES\fight_back2.bmp" />
     <Image Include="RES\fight_back3.bmp" />
@@ -409,6 +417,7 @@
     <Image Include="RES\fight_up2.bmp" />
     <Image Include="RES\fight_up3.bmp" />
     <Image Include="RES\fight_up4.BMP" />
+    <Image Include="RES\floor.BMP" />
     <Image Include="RES\floor1.bmp" />
     <Image Include="res\floor2.bmp" />
     <Image Include="RES\fork.BMP" />
@@ -435,9 +444,14 @@
     <Image Include="res\tree1.bmp" />
     <Image Include="RES\tree2.BMP" />
     <Image Include="RES\tree3.BMP" />
+    <Image Include="RES\tree4.BMP" />
+    <Image Include="RES\tree5.BMP" />
+    <Image Include="RES\tree6.BMP" />
     <Image Include="RES\turf.BMP" />
     <Image Include="RES\wall1.BMP" />
     <Image Include="RES\wall2.BMP" />
+    <Image Include="RES\wall3.BMP" />
+    <Image Include="RES\wall4.BMP" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #ifndef CAPU_H
 #define CAPU_H
-
+#include "CGameMap.h"
 namespace game_framework {
 
 	class CApu
@@ -20,7 +20,7 @@ namespace game_framework {
 		bool GetMoved();
 		int  GetCurAnimationNum();
 		int  GetCurAnimationLastNum();
-		
+
 		/* Setter */
 		void SetMovingDown(bool flag);	// 設定是否正在往下移動
 		void SetMovingLeft(bool flag);	// 設定是否正在往左移動
@@ -38,12 +38,18 @@ namespace game_framework {
 		void SetState(int flag);
 		void SetMoved(bool flag);
 		void ResetCurAnimation();
+
+		/* Judge */
+		bool IsSucceed();
+
 		//
 		void Initialize();				// 設定阿噗為初始值
 		void LoadBitmap();				// 載入圖形
 		void OnMove();					// 移動阿噗
+		void OnMove(CGameMap *map);
 		void OnShow();					// 將阿噗圖形貼到畫面
-	
+		void OnShow(CGameMap *map);
+
 	protected:
 		CAnimation moveUp;
 		CAnimation moveDown;
@@ -73,6 +79,7 @@ namespace game_framework {
 		bool isMovingLeft;			// 是否正在往左移動
 		bool isMovingRight;			// 是否正在往右移動
 		bool isMovingUp;			// 是否正在往上移動
+		bool isSucceed;
 	};
 }
 

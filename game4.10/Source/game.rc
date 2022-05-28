@@ -104,10 +104,6 @@ IDB_HELP                BITMAP                  "..\\res\\help.bmp"
 
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
 
-IDB_BRICK2              BITMAP                  "..\\res\\brick2.bmp"
-
-IDB_BRICK1              BITMAP                  "..\\res\\brick1.bmp"
-
 IDB_GRASS1              BITMAP                  "..\\res\\grass1.bmp"
 
 IDB_GRASS2              BITMAP                  "..\\res\\grass2.bmp"
@@ -202,12 +198,6 @@ IDB_APU_RIGHT5          BITMAP                  "..\\res\\apu_right5.BMP"
 
 IDB_FORK                BITMAP                  "..\\res\\fork.BMP"
 
-IDB_BRICK3              BITMAP                  "..\\res\\brick3.BMP"
-
-IDB_BRICK4              BITMAP                  "..\\res\\brick4.BMP"
-
-IDB_TURF                BITMAP                  "..\\res\\turf.BMP"
-
 IDB_APU_LOSE1           BITMAP                  "..\\res\\apu_lose1.BMP"
 
 IDB_APU_LOSE2           BITMAP                  "..\\res\\apu_lose2.BMP"
@@ -273,6 +263,44 @@ IDB_LEVEL2              BITMAP                  "..\\res\\level2.BMP"
 IDB_LEVEL3              BITMAP                  "..\\res\\level3.BMP"
 
 IDB_LEVEL_PAGE          BITMAP                  "..\\res\\levelPage.BMP"
+
+IDB_BRICK1              BITMAP                  "..\\res\\brick1.BMP"
+
+IDB_TURF                BITMAP                  "..\\res\\turf.bmp"
+
+IDB_APU_SUCCESS1        BITMAP                  "..\\res\\apu_success1.BMP"
+
+IDB_APU_SUCCESS2        BITMAP                  "..\\res\\apu_success2.BMP"
+
+IDB_APU_SUCCESS3        BITMAP                  "..\\res\\apu_success3.BMP"
+
+IDB_APU_SUCCESS4        BITMAP                  "..\\res\\apu_success4.BMP"
+
+IDB_APU_SUCCESS5        BITMAP                  "..\\res\\apu_success5.BMP"
+
+IDB_BRICK2              BITMAP                  "..\\res\\brick2.BMP"
+
+IDB_BRICK4              BITMAP                  "..\\res\\brick4.BMP"
+
+IDB_BRICK3              BITMAP                  "..\\res\\brick3.BMP"
+
+IDB_FLOOR               BITMAP                  "..\\res\\floor.BMP"
+
+IDB_WALL3               BITMAP                  "..\\res\\wall3.BMP"
+
+IDB_WALL4               BITMAP                  "..\\res\\wall4.BMP"
+
+IDB_TREE4               BITMAP                  "..\\res\\tree4.BMP"
+
+IDB_TREE5               BITMAP                  "..\\res\\tree5.BMP"
+
+IDB_TREE6               BITMAP                  "..\\res\\tree6.BMP"
+
+IDB_BRICK5              BITMAP                  "..\\res\\brick5.BMP"
+
+IDB_BRICK6              BITMAP                  "..\\res\\brick6.BMP"
+
+IDB_EXPLINATION         BITMAP                  "..\\res\\explination.BMP"
 
 
 /////////////////////////////////////////////////////////////////////////////

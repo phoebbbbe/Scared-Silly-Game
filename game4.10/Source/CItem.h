@@ -4,6 +4,8 @@
 namespace game_framework {
 
 	enum class ITEMS {
+		Button,			// 按鍵
+		MapPiece,		// 地圖
 		Tree,			// 樹
 		Grass,			// 草叢
 		Fragament,		// 地圖碎片
@@ -26,12 +28,20 @@ namespace game_framework {
 		/* Member Function */
 
 		//
-		//virtual void OnInit();
-		//virtual void OnMove();
-		//virtual void OnShow();
+		virtual void OnInit() = 0;
+		virtual void OnMove() = 0;
+		virtual void OnShow() = 0;
 	private:
 		POINT pos;
 		CAnimation item;
+	};
+
+	class Button {
+
+	};
+
+	class MapPiece {
+
 	};
 
 	class Tree {

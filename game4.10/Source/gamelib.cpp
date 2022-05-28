@@ -591,6 +591,30 @@ void CGame::SetGameState(int state)
 	running = true;
 }
 
+void CGame::SetLevel(int level) {
+	this->level = level;
+}
+
+void CGame::SetDead(bool dead) {
+	this->dead = dead;
+}
+
+void CGame::SetFinish(bool finish) {
+	this->finish = finish;
+}
+
+int CGame::GetLevel() {
+	return level;
+}
+
+bool CGame::GetDead() {
+	return dead;
+}
+
+bool CGame::GetFinish() {
+	return finish;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CSpecialEffect: Specail Effect functions
 // 一般的遊戲並不需直接操作這個物件，因此可以全部略過不看

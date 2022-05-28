@@ -36,9 +36,7 @@
 #define IDB_BITMAP2                     156
 #define IDB_LOADING                     156
 #define IDB_FLOOR2                      164
-#define IDB_BRICK2                      164
 #define IDB_FLOOR1                      167
-#define IDB_BRICK1                      167
 #define IDB_GRASS                       176
 #define IDB_GRASS1                      176
 #define IDB_GRASS2                      177
@@ -108,9 +106,6 @@
 #define IDB_BITMAP8                     240
 #define IDB_APU_RIGHT5                  240
 #define IDB_FORK                        241
-#define IDB_BRICK3                      242
-#define IDB_BRICK4                      243
-#define IDB_TURF                        244
 #define IDB_APU_LOSE1                   245
 #define IDB_APU_LOSE2                   246
 #define IDB_APU_LOSE3                   247
@@ -145,6 +140,26 @@
 #define IDB_LEVEL3                      287
 #define IDB_BITMAP3                     288
 #define IDB_LEVEL_PAGE                  288
+#define IDB_BRICK1                      290
+#define IDB_TURF                        291
+#define IDB_APU_SUCCESS1                292
+#define IDB_APU_SUCCESS2                293
+#define IDB_APU_SUCCESS3                294
+#define IDB_APU_SUCCESS4                295
+#define IDB_APU_SUCCESS5                296
+#define IDB_BRICK2                      297
+#define IDB_BRICK4                      299
+#define IDB_BRICK3                      300
+#define IDB_FLOOR                       301
+#define IDB_WALL3                       302
+#define IDB_WALL4                       303
+#define IDB_TREE4                       304
+#define IDB_TREE5                       305
+#define IDB_TREE6                       306
+#define IDB_BRICK5                      307
+#define IDB_BRICK6                      308
+#define IDB_BITMAP4                     309
+#define IDB_EXPLINATION                 309
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -157,7 +172,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        289
+#define _APS_NEXT_RESOURCE_VALUE        310
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

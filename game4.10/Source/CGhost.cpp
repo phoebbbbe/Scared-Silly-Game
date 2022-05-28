@@ -18,6 +18,9 @@ namespace game_framework {
 		//dx = dy = index = delay_counter = 0;
 	}
 
+	CGhost::~CGhost() {
+
+	}
 	bool CGhost::HitApu(CApu *apu) {
 		return HitRectangle(apu->GetX1(), apu->GetY1(), apu->GetX2(), apu->GetY2());
 	}
@@ -28,7 +31,7 @@ namespace game_framework {
 		int x2 = tx2;
 		int y2 = ty2;
 		int x3 = pos.x;				// 鬼怪的左上角pos.x座標
-		int y3 = pos.y+5;				// 鬼怪的左上角pos.y座標
+		int y3 = pos.y + 5;				// 鬼怪的左上角pos.y座標
 		int x4 = pos.x + ghost.Width();	// 鬼怪的右下角pos.x座標
 		int y4 = pos.y + ghost.Height();	// 鬼怪的右下角pos.y座標
 		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
@@ -92,7 +95,7 @@ namespace game_framework {
 		float dis = (float)sqrt((double)((X2 - X1)*(X2 - X1) + (Y2 - Y1)*(Y2 - Y1)));
 		if (dis < 0.001)
 			return 0;
-	
+
 		X2 -= X1;
 		Y2 -= Y1;
 		if (X2 >= 0 && Y2 <= 0) return 1;
@@ -170,7 +173,7 @@ namespace game_framework {
 	int  CGhost::GetY1() { return pos.y; }
 	int  CGhost::GetX2() { return pos.x + ghost.Width(); }
 	int  CGhost::GetY2() { return pos.y + ghost.Height(); }
-	
+
 	void CGhost::OnShow() {
 		if (isAlive) {
 			//ghost.SetTopLeft(pos.x + dx, pos.y + dy);

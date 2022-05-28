@@ -14,13 +14,14 @@ namespace game_framework {
 		Initialize();
 	}
 	void CApu::Initialize() {
-		pos.x = 0;
-		pos.y = SIZE_Y/3;
+		pos.x = 150;
+		pos.y = 200;
 		curState = 0;			// initApu
 		curMode = 1;			// still
 		isMoved = false;
 		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
 		isFightLeft = isFightRight = isFightUp = isFightDown = false;
+		isSucceed = false;
 
 	}
 
@@ -136,13 +137,94 @@ namespace game_framework {
 		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
 		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
 
+		success.AddBitmap(IDB_APU_SUCCESS1, WHITE);
+		success.AddBitmap(IDB_APU_SUCCESS2, WHITE);
+		success.AddBitmap(IDB_APU_SUCCESS3, WHITE);
+		success.AddBitmap(IDB_APU_SUCCESS4, WHITE);
+		success.AddBitmap(IDB_APU_SUCCESS5, WHITE);
+
 		initApu.LoadBitmap(IDB_APU_RIGHT1, WHITE);
 		initUp.LoadBitmap(IDB_APU_UP1, WHITE);
 		initDown.LoadBitmap(IDB_APU_DOWN1, WHITE);
 		initLeft.LoadBitmap(IDB_APU_LEFT1, WHITE);
 		initRight.LoadBitmap(IDB_APU_RIGHT1, WHITE);
 	}
+	void CApu::OnMove(CGameMap *map) {
+		if (curMode == 2) {
+			if (curState == 4) {
+				if (map->IsEmpty(pos.x + 30, pos.y)) {
+					pos.x += 1;
+					map->SetSX(pos.x - 150);
+					moveRight.OnMove();
+					TRACE("%d\n", pos.x);
+					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						curState = 10;
+						success.OnMove();
+					}
+				}
+				else {
+					map->SetSX(pos.x - 150);
+					moveRight.OnMove();
+					TRACE("%d,hello\n", pos.x);
+				}
+			}
+			if (curState == 3) {
+				if (map->IsEmpty(pos.x - 30, pos.y)) {
+					pos.x -= 1;
+					map->SetSX(pos.x - 150);
+					moveLeft.OnMove();
+					TRACE("%d\n", pos.x);
+					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						curState = 10;
+						success.OnMove();
+					}
+				}
+				else {
+					map->SetSX(pos.x - 150);
+					moveLeft.OnMove();
+					TRACE("%d\n", pos.x);
+				}
 
+			}
+			if (curState == 1) {
+				if (map->IsEmpty(pos.x, pos.y - 1)) {
+					pos.y -= 1;
+					map->SetSY(pos.y - 200);
+					moveUp.OnMove();
+					TRACE("%d\n", pos.y);
+					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						curState = 10;
+						success.OnMove();
+					}
+				}
+				else {
+					map->SetSY(pos.y - 200);
+					moveUp.OnMove();
+					TRACE("%d,hello\n", pos.y);
+				}
+
+			}
+			if (curState == 2) {
+				if (map->IsEmpty(pos.x, pos.y + 40)) {
+					pos.y += 1;
+					map->SetSY(pos.y - 200);
+					moveDown.OnMove();
+					TRACE("%d\n", pos.y);
+					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						curState = 10;
+						success.OnMove();
+					}
+				}
+				else {
+					map->SetSY(pos.y - 200);
+					moveDown.OnMove();
+					TRACE("%d,hello\n", pos.y);
+				}
+			}
+			if (curState == 10)
+				isSucceed = true;
+		}
+	};
 	void CApu::OnMove() {
 		const int STEP_SIZE = 1;
 		if (curMode == 2) {
@@ -250,6 +332,7 @@ namespace game_framework {
 		case 7: return fightLeft.GetCurrentBitmapNumber();
 		case 8: return fightRight.GetCurrentBitmapNumber();
 		case 9: return fail.GetCurrentBitmapNumber();
+		case 10: return success.GetCurrentBitmapNumber();
 		default:
 			return 0;
 		}
@@ -265,6 +348,7 @@ namespace game_framework {
 		case 7: return fightLeft.GetLastBitmapNumber();
 		case 8: return fightRight.GetLastBitmapNumber();
 		case 9: return fail.GetLastBitmapNumber();
+		case 10: return success.GetLastBitmapNumber();
 		default:
 			return 0;
 		}
@@ -288,6 +372,8 @@ namespace game_framework {
 			fightRight.Reset();
 		else if (curState == 9)
 			fail.Reset();
+		else if (curState == 10)
+			success.Reset();
 	}
 	void CApu::SetMode(int flag) {
 		curMode = flag;
@@ -297,6 +383,59 @@ namespace game_framework {
 	}
 	void CApu::SetMoved(bool flag) {
 		isMoved = flag;
+	}
+
+	bool CApu::IsSucceed() {
+		return isSucceed;
+	}
+	void CApu::OnShow(CGameMap *m) {
+		switch (curState) {
+		case 0:
+			initApu.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			initApu.ShowBitmap();
+			break;
+		case 1:
+			moveUp.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			moveUp.OnShow();
+			break;
+		case 2:
+			moveDown.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			moveDown.OnShow();
+			break;
+		case 3:
+			moveLeft.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			moveLeft.OnShow();
+			break;
+		case 4:
+			moveRight.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			moveRight.OnShow();
+			break;
+		case 5:
+			fightUp.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			fightUp.OnShow();
+			break;
+		case 6:
+			fightDown.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			fightDown.OnShow();
+			break;
+		case 7:
+			fightLeft.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			fightLeft.OnShow();
+			break;
+		case 8:
+			fightRight.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			fightRight.OnShow();
+			break;
+		case 9:
+			fail.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			fail.OnShow();
+			break;
+		case 10:
+			success.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			success.OnShow();
+		default:
+			break;
+		}
 	}
 	void CApu::OnShow() {
 		switch (curState) {
