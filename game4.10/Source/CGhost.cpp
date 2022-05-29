@@ -9,13 +9,13 @@
 
 namespace game_framework {
 
-	CGhost::CGhost() {
-		isAlive = true;
-		isFighted = false;
-		curMode = 1;
-		curState = 0;
-		pos.x = pos.y = 0;
-		//dx = dy = index = delay_counter = 0;
+	CGhost::CGhost() : isAlive(true), isFighted(false), curMode(1), curState(0){
+		//isAlive = true;
+		//isFighted = false;
+		//curMode = 1;
+		//curState = 0;
+		//pos.x = pos.y = 0;
+		////dx = dy = index = delay_counter = 0;
 	}
 
 	CGhost::~CGhost() {
@@ -44,24 +44,9 @@ namespace game_framework {
 	bool CGhost::IsFighted() {
 		return isFighted;
 	}
-	void CGhost::LoadBitmap() {
-		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
-
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
-
-		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-	}
+	/*void CGhost::LoadBitmap() {
+		
+	}*/
 
 	void CGhost::OnMove() {
 
@@ -199,5 +184,74 @@ namespace game_framework {
 
 			}
 		}
+	}
+
+	CBallon::CBallon() : CGhost::CGhost() {
+		pos.x = pos.y = 0;
+	}
+	CBallon::~CBallon() {}
+	void CBallon::LoadBitmap() {
+		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+
+		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+	}
+
+	CBat::CBat() : CGhost::CGhost() {
+		pos.x = pos.y = 0;
+	}
+	CBat::~CBat() {}
+	void CBat::LoadBitmap() {
+		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+
+		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+	}
+
+	CPumpkin::CPumpkin() : CGhost::CGhost() {
+		pos.x = pos.y = 0;
+	}
+	CPumpkin::~CPumpkin() {}
+	void CPumpkin::LoadBitmap() {
+		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
+		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+
+		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
 	}
 }

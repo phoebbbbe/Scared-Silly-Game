@@ -18,9 +18,7 @@ using namespace std;
 namespace game_framework {
 
 	/* CGameMap */
-	CGameMap::CGameMap() :X(0), Y(0), MW(50), MH(60) {				// 給予地圖左上角座標以及每張小圖寬高度
-		sx = 0;
-		sy = 0;
+	CGameMap::CGameMap() :X(0), Y(0), MW(50), MH(60), sx(0), sy(0) {				// 給予地圖左上角座標以及每張小圖寬高度
 	}
 	
 	CGameMap::~CGameMap() {}

@@ -158,6 +158,7 @@ namespace game_framework {
 					moveRight.OnMove();
 					TRACE("%d\n", pos.x);
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						SetMode(1);
 						curState = 10;
 						success.OnMove();
 					}
@@ -175,6 +176,7 @@ namespace game_framework {
 					moveLeft.OnMove();
 					TRACE("%d\n", pos.x);
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						SetMode(1);
 						curState = 10;
 						success.OnMove();
 					}
@@ -193,6 +195,7 @@ namespace game_framework {
 					moveUp.OnMove();
 					TRACE("%d\n", pos.y);
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						SetMode(1);
 						curState = 10;
 						success.OnMove();
 					}
@@ -211,6 +214,7 @@ namespace game_framework {
 					moveDown.OnMove();
 					TRACE("%d\n", pos.y);
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						SetMode(1);
 						curState = 10;
 						success.OnMove();
 					}
@@ -245,10 +249,17 @@ namespace game_framework {
 				fightLeft.OnMove();
 			else if (curState == 8)
 				fightRight.OnMove();
-			else if (curState == 9)
+		}
+		else {
+			if (curState == 9)
 				fail.OnMove();
+			else if (curState == 10)
+				success.OnMove();
+			else if (curState == 11)
+				relive.OnMove();
 		}
 	}
+
 	void CApu::SetMovingUp(bool flag) {
 		isMovingUp = flag;
 		if (flag)

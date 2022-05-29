@@ -58,28 +58,25 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
-		int  TheGhostNearbyApu(int x1, int y1, int x2, int y2);
+		//int  TheGhostNearbyApu(int x1, int y1, int x2, int y2);
 
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	
 	private:
-		const int		NUMBALLONS;
+		int		NUMBALLONS;
 		
 		int				curKeyState;
-		
+		/*
 		CMovingBitmap	background;	// 背景圖
 		CMovingBitmap	help;		// 說明圖
 		CMovingBitmap	corner;		// 角落圖
 		CInteger		hits_left;	// 剩下的撞擊數
-		
+		*/
 		CGameMap		*gamemap;
-		CGameMap_1		gamemap1;	// Level_1
-		CGameMap_2		gamemap2;	// Level_2
-		CGameMap_3		gamemap3;	// Level_3
-		CApu            apu;		// 阿噗
 		CGhost			*ballon;	// 綠色氣球怪
+		CApu            apu;		// 阿噗
 		int				counter;	// 倒數計時數
 		int				curLevel;
 	};

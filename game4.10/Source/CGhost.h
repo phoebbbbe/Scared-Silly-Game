@@ -3,6 +3,12 @@
 
 namespace game_framework {
 
+	enum class CGhosts {
+		CBallon,
+		CBat,
+		CPumpkin,
+	};
+
 	class CGhost
 	{
 	public:
@@ -17,7 +23,7 @@ namespace game_framework {
 		int  GetY2();
 
 		/* Setter */
-		void SetXY(int nx, int ny);			// 設定圓心的座標
+		void SetXY(int nx, int ny);			// 設定中心的座標
 		void SetIsAlive(bool alive);		// 設定是否活著
 		void SetIsFighted(bool fighted);
 		void SetMode(int m);
@@ -35,7 +41,7 @@ namespace game_framework {
 		void FollowApu(CApu *apu, int stepsize);
 
 		//
-		void LoadBitmap();					// 載入圖形
+		virtual void LoadBitmap() = 0;					// 載入圖形
 		void OnMove();						// 移動
 		void OnMove(CApu *apu);
 		void OnShow();						// 將圖形貼到畫面
@@ -54,6 +60,27 @@ namespace game_framework {
 		int  curState;
 	private:
 		bool HitRectangle(int tx1, int ty1, int tx2, int ty2);	// 是否碰到參數範圍的矩形
+	};
+
+	class CBallon : public CGhost {
+	public:
+		CBallon();
+		~CBallon();
+		void LoadBitmap() override;		
+	};
+
+	class CBat : public CGhost {
+	public:
+		CBat();
+		~CBat();
+		void LoadBitmap() override;
+	};
+
+	class CPumpkin : public CGhost {
+	public:
+		CPumpkin();
+		~CPumpkin();
+		void LoadBitmap() override;
 	};
 }
 
