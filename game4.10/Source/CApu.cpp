@@ -11,31 +11,25 @@
 namespace game_framework {
 
 	CApu::CApu() {
-		Initialize();
+		Initialize(0, 0);
 	}
-	void CApu::Initialize() {
-		pos.x = 150;
-		pos.y = 200;
+	CApu::CApu(int x, int y) {
+		Initialize(x, y);
+	}
+	CApu::~CApu() {}
+	void CApu::Initialize(int x, int y) {
+		pos.x = x;
+		pos.y = y;
 		curState = 0;			// initApu
 		curMode = 1;			// still
 		isMoved = false;
 		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
 		isFightLeft = isFightRight = isFightUp = isFightDown = false;
 		isSucceed = false;
-
 	}
 
-	CApu::~CApu() {
-
-	}
-	int CApu::GetX1() {
-		return pos.x;
-	}
-
-	int CApu::GetY1() {
-		return pos.y;
-	}
-
+	int CApu::GetX1() { return pos.x; }
+	int CApu::GetY1() { return pos.y; }
 	int CApu::GetX2() {
 		switch (curState) {
 		case 1: return pos.x + initUp.Width();
@@ -46,7 +40,6 @@ namespace game_framework {
 			return pos.x + initRight.Width();
 		}
 	}
-
 	int CApu::GetY2() {
 		switch (curState) {
 		case 1: return pos.y + initUp.Height();
@@ -57,17 +50,137 @@ namespace game_framework {
 			return pos.y + initRight.Height();
 		}
 	}
+	int CApu::GetMode() { return curMode; }
+	int CApu::GetState() { return curState; }
+	bool CApu::GetMoved() { return isMoved; }
+	int CApu::GetCurAnimationNum() {
+		switch (curState) {
+		case 1: return moveUp.GetCurrentBitmapNumber();
+		case 2: return moveDown.GetCurrentBitmapNumber();
+		case 3: return moveLeft.GetCurrentBitmapNumber();
+		case 4: return moveRight.GetCurrentBitmapNumber();
+		case 5: return fightUp.GetCurrentBitmapNumber();
+		case 6: return fightDown.GetCurrentBitmapNumber();
+		case 7: return fightLeft.GetCurrentBitmapNumber();
+		case 8: return fightRight.GetCurrentBitmapNumber();
+		case 9: return fail.GetCurrentBitmapNumber();
+		case 10: return success.GetCurrentBitmapNumber();
+		default:
+			return 0;
+		}
+	}
+	int CApu::GetCurAnimationLastNum() {
+		switch (curState) {
+		case 1: return moveUp.GetLastBitmapNumber();
+		case 2: return moveDown.GetLastBitmapNumber();
+		case 3: return moveLeft.GetLastBitmapNumber();
+		case 4: return moveRight.GetLastBitmapNumber();
+		case 5: return fightUp.GetLastBitmapNumber();
+		case 6: return fightDown.GetLastBitmapNumber();
+		case 7: return fightLeft.GetLastBitmapNumber();
+		case 8: return fightRight.GetLastBitmapNumber();
+		case 9: return fail.GetLastBitmapNumber();
+		case 10: return success.GetLastBitmapNumber();
+		default:
+			return 0;
+		}
+	}
+	
+	void CApu::SetXY(int nx, int ny) {
+		pos.x = nx; pos.y = ny;
+	}
+	void CApu::SetXY(int stepSize) {
+		if (isMovingLeft) {
+			pos.x -= stepSize;
+		}
+		if (isMovingRight) {
+			pos.x += stepSize;
+		}
+		if (isMovingUp) {
+			pos.y -= stepSize;
+		}
+		if (isMovingDown) {
+			pos.y += stepSize;
+		}
+	}
+	void CApu::SetMovingUp(bool flag) {
+		isMovingUp = flag;
+		if (flag)
+			curState = 1;
+	}
+	void CApu::SetMovingDown(bool flag) {
+		isMovingDown = flag;
+		if (flag)
+			curState = 2;
+	}
+	void CApu::SetMovingLeft(bool flag) {
+		isMovingLeft = flag;
+		if (flag)
+			curState = 3;
+	}
+	void CApu::SetMovingRight(bool flag) {
+		isMovingRight = flag;
+		if (flag)
+			curState = 4;
+	}
+	void CApu::SetFightUp(bool flag) {
+		isFightUp = flag;
+		if (flag)
+			curState = 5;
+	}
+	void CApu::SetFightDown(bool flag) {
+		isFightDown = flag;
+		if (flag)
+			curState = 6;
+	}
+	void CApu::SetFightLeft(bool flag) {
+		isFightLeft = flag;
+		if (flag)
+			curState = 7;
+	}
+	void CApu::SetFightRight(bool flag) {
+		isFightRight = flag;
+		if (flag)
+			curState = 8;
+	}
+	void CApu::SetAllAction(bool flag) {
+		isMovingUp = flag;
+		isMovingDown = flag;
+		isMovingLeft = flag;
+		isMovingRight = flag;
+		isFightUp = flag;
+		isFightDown = flag;
+		isFightLeft = flag;
+		isFightRight = flag;
+	}
+	void CApu::SetMode(int flag) { curMode = flag; }
+	void CApu::SetState(int flag) { curState = flag; }
+	void CApu::SetMoved(bool flag) { isMoved = flag; }
+	void CApu::ResetCurAnimation() {
+		if (curState == 1)
+			moveUp.Reset();
+		else if (curState == 2)
+			moveDown.Reset();
+		else if (curState == 3)
+			moveLeft.Reset();
+		else if (curState == 4)
+			moveRight.Reset();
+		else if (curState == 5)
+			fightUp.Reset();
+		else if (curState == 6)
+			fightDown.Reset();
+		else if (curState == 7)
+			fightLeft.Reset();
+		else if (curState == 8)
+			fightRight.Reset();
+		else if (curState == 9)
+			fail.Reset();
+		else if (curState == 10)
+			success.Reset();
+	}
 
-	int CApu::GetMode() {
-		return curMode;
-	}
-	int CApu::GetState() {
-		return curState;
-	}
-	bool CApu::GetMoved() {
-		return isMoved;
-	}
-
+	bool CApu::IsSucceed() { return isSucceed; }
+	
 	void CApu::LoadBitmap() {
 
 		moveUp.AddBitmap(IDB_APU_UP1, WHITE);
@@ -258,146 +371,6 @@ namespace game_framework {
 			else if (curState == 11)
 				relive.OnMove();
 		}
-	}
-
-	void CApu::SetMovingUp(bool flag) {
-		isMovingUp = flag;
-		if (flag)
-			curState = 1;
-	}
-
-	void CApu::SetMovingDown(bool flag) {
-		isMovingDown = flag;
-		if (flag)
-			curState = 2;
-	}
-
-	void CApu::SetMovingLeft(bool flag) {
-		isMovingLeft = flag;
-		if (flag)
-			curState = 3;
-	}
-
-	void CApu::SetMovingRight(bool flag) {
-		isMovingRight = flag;
-		if (flag)
-			curState = 4;
-	}
-
-	void CApu::SetFightUp(bool flag) {
-		isFightUp = flag;
-		if (flag)
-			curState = 5;
-	}
-	void CApu::SetFightDown(bool flag) {
-		isFightDown = flag;
-		if (flag)
-			curState = 6;
-	}
-	void CApu::SetFightLeft(bool flag) {
-		isFightLeft = flag;
-		if (flag)
-			curState = 7;
-	}
-	void CApu::SetFightRight(bool flag) {
-		isFightRight = flag;
-		if (flag)
-			curState = 8;
-	}
-	void CApu::SetAllAction(bool flag) {
-		isMovingUp = flag;
-		isMovingDown = flag;
-		isMovingLeft = flag;
-		isMovingRight = flag;
-		isFightUp = flag;
-		isFightDown = flag;
-		isFightLeft = flag;
-		isFightRight = flag;
-	}
-	void CApu::SetXY(int nx, int ny) {
-		pos.x = nx; pos.y = ny;
-	}
-	void CApu::SetXY(int stepSize) {
-		if (isMovingLeft) {
-			pos.x -= stepSize;
-		}
-		if (isMovingRight) {
-			pos.x += stepSize;
-		}
-		if (isMovingUp) {
-			pos.y -= stepSize;
-		}
-		if (isMovingDown) {
-			pos.y += stepSize;
-		}
-	}
-
-	int CApu::GetCurAnimationNum() {
-		switch (curState) {
-		case 1: return moveUp.GetCurrentBitmapNumber();
-		case 2: return moveDown.GetCurrentBitmapNumber();
-		case 3: return moveLeft.GetCurrentBitmapNumber();
-		case 4: return moveRight.GetCurrentBitmapNumber();
-		case 5: return fightUp.GetCurrentBitmapNumber();
-		case 6: return fightDown.GetCurrentBitmapNumber();
-		case 7: return fightLeft.GetCurrentBitmapNumber();
-		case 8: return fightRight.GetCurrentBitmapNumber();
-		case 9: return fail.GetCurrentBitmapNumber();
-		case 10: return success.GetCurrentBitmapNumber();
-		default:
-			return 0;
-		}
-	}
-	int CApu::GetCurAnimationLastNum() {
-		switch (curState) {
-		case 1: return moveUp.GetLastBitmapNumber();
-		case 2: return moveDown.GetLastBitmapNumber();
-		case 3: return moveLeft.GetLastBitmapNumber();
-		case 4: return moveRight.GetLastBitmapNumber();
-		case 5: return fightUp.GetLastBitmapNumber();
-		case 6: return fightDown.GetLastBitmapNumber();
-		case 7: return fightLeft.GetLastBitmapNumber();
-		case 8: return fightRight.GetLastBitmapNumber();
-		case 9: return fail.GetLastBitmapNumber();
-		case 10: return success.GetLastBitmapNumber();
-		default:
-			return 0;
-		}
-	}
-	void CApu::ResetCurAnimation() {
-		if (curState == 1)
-			moveUp.Reset();
-		else if (curState == 2)
-			moveDown.Reset();
-		else if (curState == 3)
-			moveLeft.Reset();
-		else if (curState == 4)
-			moveRight.Reset();
-		else if (curState == 5)
-			fightUp.Reset();
-		else if (curState == 6)
-			fightDown.Reset();
-		else if (curState == 7)
-			fightLeft.Reset();
-		else if (curState == 8)
-			fightRight.Reset();
-		else if (curState == 9)
-			fail.Reset();
-		else if (curState == 10)
-			success.Reset();
-	}
-	void CApu::SetMode(int flag) {
-		curMode = flag;
-	}
-	void CApu::SetState(int flag) {
-		curState = flag;
-	}
-	void CApu::SetMoved(bool flag) {
-		isMoved = flag;
-	}
-
-	bool CApu::IsSucceed() {
-		return isSucceed;
 	}
 	void CApu::OnShow(CGameMap *m) {
 		switch (curState) {

@@ -9,69 +9,51 @@
 
 namespace game_framework {
 
-	CGhost::CGhost() : isAlive(true), isFighted(false), curMode(1), curState(0){
-		//isAlive = true;
-		//isFighted = false;
-		//curMode = 1;
-		//curState = 0;
-		//pos.x = pos.y = 0;
-		////dx = dy = index = delay_counter = 0;
+	CGhost::CGhost(int x, int y) {
+		Initialize(x, y);
 	}
-
 	CGhost::~CGhost() {
 
 	}
-	bool CGhost::HitApu(CApu *apu) {
-		return HitRectangle(apu->GetX1(), apu->GetY1(), apu->GetX2(), apu->GetY2());
+
+	void CGhost::Initialize(int x, int y) {
+		pos.x = x;
+		pos.y = y;
+		isAlive = true;
+		isFighted = false;
+		curMode = 1;
+		curState = 0;
 	}
 
-	bool CGhost::HitRectangle(int tx1, int ty1, int tx2, int ty2) {
-		int x1 = tx1;
-		int y1 = ty1;
-		int x2 = tx2;
-		int y2 = ty2;
-		int x3 = pos.x;				// 鬼怪的左上角pos.x座標
-		int y3 = pos.y + 5;				// 鬼怪的左上角pos.y座標
-		int x4 = pos.x + ghost.Width();	// 鬼怪的右下角pos.x座標
-		int y4 = pos.y + ghost.Height();	// 鬼怪的右下角pos.y座標
-		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
+	int  CGhost::GetX1() { return pos.x; }
+	int  CGhost::GetY1() { return pos.y; }
+	int  CGhost::GetX2() { return pos.x + ghost.Width(); }
+	int  CGhost::GetY2() { return pos.y + ghost.Height(); }
+	
+	void CGhost::SetXY(int nx, int ny) {
+		pos.x = nx; pos.y = ny;
 	}
+	void CGhost::SetIsAlive(bool alive) {
+		isAlive = alive;
+	}
+	void CGhost::SetIsFighted(bool fighted) {
+		isFighted = fighted;
+	}
+	void CGhost::SetMode(int m) {
+		curMode = m;
+	}
+	void CGhost::SetState(int s) {
+		curState = s;
+	}
+	void CGhost::SetFork() {
 
+	}
+	
 	bool CGhost::IsAlive() {
 		return isAlive;
 	}
-
 	bool CGhost::IsFighted() {
 		return isFighted;
-	}
-	/*void CGhost::LoadBitmap() {
-		
-	}*/
-
-	void CGhost::OnMove() {
-
-	}
-
-	void CGhost::OnMove(CApu *apu) {
-		const int STEP_SIZE = 1;
-		if (!isAlive)
-		{
-			ghost_die.OnMove();
-			ghost_die.OnMove();
-			return;
-		}
-		if (apu->GetMode() == 2) {
-			//TRACE("%d\n", curMode);
-			if (curMode == 1)
-			{
-				ghost.OnMove();
-			}
-			else if (curMode == 2)
-			{
-				FollowApu(apu, STEP_SIZE);
-				// undisplay fork
-			}
-		}
 	}
 
 	int CGhost::WhereIsApu(CApu *apu) {
@@ -88,6 +70,14 @@ namespace game_framework {
 		else if (X2 <= 0 && Y2 >= 0) return 3;
 		else if (X2 >= 0 && Y2 >= 0) return 4;
 		else return 0;
+	}
+	void CGhost::SwitchMode() {
+		if (curMode == 1) {
+			SetMode(2);
+		}
+		else if (curMode == 2) {
+			SetMode(1);
+		}
 	}
 	void CGhost::FollowApu(CApu *apu, int stepsize) {
 		int xUp = pos.x, yUp = pos.y - stepsize;
@@ -127,68 +117,93 @@ namespace game_framework {
 		else if (curState == 4)
 			SetXY(xRight, yRight);
 	}
+	bool CGhost::HitApu(CApu *apu) {
+		return HitRectangle(apu->GetX1(), apu->GetY1(), apu->GetX2(), apu->GetY2());
+	}
+	bool CGhost::HitRectangle(int tx1, int ty1, int tx2, int ty2) {
+		int x1 = tx1;
+		int y1 = ty1;
+		int x2 = tx2;
+		int y2 = ty2;
+		int x3 = pos.x;				// 鬼怪的左上角pos.x座標
+		int y3 = pos.y + 5;				// 鬼怪的左上角pos.y座標
+		int x4 = pos.x + ghost.Width();	// 鬼怪的右下角pos.x座標
+		int y4 = pos.y + ghost.Height();	// 鬼怪的右下角pos.y座標
+		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
+	}
 
-	void CGhost::SetIsAlive(bool alive) {
-		isAlive = alive;
-	}
-	void CGhost::SetIsFighted(bool fighted) {
-		isFighted = fighted;
-	}
-	void CGhost::SetXY(int nx, int ny) {
-		pos.x = nx; pos.y = ny;
-	}
-	void CGhost::SetFork() {
+	void CGhost::OnMove() {
 
 	}
-	void CGhost::SetMode(int m) {
-		curMode = m;
-	}
-	void CGhost::SetState(int s) {
-		curState = s;
-	}
-	void CGhost::SwitchMode() {
-		if (curMode == 1) {
-			SetMode(2);
+	void CGhost::OnMove(CApu *apu) {
+		const int STEP_SIZE = 1;
+		if (!isAlive)
+		{
+			ghost_die.OnMove();
+			ghost_die.OnMove();
+			return;
 		}
-		else if (curMode == 2) {
-			SetMode(1);
+		if (apu->GetMode() == 2) {
+			//TRACE("%d\n", curMode);
+			if (curMode == 1)
+			{
+				ghost.OnMove();
+			}
+			else if (curMode == 2)
+			{
+				FollowApu(apu, STEP_SIZE);
+				// undisplay fork
+			}
 		}
 	}
-	int  CGhost::GetX1() { return pos.x; }
-	int  CGhost::GetY1() { return pos.y; }
-	int  CGhost::GetX2() { return pos.x + ghost.Width(); }
-	int  CGhost::GetY2() { return pos.y + ghost.Height(); }
-
 	void CGhost::OnShow() {
 		if (isAlive) {
-			//ghost.SetTopLeft(pos.x + dx, pos.y + dy);
-			if (isFighted) {
-				ghost_die.SetTopLeft(pos.x, pos.y);
-				ghost_die.OnShow(); // 改進ghost_die的動畫
+			ghost.SetTopLeft(pos.x, pos.y);
+			ghost.OnShow();
+			if (curMode == 1)
+			{
+				//SetFork();
+				/*fork1.SetTopLeft(pos.x - 30, pos.y);
+				fork2.SetTopLeft(pos.x + 30, pos.y);
+				fork3.SetTopLeft(pos.x, pos.y - 30);
+				fork4.SetTopLeft(pos.x, pos.y + 30);
+				fork1.ShowBitmap();
+				fork2.ShowBitmap();
+				fork3.ShowBitmap();
+				fork4.ShowBitmap();*/
 			}
-			else {
-				ghost.SetTopLeft(pos.x, pos.y);
-				ghost.OnShow();
-				if (curMode == 1)
-				{
-					//SetFork();
-					/*fork1.SetTopLeft(pos.x - 30, pos.y);
-					fork2.SetTopLeft(pos.x + 30, pos.y);
-					fork3.SetTopLeft(pos.x, pos.y - 30);
-					fork4.SetTopLeft(pos.x, pos.y + 30);
-					fork1.ShowBitmap();
-					fork2.ShowBitmap();
-					fork3.ShowBitmap();
-					fork4.ShowBitmap();*/
-				}
 
+		}
+		else if (isFighted) {
+			ghost_die.SetTopLeft(pos.x, pos.y);
+			ghost_die.OnShow(); // 改進ghost_die的動畫
+		}
+	}
+	void CGhost::OnShow(CGameMap *m) {
+		if (isAlive) {
+			ghost.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			ghost.OnShow();
+			if (curMode == 1)
+			{
+				//SetFork();
+				/*fork1.SetTopLeft(pos.x - 30, pos.y);
+				fork2.SetTopLeft(pos.x + 30, pos.y);
+				fork3.SetTopLeft(pos.x, pos.y - 30);
+				fork4.SetTopLeft(pos.x, pos.y + 30);
+				fork1.ShowBitmap();
+				fork2.ShowBitmap();
+				fork3.ShowBitmap();
+				fork4.ShowBitmap();*/
 			}
+
+		}
+		else if (isFighted) {
+			ghost_die.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+			ghost_die.OnShow(); // 改進ghost_die的動畫
 		}
 	}
 
-	CBallon::CBallon() : CGhost::CGhost() {
-		pos.x = pos.y = 0;
-	}
+	CBallon::CBallon(int x, int y) : CGhost::CGhost(x, y) {}
 	CBallon::~CBallon() {}
 	void CBallon::LoadBitmap() {
 		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
@@ -209,9 +224,7 @@ namespace game_framework {
 		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
 	}
 
-	CBat::CBat() : CGhost::CGhost() {
-		pos.x = pos.y = 0;
-	}
+	CBat::CBat(int x, int y) : CGhost::CGhost(x, y) {}
 	CBat::~CBat() {}
 	void CBat::LoadBitmap() {
 		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
@@ -232,9 +245,7 @@ namespace game_framework {
 		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
 	}
 
-	CPumpkin::CPumpkin() : CGhost::CGhost() {
-		pos.x = pos.y = 0;
-	}
+	CPumpkin::CPumpkin(int x, int y) : CGhost::CGhost(x, y) {}
 	CPumpkin::~CPumpkin() {}
 	void CPumpkin::LoadBitmap() {
 		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));

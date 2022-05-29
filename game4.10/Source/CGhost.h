@@ -12,17 +12,14 @@ namespace game_framework {
 	class CGhost
 	{
 	public:
-		/* Constructor */
-		CGhost();
+		CGhost(int x, int y);
 		~CGhost();
 
-		/* Getter */
 		int  GetX1();
 		int  GetY1();
 		int  GetX2();
 		int  GetY2();
 
-		/* Setter */
 		void SetXY(int nx, int ny);			// 設定中心的座標
 		void SetIsAlive(bool alive);		// 設定是否活著
 		void SetIsFighted(bool fighted);
@@ -30,21 +27,21 @@ namespace game_framework {
 		void SetState(int s);
 		void SetFork();
 
-		/* judge */
 		bool IsAlive();						// 是否活著
 		bool IsFighted();					// 是否被攻擊
 		bool HitApu(CApu *apu);				// 是否碰到阿噗
 
-		/* Member Function */
+		/* Apu Function */
 		void SwitchMode();
 		int  WhereIsApu(CApu *apu);
 		void FollowApu(CApu *apu, int stepsize);
 
-		//
+		void Initialize(int x, int y);
 		virtual void LoadBitmap() = 0;					// 載入圖形
 		void OnMove();						// 移動
 		void OnMove(CApu *apu);
 		void OnShow();						// 將圖形貼到畫面
+		void OnShow(CGameMap *m);
 
 	protected:
 		CAnimation ghost;
@@ -64,21 +61,21 @@ namespace game_framework {
 
 	class CBallon : public CGhost {
 	public:
-		CBallon();
+		CBallon(int x, int y);
 		~CBallon();
 		void LoadBitmap() override;		
 	};
 
 	class CBat : public CGhost {
 	public:
-		CBat();
+		CBat(int x, int y);
 		~CBat();
 		void LoadBitmap() override;
 	};
 
 	class CPumpkin : public CGhost {
 	public:
-		CPumpkin();
+		CPumpkin(int x, int y);
 		~CPumpkin();
 		void LoadBitmap() override;
 	};

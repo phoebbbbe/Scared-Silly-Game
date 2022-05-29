@@ -19,35 +19,22 @@ namespace game_framework {
 
 	class CGameMap {
 	public:
-		/* Constructor */
 		CGameMap();
 		~CGameMap();
 
-		/* Getter */
 		int *GetMap();
 		POINT GetPieceXY();
 		POINT GetSXY();
 
-		/* Setter */
 		void SetSX(int);
 		void SetSY(int);
 		int ScreenX(int);
 		int ScreenY(int);
 
-		/* Judge */
 		bool IsEmpty(int, int);
 		bool HasPiece(int, int, int, int);
-		/*bool GAMEOVER;
-		bool APUWIN;*/
 
-		/* Ghost Function */
-		/*virtual int  GhostNearbyApu(int, int, int, int) = 0;
-		virtual void SetGhostFighted(int, bool) = 0;
-		virtual void SetGhostMove(int) = 0;
-		virtual void SwitchGhostMode() = 0;*/
-		//
-		void LoadBitmap();
-		virtual void LoadLevelBitmap() = 0;
+		virtual void LoadBitmap() = 0;
 		virtual void OnShow() = 0;
 		virtual void OnMove() = 0;
 
@@ -70,25 +57,17 @@ namespace game_framework {
 		CGameMap_1();
 		~CGameMap_1();
 
-		/*int  GhostNearbyApu(int, int, int, int) override;
-		void SetGhostFighted(int, bool) override;
-		void SetGhostMove(int) override;
-		void SwitchGhostMode() override;*/
-
-		void LoadLevelBitmap() override;
+		void LoadBitmap() override;
 		void OnShow() override;
 		void OnMove() override;
 
 	private:
-		/* Floor */
-		CMovingBitmap turf;						// ¯ó¥Ö
+		CMovingBitmap turf;
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
-		/* Background */
 		CMovingBitmap explination;
 		CMovingBitmap tree[20];
 		CMovingBitmap grass[10];
-		/* Ghost */
 
 	};
 
@@ -98,25 +77,17 @@ namespace game_framework {
 		CGameMap_2();
 		~CGameMap_2();
 
-		/*int  GhostNearbyApu(int, int, int, int) override;
-		void SetGhostFighted(int, bool) override;
-		void SetGhostMove(int) override;
-		void SwitchGhostMode() override;*/
-
-		void LoadLevelBitmap() override;
+		void LoadBitmap() override;
 		void OnShow() override;
 		void OnMove() override;
 
 	private:
-		/* Floor */
-		CMovingBitmap turf;						// ¯ó¥Ö
+		CMovingBitmap turf;
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
 		CMovingBitmap wall;
-		/* Background */
 		CMovingBitmap tree[20];
 		CMovingBitmap grass[20];
-		/* Ghost */
 	};
 
 	/* CGameMap_3 */
@@ -125,26 +96,18 @@ namespace game_framework {
 		CGameMap_3();
 		~CGameMap_3();
 
-		/*int  GhostNearbyApu(int, int, int, int) override;
-		void SetGhostFighted(int, bool) override;
-		void SetGhostMove(int) override;
-		void SwitchGhostMode() override;*/
-
-		void LoadLevelBitmap() override;
+		void LoadBitmap() override;
 		void OnShow() override;
 		void OnMove() override;
 
 	private:
-		/* Floor */
-		CMovingBitmap floor;						// ¯ó¥Ö
+		CMovingBitmap floor;
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
 		CMovingBitmap wall;
-		/* Background */
 		CMovingBitmap tree[20];
 		CMovingBitmap grass[20];
 		CMovingBitmap tomb[10];
-		/* Ghost */
 	};
 }
 

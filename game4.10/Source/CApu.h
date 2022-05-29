@@ -6,11 +6,10 @@ namespace game_framework {
 	class CApu
 	{
 	public:
-		/* Constructor */
 		CApu();
+		CApu(int x, int y);
 		~CApu();
 
-		/* Getter */
 		int  GetX1();					// 阿噗左上角 x 座標
 		int  GetY1();					// 阿噗左上角 y 座標
 		int  GetX2();					// 阿噗右下角 x 座標
@@ -21,7 +20,8 @@ namespace game_framework {
 		int  GetCurAnimationNum();
 		int  GetCurAnimationLastNum();
 
-		/* Setter */
+		void SetXY(int nx, int ny);		// 設定阿噗左上角座標
+		void SetXY(int stepSize);
 		void SetMovingDown(bool flag);	// 設定是否正在往下移動
 		void SetMovingLeft(bool flag);	// 設定是否正在往左移動
 		void SetMovingRight(bool flag); // 設定是否正在往右移動
@@ -32,18 +32,14 @@ namespace game_framework {
 		void SetFightRight(bool flag);  // 設定是某正在往右攻擊
 		void SetAllAction(bool flag);
 		//void SetInitTopLeft();
-		void SetXY(int nx, int ny);		// 設定擦子左上角座標
-		void SetXY(int stepSize);
 		void SetMode(int flag);
 		void SetState(int flag);
 		void SetMoved(bool flag);
 		void ResetCurAnimation();
 
-		/* Judge */
 		bool IsSucceed();
 
-		//
-		void Initialize();				// 設定阿噗為初始值
+		void Initialize(int x, int y);				// 設定阿噗為初始值
 		void LoadBitmap();				// 載入圖形
 		void OnMove();					// 移動阿噗
 		void OnMove(CGameMap *map);

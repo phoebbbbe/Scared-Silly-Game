@@ -51,21 +51,23 @@ namespace game_framework {
 		~CGameStateRun();
 		void OnBeginState();							// 設定每次重玩所需的變數
 		void OnInit();  								// 遊戲的初值及圖形設定
-		void OnKeyDown(UINT, UINT, UINT);
-		void OnKeyUp(UINT, UINT, UINT);
+		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+		void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnLButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnLButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
-		//int  TheGhostNearbyApu(int x1, int y1, int x2, int y2);
+		
+		int  TheGhostNearbyApu(int x1, int y1, int x2, int y2);
+		void AddGhost(int type, int x, int y);
 
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	
 	private:
-		int		NUMBALLONS;
+		int		GHOSTNUM;
 		
 		int				curKeyState;
 		/*
@@ -75,7 +77,7 @@ namespace game_framework {
 		CInteger		hits_left;	// 剩下的撞擊數
 		*/
 		CGameMap		*gamemap;
-		CGhost			*ballon;	// 綠色氣球怪
+		vector<CGhost*> ghost;
 		CApu            apu;		// 阿噗
 		int				counter;	// 倒數計時數
 		int				curLevel;

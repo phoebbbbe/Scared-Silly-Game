@@ -209,58 +209,52 @@ CGameStateRun::CGameStateRun(CGame *g)
 
 CGameStateRun::~CGameStateRun() {
 	delete gamemap;
-	//delete[] ballon;
+	ghost.clear();
 }
 
 void CGameStateRun::OnBeginState() {
-	//const int BALL_GAP = 90;
-	//const int BALL_XY_OFFSET = 45;
-	//const int BALL_PER_ROW = 7;
-	//const int HITS_LEFT = 10;
-	//const int HITS_LEFT_X = 590;
-	//const int HITS_LEFT_Y = 0;
-	//const int BACKGROUND_X = 60;
-	//const int ANIMATION_SPEED = 15;
+	GHOSTNUM = 5;
 	counter = 30 * 1;									// 5 seconds
 	curLevel = CGame::Instance()->GetLevel();
 
 	switch (curLevel) {
 	case 1:
+		apu.Initialize(150, 200);
 		gamemap = new CGameMap_1();
-		//ballon = new CBallon[NUMBALLONS];
+		for (int i = 0; i < GHOSTNUM; i++) {
+			AddGhost(1, 120 * (i + 1), 100);
+		}
 		break;
 	case 2:
+		apu.Initialize(150, 200);
 		gamemap = new CGameMap_2();
-		//ballon = new CBat[NUMBALLONS];
+		for (int i = 0; i < GHOSTNUM; i++) {
+			AddGhost(1, 120 * (i + 1), 100);
+			AddGhost(2, 220 * (i + 1), 100);
+		}
 		break;
 	case 3:
+		apu.Initialize(150, 200);
 		gamemap = new CGameMap_3();
-		//ballon = new CPumpkin[NUMBALLONS];
+		for (int i = 0; i < GHOSTNUM; i++) {
+			AddGhost(1, 120 * (i + 1), 100);
+			AddGhost(2, 220 * (i + 1), 100);
+			AddGhost(3, 320 * (i + 1), 100);
+		}
 		break;
 	default:
-		gamemap = new CGameMap_1();
-		//ballon = new CBallon[NUMBALLONS];
 		break;
 	}
-	gamemap->LoadLevelBitmap();
-	/*for (int i = 0; i < NUMBALLS; i++) {				// 設定球的起始座標
-		int x_pos = i % BALL_PER_ROW;
-		int y_pos = i / BALL_PER_ROW;
-		ball[i].SetXY(x_pos * BALL_GAP + BALL_XY_OFFSET, y_pos * BALL_GAP + BALL_XY_OFFSET);
-		ball[i].SetXY(x_pos, y_pos);
-		ball[i].SetDelay(x_pos);
-		ball[i].SetIsAlive(true);
-	}*/
-
+	gamemap->LoadBitmap();
+	apu.LoadBitmap();
+	for (int i = 0; i < GHOSTNUM; i++)
+		ghost[i]->LoadBitmap();
 	//for (int i = 0; i < NUMBALLONS; i++) {				// 設定ballon的起始座標
 	//	int x_pos = 700; // 715,725
 	//	int y_pos = 200;
 	//	ballon[i].SetXY(x_pos,y_pos);
 	//	ballon[i].SetIsAlive(true);
 	//}
-
-	apu.Initialize();
-
 	/*
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
@@ -272,24 +266,16 @@ void CGameStateRun::OnBeginState() {
 	*/
 }
 
-void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
-{
-	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
+void CGameStateRun::OnInit() { 								// 遊戲的初值及圖形設定
+	// 當圖很多時，OnInit載入所有的圖要花很多時間。
+	//為避免玩遊戲的人等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
 	ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
-
-	// 開始載入資料
-	//int i;
-	//for (i = 0; i < NUMBALLONS; i++)
-	//	ballon[i].LoadBitmap();								// 載入第i個ballon的圖形
-	apu.LoadBitmap();
-	//background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
 
 	// 完成部分Loading動作，提高進度
 	ShowInitProgress(50);
 	Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 
-	// 繼續載入其他資料
+	// 載入其他資料
 	/*
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				// 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
@@ -301,12 +287,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	*/
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	gamemap = nullptr;
-	//ballon = nullptr;
-
 }
 
-void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
+void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	const char KEY_LEFT = 0x25; // keyboard左箭頭
 	const char KEY_UP = 0x26; // keyboard上箭頭
 	const char KEY_RIGHT = 0x27; // keyboard右箭頭
@@ -366,58 +349,56 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 }
-
-void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
+void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	const char KEY_LEFT  = 0x25; // keyboard左箭頭
 	const char KEY_UP    = 0x26; // keyboard上箭頭
 	const char KEY_RIGHT = 0x27; // keyboard右箭頭
 	const char KEY_DOWN  = 0x28; // keyboard下箭頭
 }
-
-void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
-{
+void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point) {  // 處理滑鼠的動作
 	apu.SetMovingLeft(true);
 }
-
-void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
-{
+void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point) {	// 處理滑鼠的動作
 	apu.SetMovingLeft(false);
 }
-
-void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
-{
+void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point) {	// 處理滑鼠的動作
 	// 沒事。如果需要處理滑鼠移動的話，寫code在這裡
 }
-
-void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
-{
+void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point) {  // 處理滑鼠的動作
 	apu.SetMovingRight(true);
 }
-
-void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
-{
+void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point) {	// 處理滑鼠的動作
 	apu.SetMovingRight(false);
 }
 
-//int CGameStateRun::TheGhostNearbyApu(int x1, int y1, int x2, int y2) {
-//	for (int i = 0; i < NUMBALLONS; i++) {
-//		if (x2 >= ballon[i].GetX1() && x1 <= ballon[i].GetX2() && y2 >= ballon[i].GetY1() && y1 <= ballon[i].GetY2())
-//			if (ballon[i].IsAlive()) return i;
-//			else break;
-//	}
-//	return -1;
-//}
+int CGameStateRun::TheGhostNearbyApu(int x1, int y1, int x2, int y2) {
+	for (int i = 0; i < GHOSTNUM; i++) {
+		if (x2 >= ghost[i]->GetX1() && x1 <= ghost[i]->GetX2() && y2 >= ghost[i]->GetY1() && y1 <= ghost[i]->GetY2())
+			if (ghost[i]->IsAlive()) return i;
+			else break;
+	}
+	return -1;
+}
 
+void CGameStateRun::AddGhost(int type, int x, int y) {
+	switch (type) {
+	case 1:
+		ghost.push_back(new CBallon(x, y));
+		break;
+	case 2:
+		ghost.push_back(new CBat(x, y));
+		break;
+	case 3:
+		ghost.push_back(new CPumpkin(x, y));
+		break;
+	default:
+		break;
+	}
+}
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	// 如果希望修改cursor的樣式，則將下面程式的commment取消即可
 	// SetCursor(AfxGetApp()->LoadCursor(IDC_GAMECURSOR));
-
-	/* 移動背景圖的座標 */
-	//if (background.Top() > SIZE_Y)
-		//background.SetTopLeft(60, -background.Height());
-	//background.SetTopLeft(background.Left(), background.Top() + 1);
 
 	/* 移動氣球鬼 */
 	//for (int i = 0; i < NUMBALLONS; i++)
@@ -435,8 +416,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		apu.ResetCurAnimation();
 		apu.SetMode(1);
 		apu.SetAllAction(false);
-		/*for (int i = 0; i < NUMBALLONS; i++)
-		{
+		/*for (int i = 0; i < NUMBALLONS; i++) {
 			ballon[i].SwitchMode();
 			ballon[i].SetState(0);
 		}*/
@@ -447,55 +427,33 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		if (counter < 0)
 			GotoGameState(GAME_STATE_OVER);
 	}
-	//apu.Moving(gamemap.GetMap());
-	// 判斷擦子是否碰到球
-	//for (i = 0; i < NUMBALLS; i++) {
-	//	//if (ball[i].IsAlive() && ball[i].HitEraser(&eraser)) {
-	//	if (ball[i].IsAlive() && ball[i].IsFighted()) {
-	//		ball[i].SetIsAlive(false);
-	//		CAudio::Instance()->Play(AUDIO_DING);
-	//		hits_left.Add(-1); // 生命值
-	//		// 若剩餘碰撞次數為0，則跳到Game Over狀態
-	//		if (hits_left.GetInteger() <= 0) {
-	//			CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
-	//			CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
-	//			GotoGameState(GAME_STATE_OVER);
-	//		}
-	//	}
-	//}
 
-	//判斷Apu是否fight Ghost
-	//for (int i = 0; i < NUMBALLONS; i++) {
-	//	if (ballon[i].IsAlive() && ballon[i].IsFighted()) { // 判斷當Apu打擊到Ghost，則Ghost消失
-	//		ballon[i].SetIsAlive(false);
-	//		CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
+	/* 判斷Apu是否fight Ghost */
+	for (int i = 0; i < GHOSTNUM; i++) {
+		if (ghost[i]->IsAlive() && ghost[i]->IsFighted()) {			// 判斷當Apu打擊到Ghost，則Ghost消失
+			ghost[i]->SetIsAlive(false);
+			//CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
 
-	//		// 若剩餘碰撞次數為0，則跳到Game Over狀態
-	//		//if (hits_left.GetInteger() <= 0) {
-	//		//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
-	//		//	CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
-	//		//}
-	//	}
-	//	if (ballon[i].IsAlive() && ballon[i].HitApu(&apu)) // 判斷當Ghost碰到Apu，則跳到Game Over狀態
-	//	{
-	//		apu.SetMode(1);
-	//		apu.SetState(9);
-	//		apu.OnMove();
-	//		counter--;
-	//		if (counter < 0)
-	//			GotoGameState(GAME_STATE_OVER);
-	//	}
-	//}
+			//if (hits_left.GetInteger() <= 0) {
+			//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
+			//	CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
+			//}
+		}
+		if (ghost[i]->IsAlive() && ghost[i]->HitApu(&apu)) {		// 判斷當Ghost碰到Apu，則跳到Game Over狀態
+			apu.SetMode(1);
+			apu.SetState(9);
+			apu.OnMove();
+			counter--;
+			if (counter < 0)
+				GotoGameState(GAME_STATE_OVER);
+		}
+	}
 }
-
-void CGameStateRun::OnShow()
-{	
+void CGameStateRun::OnShow() {	
 	gamemap->OnShow();					//貼上練習的地圖
 	apu.OnShow(gamemap);
-
-	//hits_left.ShowBitmap();
-	/*for (int i = 0; i < NUMBALLONS; i++)
-		ballon[i].OnShow(&gamemap1);*/
+	for (int i = 0; i < GHOSTNUM; i++)
+		ghost[i]->OnShow(gamemap);
 }
 
 }

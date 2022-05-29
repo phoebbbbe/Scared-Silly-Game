@@ -17,23 +17,10 @@ using namespace std;
 
 namespace game_framework {
 
-	/* CGameMap */
 	CGameMap::CGameMap() :X(0), Y(0), MW(50), MH(60), sx(0), sy(0) {				// 給予地圖左上角座標以及每張小圖寬高度
 	}
 	
 	CGameMap::~CGameMap() {}
-
-	void CGameMap::LoadBitmap() {
-		brick1.LoadBitmap(IDB_BRICK1);							// 載入地板
-		brick2.LoadBitmap(IDB_BRICK3);
-		piece.LoadBitmap(IDB_MAP_FINAL, WHITE);
-	}
-
-	bool CGameMap::IsEmpty(int x, int y) {
-		int gx = x / 47;
-		int gy = y / 50;
-		return (map[gx][gy] == 1) || (map[gx][gy] == 2);
-	}
 
 	POINT CGameMap::GetPieceXY() {
 		POINT p = POINT();
@@ -41,7 +28,6 @@ namespace game_framework {
 		p.y = 60 * 4;
 		return p;
 	}
-
 	POINT CGameMap::GetSXY() {
 		POINT p = POINT();
 		p.x = sx;
@@ -49,32 +35,22 @@ namespace game_framework {
 		return p;
 	}
 	
-	int *CGameMap::GetMap() {
-		return map[0];
-	}
-	
-	void CGameMap::SetSX(int x) {
-		sx = x;
-	}
+	int *CGameMap::GetMap() { return map[0]; }
+	void CGameMap::SetSX(int x) { sx = x; }
+	void CGameMap::SetSY(int y) { sy = y; }
+	int CGameMap::ScreenX(int x) { return x - sx; }
+	int CGameMap::ScreenY(int y) { return y - sy; }
 
-	void CGameMap::SetSY(int y) {
-		sy = y;
+	bool CGameMap::IsEmpty(int x, int y) {
+		int gx = x / 47;
+		int gy = y / 50;
+		return (map[gx][gy] == 1) || (map[gx][gy] == 2);
 	}
-
-	int CGameMap::ScreenX(int x) {
-		return x - sx;
-	}
-
-	int CGameMap::ScreenY(int y) {
-		return y - sy;
-	}
-
 	bool CGameMap::HasPiece(int x1, int y1, int x2, int y2) {
-		int x3 = GetPieceXY().x;				// 鬼怪的左上角pos.x座標
-		int y3 = GetPieceXY().y;				// 鬼怪的左上角pos.y座標
-		int x4 = GetPieceXY().x + piece.Width();	// 鬼怪的右下角pos.x座標
-		int y4 = GetPieceXY().y +piece.Height();	// 鬼怪的右下角pos.y座標
-		TRACE("piece x = %d, y = %d\n", x3, y3);
+		int x3 = GetPieceXY().x;
+		int y3 = GetPieceXY().y;
+		int x4 = GetPieceXY().x + piece.Width();
+		int y4 = GetPieceXY().y +piece.Height();
 		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	}
 	
@@ -85,54 +61,21 @@ namespace game_framework {
 			for (int j = 0; j < 30; j++)
 				map[i][j] = LEVEL1_MAP[i][j];
 	}
-
 	CGameMap_1::~CGameMap_1() {}
-
-	void CGameMap_1::LoadLevelBitmap() {
-		int i;
-		LoadBitmap();
+	void CGameMap_1::LoadBitmap() {
+		brick1.LoadBitmap(IDB_BRICK1);							// 載入地板
+		brick2.LoadBitmap(IDB_BRICK3);
+		piece.LoadBitmap(IDB_MAP_FINAL, WHITE);
 		turf.LoadBitmap(IDB_TURF);								// 載入草叢
 		brick3.LoadBitmap(IDB_BRICK2);
 		brick4.LoadBitmap(IDB_BRICK4);
 		explination.LoadBitmap(IDB_EXPLINATION, WHITE);
-		for (i = 0; i < Twenty; i++)
+		for (int i = 0; i < Twenty; i++)
 			tree[i].LoadBitmap(IDB_TREE1, WHITE);
-		for (i = 0; i < Ten; i++)
+		for (int i = 0; i < Ten; i++)
 			grass[i].LoadBitmap(IDB_GRASS4, WHITE);
 	}
-
-	//int CGameMap_1::GhostNearbyApu(int x1, int y1, int x2, int y2) {
-	//	for (int i = 0; i < ballonNum; i++) {
-	//		if (x2 >= ballon[i].GetX1() && x1 <= ballon[i].GetX2() && y2 >= ballon[i].GetY1() + 5 && y1 <= ballon[i].GetY2())
-	//			if (ballon[i].IsAlive())
-	//				return i;
-	//			else
-	//				break;
-	//	}
-	//	return -1;
-	//}
-
-	//void CGameMap_1::SetGhostFighted(int i, bool fighted) {
-	//	ballon[i].SetIsFighted(true);
-	//}
-	//void CGameMap_1::OnMove(POINT apuXY1, POINT apuXY2, int apu_mode) {
-	//	int i;
-	//	for (i = 0; i < ballonNum; i++) {
-	//		if (ballon[i].IsAlive() && ballon[i].IsFighted()) {
-	//			ballon[i].SetIsAlive(false);
-	//			//CAudio::Instance()->Play() // 出現打擊的聲音
-	//		}
-	//		if (ballon[i].IsAlive() && ballon[i].HitApu(apuXY1, apuXY2)) {
-	//			APUWIN = false;
-	//			GAMEOVER = true;
-	//		}
-	//	}
-	//	for (int i = 0; i < ballonNum; i++)
-	//		ballon[i].OnMove(apuXY1, apuXY2, apu_mode);
-	//}
-
 	void CGameMap_1::OnMove(){}
-
 	void CGameMap_1::OnShow() {
 		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
 			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
@@ -179,7 +122,6 @@ namespace game_framework {
 		explination.ShowBitmap();
 	}
 
-
 	/* CGameMap_2 */
 	CGameMap_2::CGameMap_2() : CGameMap::CGameMap()
 	{
@@ -187,15 +129,14 @@ namespace game_framework {
 			for (int j = 0; j < 30; j++)
 				map[i][j] = LEVEL2_MAP[i][j];
 	}
-
-	CGameMap_2::~CGameMap_2() {
-	}
-
-	void CGameMap_2::LoadLevelBitmap() {
-		LoadBitmap();
+	CGameMap_2::~CGameMap_2() {}
+	void CGameMap_2::LoadBitmap() {
+		brick1.LoadBitmap(IDB_BRICK1);
+		brick2.LoadBitmap(IDB_BRICK3);
+		piece.LoadBitmap(IDB_MAP_FINAL, WHITE);
 		brick3.LoadBitmap(IDB_BRICK2);
 		brick4.LoadBitmap(IDB_BRICK4);
-		turf.LoadBitmap(IDB_TURF);								// 載入草叢
+		turf.LoadBitmap(IDB_TURF);
 		wall.LoadBitmap(IDB_WALL1);
 		for (int i = 0; i < Twenty;) {
 			tree[i++].LoadBitmap(IDB_TREE1, WHITE);
@@ -204,7 +145,7 @@ namespace game_framework {
 		for (int i = 0; i < Twenty; i++)
 			grass[i].LoadBitmap(IDB_GRASS4, WHITE);
 	}
-
+	void CGameMap_2::OnMove() {}
 	void CGameMap_2::OnShow() {
 		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
 			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
@@ -249,10 +190,6 @@ namespace game_framework {
 		piece.ShowBitmap();
 	}
 
-	void CGameMap_2::OnMove() {
-
-	}
-
 	/* CGameMap_3 */
 	CGameMap_3::CGameMap_3() : CGameMap::CGameMap()
 	{
@@ -260,11 +197,11 @@ namespace game_framework {
 			for (int j = 0; j < 30; j++)
 				map[i][j] = LEVEL3_MAP[i][j];
 	}
-
 	CGameMap_3::~CGameMap_3() {}
-
-	void CGameMap_3::LoadLevelBitmap() {
-		LoadBitmap();
+	void CGameMap_3::LoadBitmap() {
+		brick1.LoadBitmap(IDB_BRICK1);							// 載入地板
+		brick2.LoadBitmap(IDB_BRICK3);
+		piece.LoadBitmap(IDB_MAP_FINAL, WHITE);
 		brick3.LoadBitmap(IDB_BRICK5);
 		brick4.LoadBitmap(IDB_BRICK6);
 		floor.LoadBitmap(IDB_FLOOR);								// 載入草叢
@@ -277,7 +214,7 @@ namespace game_framework {
 		//for (int i = 0; i < 10; i++)
 		//	tombs[i].LoadBitmap(IDB_GRASS4, WHITE);
 	}
-
+	void CGameMap_3::OnMove() {}
 	void CGameMap_3::OnShow() {
 		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
 			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
@@ -318,5 +255,4 @@ namespace game_framework {
 		piece.ShowBitmap();
 	}
 
-	void CGameMap_3::OnMove() {}
 }
