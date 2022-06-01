@@ -33,28 +33,16 @@ namespace game_framework {
 	void CGhost::SetXY(int nx, int ny) {
 		pos.x = nx; pos.y = ny;
 	}
-	void CGhost::SetIsAlive(bool alive) {
-		isAlive = alive;
-	}
-	void CGhost::SetIsFighted(bool fighted) {
-		isFighted = fighted;
-	}
-	void CGhost::SetMode(int m) {
-		curMode = m;
-	}
-	void CGhost::SetState(int s) {
-		curState = s;
-	}
+	void CGhost::SetIsAlive(bool alive) { isAlive = alive; }
+	void CGhost::SetIsFighted(bool fighted) { isFighted = fighted; }
+	void CGhost::SetMode(int mode) { curMode = mode; }
+	void CGhost::SetState(int state) { curState = state; }
 	void CGhost::SetFork() {
 
 	}
 	
-	bool CGhost::IsAlive() {
-		return isAlive;
-	}
-	bool CGhost::IsFighted() {
-		return isFighted;
-	}
+	bool CGhost::IsAlive() { return isAlive; }
+	bool CGhost::IsFighted() { return isFighted; }
 
 	int CGhost::WhereIsApu(CApu *apu) {
 		int X1 = pos.x, Y1 = pos.y;
@@ -62,7 +50,6 @@ namespace game_framework {
 		float dis = (float)sqrt((double)((X2 - X1)*(X2 - X1) + (Y2 - Y1)*(Y2 - Y1)));
 		if (dis < 0.001)
 			return 0;
-
 		X2 -= X1;
 		Y2 -= Y1;
 		if (X2 >= 0 && Y2 <= 0) return 1;
@@ -132,28 +119,31 @@ namespace game_framework {
 		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	}
 
-	void CGhost::OnMove() {
-
-	}
-	void CGhost::OnMove(CApu *apu) {
-		const int STEP_SIZE = 1;
-		if (!isAlive)
+	void CGhost::OnMove(CGameMap *map, CApu *apu) {
+		const int STEP = 1;
+		if (isAlive)
 		{
-			ghost_die.OnMove();
-			ghost_die.OnMove();
-			return;
-		}
-		if (apu->GetMode() == 2) {
-			//TRACE("%d\n", curMode);
-			if (curMode == 1)
-			{
-				ghost.OnMove();
+			if (isFighted) {
+				curState = 2;
+				ghost_die.OnMove();
 			}
-			else if (curMode == 2)
-			{
-				FollowApu(apu, STEP_SIZE);
-				// undisplay fork
+			else if (HitApu(apu)) {
+				apu->SetFail(true);
 			}
+			if (apu->GetMode() == 2) {
+				TRACE("ghost is %d and the mode is %d\n", isAlive, curMode);
+				if (curMode == 1)
+				{
+					ghost.OnMove();
+				}
+				else if (curMode == 2)
+				{
+					//FollowApu(apu, STEP_SIZE);
+					// undisplay fork
+				}
+			}
+			
+			TRACE("ghost is %d and the mode is %d\n", isAlive, curMode);
 		}
 	}
 	void CGhost::OnShow() {
@@ -181,11 +171,13 @@ namespace game_framework {
 	}
 	void CGhost::OnShow(CGameMap *m) {
 		if (isAlive) {
-			ghost.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
-			ghost.OnShow();
+			switch (curState) {
+				// 比照阿噗
+			}
 			if (curMode == 1)
 			{
-				//SetFork();
+				ghost.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+				ghost.OnShow();
 				/*fork1.SetTopLeft(pos.x - 30, pos.y);
 				fork2.SetTopLeft(pos.x + 30, pos.y);
 				fork3.SetTopLeft(pos.x, pos.y - 30);
@@ -195,11 +187,14 @@ namespace game_framework {
 				fork3.ShowBitmap();
 				fork4.ShowBitmap();*/
 			}
-
-		}
-		else if (isFighted) {
-			ghost_die.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
-			ghost_die.OnShow(); // 改進ghost_die的動畫
+			else {
+				ghost.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+				ghost.OnShow();
+			}
+			if (isFighted) {
+				ghost_die.SetTopLeft(m->ScreenX(pos.x), m->ScreenY(pos.y));
+				ghost_die.OnShow(); // 改進ghost_die的動畫
+			}
 		}
 	}
 

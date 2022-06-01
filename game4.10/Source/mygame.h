@@ -67,20 +67,22 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	
 	private:
-		int		GHOSTNUM;
-		
-		int				curKeyState;
 		/*
 		CMovingBitmap	background;	// 背景圖
 		CMovingBitmap	help;		// 說明圖
 		CMovingBitmap	corner;		// 角落圖
 		CInteger		hits_left;	// 剩下的撞擊數
 		*/
+		int				GHOSTNUM;
+		
 		CGameMap		*gamemap;
 		vector<CGhost*> ghost;
 		CApu            apu;		// 阿噗
 		int				counter;	// 倒數計時數
+		int				curKeyState;
 		int				curLevel;
+		bool			isFinish;
+		bool			isDead;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

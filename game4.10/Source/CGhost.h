@@ -23,8 +23,8 @@ namespace game_framework {
 		void SetXY(int nx, int ny);			// 設定中心的座標
 		void SetIsAlive(bool alive);		// 設定是否活著
 		void SetIsFighted(bool fighted);
-		void SetMode(int m);
-		void SetState(int s);
+		void SetMode(int mode);
+		void SetState(int state);
 		void SetFork();
 
 		bool IsAlive();						// 是否活著
@@ -38,10 +38,9 @@ namespace game_framework {
 
 		void Initialize(int x, int y);
 		virtual void LoadBitmap() = 0;					// 載入圖形
-		void OnMove();						// 移動
-		void OnMove(CApu *apu);
+		void OnMove(CGameMap *map, CApu *apu);
 		void OnShow();						// 將圖形貼到畫面
-		void OnShow(CGameMap *m);
+		void OnShow(CGameMap *map);
 
 	protected:
 		CAnimation ghost;
@@ -54,7 +53,7 @@ namespace game_framework {
 		bool isAlive;				// 是否活著
 		bool isFighted;
 		int  curMode;				// 鬼怪現在的狀態:1(靜止), 2(移動)
-		int  curState;
+		int  curState;				// 鬼怪現在的模樣:1(活著), 2(死亡)
 	private:
 		bool HitRectangle(int tx1, int ty1, int tx2, int ty2);	// 是否碰到參數範圍的矩形
 	};

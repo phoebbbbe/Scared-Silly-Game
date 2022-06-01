@@ -205,6 +205,7 @@ void CGameStateOver::OnShow()
 CGameStateRun::CGameStateRun(CGame *g)
 : CGameState(g) {
 	curLevel = CGame::Instance()->GetLevel();
+	
 }
 
 CGameStateRun::~CGameStateRun() {
@@ -213,16 +214,18 @@ CGameStateRun::~CGameStateRun() {
 }
 
 void CGameStateRun::OnBeginState() {
-	GHOSTNUM = 5;
+	GHOSTNUM = 1;
 	counter = 30 * 1;									// 5 seconds
 	curLevel = CGame::Instance()->GetLevel();
+	isFinish = false;
+	isDead = false;
 
 	switch (curLevel) {
 	case 1:
 		apu.Initialize(150, 200);
 		gamemap = new CGameMap_1();
 		for (int i = 0; i < GHOSTNUM; i++) {
-			AddGhost(1, 120 * (i + 1), 100);
+			AddGhost(1, 450 * (i + 1), 200);
 		}
 		break;
 	case 2:
@@ -249,19 +252,21 @@ void CGameStateRun::OnBeginState() {
 	apu.LoadBitmap();
 	for (int i = 0; i < GHOSTNUM; i++)
 		ghost[i]->LoadBitmap();
+	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
+
 	//for (int i = 0; i < NUMBALLONS; i++) {				// 設定ballon的起始座標
 	//	int x_pos = 700; // 715,725
 	//	int y_pos = 200;
 	//	ballon[i].SetXY(x_pos,y_pos);
 	//	ballon[i].SetIsAlive(true);
 	//}
+	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	/*
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
 	hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
 	hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
 	CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
-	CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
 	*/
 }
@@ -276,17 +281,19 @@ void CGameStateRun::OnInit() { 								// 遊戲的初值及圖形設定
 	Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 
 	// 載入其他資料
+	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
 	/*
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				// 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
 	corner.ShowBitmap(background);							// 將corner貼到background
 	hits_left.LoadBitmap();									
-	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
 	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
 	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
 	*/
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	gamemap = nullptr;
+	//CAudio::Instance()->Load(AUDIO_DING, "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
+	
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
@@ -306,10 +313,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 	if (nChar == KEY_UP) {
 		curKeyState = 1;
-		//exist = TheGhostNearbyApu(apuX1, apuY1-RANGE, apuX2, apuY2-RANGE);
+		exist = TheGhostNearbyApu(apuX1, apuY1-RANGE, apuX2, apuY2-RANGE);
 		if (exist != -1) {
 			apu.SetFightUp(true);
-			//ballon[exist].SetIsFighted(true);
+			ghost[exist]->SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingUp(true);
@@ -317,10 +324,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	if (nChar == KEY_DOWN) {
 		curKeyState = 2;
-		//exist = TheGhostNearbyApu(apuX1, apuY1+RANGE, apuX2, apuY2+RANGE);
+		exist = TheGhostNearbyApu(apuX1, apuY1+RANGE, apuX2, apuY2+RANGE);
 		if (exist != -1) {
 			apu.SetFightDown(true);
-			//ballon[exist].SetIsFighted(true);
+			ghost[exist]->SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingDown(true);
@@ -328,10 +335,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	if (nChar == KEY_LEFT) {
 		curKeyState = 3;
-		//exist = TheGhostNearbyApu(apuX1-RANGE, apuY1, apuX2-RANGE, apuY2);
+		exist = TheGhostNearbyApu(apuX1-RANGE, apuY1, apuX2-RANGE, apuY2);
 		if (exist != -1) {
 			apu.SetFightLeft(true);
-			//ballon[exist].SetIsFighted(true);
+			ghost[exist]->SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingLeft(true);
@@ -339,10 +346,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	if (nChar == KEY_RIGHT) {
 		curKeyState = 4;
-		//exist = TheGhostNearbyApu(apuX1+RANGE, apuY1, apuX2+RANGE, apuY2);
+		exist = TheGhostNearbyApu(apuX1+RANGE, apuY1, apuX2+RANGE, apuY2);
 		if (exist != -1) {
 			apu.SetFightRight(true);
-			//ballon[exist].SetIsFighted(true);
+			ghost[exist]->SetIsFighted(true);
 		}
 		else {
 			apu.SetMovingRight(true);
@@ -379,7 +386,6 @@ int CGameStateRun::TheGhostNearbyApu(int x1, int y1, int x2, int y2) {
 	}
 	return -1;
 }
-
 void CGameStateRun::AddGhost(int type, int x, int y) {
 	switch (type) {
 	case 1:
@@ -395,58 +401,46 @@ void CGameStateRun::AddGhost(int type, int x, int y) {
 		break;
 	}
 }
-void CGameStateRun::OnMove()							// 移動遊戲元素
-{
+
+void CGameStateRun::OnMove() {
 	// 如果希望修改cursor的樣式，則將下面程式的commment取消即可
 	// SetCursor(AfxGetApp()->LoadCursor(IDC_GAMECURSOR));
 
-	/* 移動氣球鬼 */
-	//for (int i = 0; i < NUMBALLONS; i++)
-	//{
-	//	ballon[i].OnMove(&apu);
-	//	ballon[i].OnMove(&apu);
-	//	ballon[i].OnMove(&apu);
-	//	// 比照阿噗
-	//}
-
-	/* 移動阿噗 */
+	/* 阿噗動作 */
 	for (int i = 0; i < 4; i++)
 		apu.OnMove(gamemap);
-	if (apu.GetCurAnimationNum() == apu.GetCurAnimationLastNum()) {
-		apu.ResetCurAnimation();
-		apu.SetMode(1);
-		apu.SetAllAction(false);
-		/*for (int i = 0; i < NUMBALLONS; i++) {
-			ballon[i].SwitchMode();
-			ballon[i].SetState(0);
-		}*/
+	
+	/*  鬼怪動作 */
+	for (int i = 0; i < GHOSTNUM; i++) {
+		ghost[i]->OnMove(gamemap, &apu);
+		//ghost[i]->SwitchMode();
+			//ghost[i]->SetState(0);
+		if (ghost[i]->IsFighted()) {
+			ghost[i]->SetIsAlive(false);
+			//CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
+				//if (hits_left.GetInteger() <= 0) {
+				//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
+				//	CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
+				//}
+		}
+			else if (ghost[i]->HitApu(&apu)){
+				apu.SetMode(1);
+				apu.SetState(9);
+				
+			}
 	}
+	/* 判斷成功與失敗 */
 	if (apu.IsSucceed()) {
-		apu.OnMove();
+		apu.OnMove(gamemap);
 		counter--;
 		if (counter < 0)
 			GotoGameState(GAME_STATE_OVER);
 	}
-
-	/* 判斷Apu是否fight Ghost */
-	for (int i = 0; i < GHOSTNUM; i++) {
-		if (ghost[i]->IsAlive() && ghost[i]->IsFighted()) {			// 判斷當Apu打擊到Ghost，則Ghost消失
-			ghost[i]->SetIsAlive(false);
-			//CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
-
-			//if (hits_left.GetInteger() <= 0) {
-			//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
-			//	CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
-			//}
-		}
-		if (ghost[i]->IsAlive() && ghost[i]->HitApu(&apu)) {		// 判斷當Ghost碰到Apu，則跳到Game Over狀態
-			apu.SetMode(1);
-			apu.SetState(9);
-			apu.OnMove();
-			counter--;
-			if (counter < 0)
-				GotoGameState(GAME_STATE_OVER);
-		}
+	else if (apu.IsFail()) {
+		apu.OnMove(gamemap);
+		counter--;
+		if (counter < 0)
+			GotoGameState(GAME_STATE_OVER);
 	}
 }
 void CGameStateRun::OnShow() {	

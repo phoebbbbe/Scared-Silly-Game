@@ -35,15 +35,17 @@ namespace game_framework {
 		void SetMode(int flag);
 		void SetState(int flag);
 		void SetMoved(bool flag);
+		void SetSucceed(bool flag);
+		void SetFail(bool flag);
+		void SetRelive(bool flag);
 		void ResetCurAnimation();
 
 		bool IsSucceed();
+		bool IsFail();
 
-		void Initialize(int x, int y);				// 設定阿噗為初始值
-		void LoadBitmap();				// 載入圖形
-		void OnMove();					// 移動阿噗
+		void Initialize(int x, int y);
+		void LoadBitmap();
 		void OnMove(CGameMap *map);
-		void OnShow();					// 將阿噗圖形貼到畫面
 		void OnShow(CGameMap *map);
 
 	protected:
@@ -75,7 +77,6 @@ namespace game_framework {
 		bool isMovingLeft;			// 是否正在往左移動
 		bool isMovingRight;			// 是否正在往右移動
 		bool isMovingUp;			// 是否正在往上移動
-		bool isSucceed;
 	};
 }
 
