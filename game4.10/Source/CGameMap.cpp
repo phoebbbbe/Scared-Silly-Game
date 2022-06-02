@@ -40,6 +40,12 @@ namespace game_framework {
 	void CGameMap::SetSY(int y) { sy = y; }
 	int CGameMap::ScreenX(int x) { return x - sx; }
 	int CGameMap::ScreenY(int y) { return y - sy; }
+	POINT CGameMap::ScreenXY(POINT xy) {
+		POINT _xy = POINT();
+		_xy.x = xy.x - sx;
+		_xy.y = xy.y - sy;
+		return _xy;
+	}
 
 	bool CGameMap::IsEmpty(int x, int y) {
 		int gx = x / 47;

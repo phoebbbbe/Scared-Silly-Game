@@ -150,20 +150,15 @@ CGameStateOver::CGameStateOver(CGame *g)
 : CGameState(g)
 {
 	curLevel = CGame::Instance()->GetLevel();
-}
-
-void CGameStateOver::OnMove()
-{
-	//apu_relive.OnMove();
-	counter--;
-	if (counter < 0)
-		GotoGameState(GAME_STATE_INIT);
+	curState = CGame::Instance()->GetFinish(curLevel);
 }
 
 void CGameStateOver::OnBeginState()
 {
-	counter = 30 * 5; // 5 seconds
+	counter = 45; // 1.5 seconds
 	curLevel = CGame::Instance()->GetLevel();
+	curState = CGame::Instance()->GetFinish(curLevel);
+	apu_curMode = 2;
 
 }
 
@@ -179,31 +174,58 @@ void CGameStateOver::OnInit()
 	// 最終進度為100%
 	ShowInitProgress(100);
 
-	/*apu_relive.AddBitmap(IDB_APU_RELIVE1, WHITE);
+	apu_relive.AddBitmap(IDB_APU_RELIVE1, WHITE);
 	apu_relive.AddBitmap(IDB_APU_RELIVE2, WHITE);
 	apu_relive.AddBitmap(IDB_APU_RELIVE3, WHITE);
 	apu_relive.AddBitmap(IDB_APU_RELIVE4, WHITE);
 	apu_relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
-	apu_relive.AddBitmap(IDB_APU_RELIVE5, WHITE);*/
+	apu_relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
+}
+
+void CGameStateOver::OnMove()
+{
+	if (curState) {
+		;
+	}
+	else {
+		if (apu_relive.GetCurrentBitmapNumber() == apu_relive.GetLastBitmapNumber()) {
+			apu_curMode = 1;
+		}
+		if (apu_curMode == 2) {
+			apu_relive.OnMove();
+			apu_relive.OnMove();
+		}
+	}
+
+	counter--;
+	if (counter < 0) {
+		apu_curMode = 2;
+		apu_relive.Reset();
+		GotoGameState(GAME_STATE_INIT);
+	}
 }
 
 void CGameStateOver::OnShow()
 {
-	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-	CFont f,*fp;
-	f.CreatePointFont(160,"Times New Roman");	// 產生 font f; 160表示16 point的字
-	fp=pDC->SelectObject(&f);					// 選用 font f
-	pDC->SetBkColor(RGB(0,0,0));
-	pDC->SetTextColor(RGB(255,255,0));
-	char str[80];								// Demo 數字對字串的轉換
-	sprintf(str, "Game Over ! (%d)", counter / 30);
-	pDC->TextOut(240,210,str);
-	pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-	
-	//POINT pos = CGame::Instance()->GetApuXY();
-	//apu_relive.SetTopLeft(pos.x, pos.y);
-	//apu_relive.OnShow();
+	if (curState)
+	{
+		CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+		CFont f, *fp;
+		f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
+		fp = pDC->SelectObject(&f);					// 選用 font f
+		pDC->SetBkColor(RGB(0, 0, 0));
+		pDC->SetTextColor(RGB(255, 255, 0));
+		char str[80];								// Demo 數字對字串的轉換
+		sprintf(str, "Apu Succeed!");
+		pDC->TextOut(240, 210, str);
+		pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+		CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+	}
+	else {
+		POINT pos = CGame::Instance()->GetApuXY();
+		apu_relive.SetTopLeft(pos.x, pos.y);
+		apu_relive.OnShow();
+	}
 
 
 }
@@ -213,7 +235,6 @@ void CGameStateOver::OnShow()
 CGameStateRun::CGameStateRun(CGame *g)
 : CGameState(g) {
 	curLevel = CGame::Instance()->GetLevel();
-	
 }
 
 CGameStateRun::~CGameStateRun() {
@@ -226,8 +247,6 @@ void CGameStateRun::OnBeginState() {
 	GHOSTNUM = 1;
 	overCounter = 30 * 1;									// 5 seconds
 	curLevel = CGame::Instance()->GetLevel();
-	isFinish = false;
-	isDead = false;
 
 	ghost.clear();
 	switch (curLevel) {
@@ -408,16 +427,16 @@ void CGameStateRun::OnMove() {
 
 	/* 判斷成功與失敗 */
 	if (apu->IsSucceed()) {
-		//CGame::Instance()->SetFinish(curLevel);
-		//CGame::Instance()->SetApuXY(apu.GetXY());
+		CGame::Instance()->SetFinish(curLevel);
+		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);
 		overCounter--;
 		if (overCounter < 0)
 			GotoGameState(GAME_STATE_OVER);
 	}
 	else if (apu->IsFail()) {
-		//CGame::Instance()->SetDead(curLevel);
-		//CGame::Instance()->SetApuXY(apu.GetXY());
+		CGame::Instance()->SetDead(curLevel);
+		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);
 		overCounter--;
 		if (overCounter < 0)

@@ -26,13 +26,14 @@ namespace game_framework {
 		POINT GetPieceXY();
 		POINT GetSXY();
 
-		void SetSX(int);
-		void SetSY(int);
-		int ScreenX(int);
-		int ScreenY(int);
+		void SetSX(int x);
+		void SetSY(int y);
+		int ScreenX(int x);
+		int ScreenY(int y);
+		POINT ScreenXY(POINT xy);
 
-		bool IsEmpty(int, int);
-		bool HasPiece(int, int, int, int);
+		bool IsEmpty(int x, int y);
+		bool HasPiece(int x1, int y1, int x2, int y2);
 
 		virtual void LoadBitmap() = 0;
 		virtual void OnShow() = 0;

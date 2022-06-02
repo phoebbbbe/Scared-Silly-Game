@@ -82,8 +82,6 @@ namespace game_framework {
 		int				overCounter;	// 倒數計時數
 		int				curKeyState;
 		int				curLevel;
-		bool			isFinish;
-		bool			isDead;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -100,9 +98,11 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		//CAnimation apu_relive;
+		CAnimation apu_relive;
+		int  apu_curMode;
 		int  counter;	// 倒數之計數器
 		int  curLevel;
+		int  curState;
 	};
 
 }
