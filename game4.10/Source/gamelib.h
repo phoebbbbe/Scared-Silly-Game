@@ -273,19 +273,23 @@ public:
 	void OnSuspend();								// 處理「待命」的動作
 	void SetGameState(int);
 	void SetLevel(int);
-	void SetDead(bool);
-	void SetFinish(bool);
+	void SetDead(int);
+	void SetFinish(int);
+	void SetApuXY(POINT);
 	int  GetLevel();
-	bool GetDead();
-	bool GetFinish();
+	bool GetDead(int);
+	bool GetFinish(int);
+	POINT GetApuXY();
+
 	static CGame *Instance();
 private:
 	bool			running;			// 遊戲是否正在進行中(未被Pause)
 	bool            suspended;			// 遊戲是否被suspended
 	const int		NUM_GAME_STATES;	// 遊戲的狀態數(3個狀態)
 	int				level;
-	bool			dead;
-	bool			finish;
+	bool			dead[3];
+	bool			finish[3];
+	POINT			apu_xy;
 	CGameState		*gameState;			// pointer指向目前的遊戲狀態
 	CGameState		*gameStateTable[3];	// 遊戲狀態物件的pointer
 	static CGame	instance;			// 遊戲唯一的instance

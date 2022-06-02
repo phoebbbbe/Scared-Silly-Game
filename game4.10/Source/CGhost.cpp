@@ -6,6 +6,7 @@
 #include "gamelib.h"
 #include "CApu.h"
 #include "CGhost.h"
+#define WHITE RGB(255, 255, 255)
 
 namespace game_framework {
 
@@ -26,34 +27,35 @@ namespace game_framework {
 		curMode = 1;
 		curState = 1;
 		curDirect = 1;
-		counter = 30;
+		moveCounter = 30;
+		dieCounter = 18;
 	}
 
 	int  CGhost::GetX1() { return pos.x; }
 	int  CGhost::GetY1() { return pos.y; }
-	int  CGhost::GetX2() { return pos.x + ghost.Width(); }
-	int  CGhost::GetY2() { return pos.y + ghost.Height(); }
+	int  CGhost::GetX2() { return pos.x + ghost_up.Width(); }
+	int  CGhost::GetY2() { return pos.y + ghost_up.Height(); }
 	int  CGhost::GetCurAnimationNum() {
 		switch (curState) {
-		case 1: return ghost.GetCurrentBitmapNumber();
-		case 2: return ghost.GetCurrentBitmapNumber();
+		case 1: return ghost_up.GetCurrentBitmapNumber();
+		case 2: return ghost_down.GetCurrentBitmapNumber();
 		case 3: return ghost_die.GetCurrentBitmapNumber();
 		default: return 0;
 		}
 	}
 	int CGhost::GetCurAnimationLastNum() {
 		switch (curState) {
-		case 1: return ghost.GetLastBitmapNumber();
-		case 2: return ghost.GetLastBitmapNumber();
+		case 1: return ghost_up.GetLastBitmapNumber();
+		case 2: return ghost_down.GetLastBitmapNumber();
 		case 3: return ghost_die.GetLastBitmapNumber();
 		default: return 0;
 		}
 	}
 	void CGhost::ResetCurAnimation() {
 		if (curState == 1)
-			ghost.Reset();
+			ghost_up.Reset();
 		else if (curState == 2)
-			ghost.Reset();
+			ghost_down.Reset();
 		else if (curState == 3)
 			ghost_die.Reset();
 	}
@@ -89,8 +91,8 @@ namespace game_framework {
 		int y2 = apu->GetY2();
 		int x3 = pos.x;
 		int y3 = pos.y + 5;
-		int x4 = pos.x + ghost.Width();
-		int y4 = pos.y + ghost.Height();
+		int x4 = pos.x + ghost_up.Width();
+		int y4 = pos.y + ghost_up.Height();
 		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	}
 	void CGhost::FollowApu(CApu *apu) {
@@ -132,7 +134,7 @@ namespace game_framework {
 			else if (curDirect == 4)
 				SetXY(xRight, yRight);
 		}
-		if (counter < 0)
+		if (moveCounter < 0)
 			followApu = false;
 
 	}
@@ -154,12 +156,14 @@ namespace game_framework {
 	void CGhost::SwitchState() {
 		if (switchState) {
 			curMode = 2;
+			ResetCurAnimation();
 			if (curState == 1) {
 				curState = 2;
+				moveCounter = 30;
 				followApu = true;
-				counter = 30;
 			}
 			else if (curState == 2)  curState = 1;
+			else if (curState == 3) dieCounter = 18;
 		}
 		switchState = false;
 	}
@@ -177,28 +181,24 @@ namespace game_framework {
 			}	
 
 			if (curMode == 2) {
-				switch (curState) {
-				case 1:
-					ResetCurAnimation();
+				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
 					curMode = 1;
-					break;
-				case 2:
-					if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
-						curMode = 1;
-					}
-					ghost.OnMove();
+				}
+				if (curState == 1) {
+					ghost_up.OnMove();
+					ghost_up.OnMove();
+				}
+				else if (curState == 2) {
+					ghost_down.OnMove();
+					ghost_down.OnMove();
 					FollowApu(apu);
-					break;
-				case 3:
-					ghost_die.OnMove();
-					break;
-				default:
-					break;
 				}
 			}
-			
 
-			
+			if (curState == 3) {
+				ghost_die.OnMove();
+				ghost_die.OnMove();
+			}
 		}
 	}
 
@@ -206,23 +206,26 @@ namespace game_framework {
 		if (isAlive) {
 			switch (curState) {
 			case 1:
-				ghost.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
-				ghost.OnShow();
+				ghost_up.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+				ghost_up.OnShow();
 				break;
 			case 2:
-				counter--;
-				ghost.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
-				ghost.OnShow();
+				moveCounter--;
+				ghost_down.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+				ghost_down.OnShow();
 				fork1.SetTopLeft(map->ScreenX(pos.x - 50), map->ScreenY(pos.y));
 				fork2.SetTopLeft(map->ScreenX(pos.x + 50), map->ScreenY(pos.y));
 				fork3.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y - 80));
 				fork4.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y + 80));
-				fork1.ShowBitmap();
-				fork2.ShowBitmap();
-				fork3.ShowBitmap();
-				fork4.ShowBitmap();
+				//fork1.ShowBitmap();
+				//fork2.ShowBitmap();
+				//fork3.ShowBitmap();
+				//fork4.ShowBitmap();
 				break;
 			case 3:
+				dieCounter--;
+				if (dieCounter < 0)
+					isAlive = false;
 				ghost_die.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
 				ghost_die.OnShow();
 				break;
@@ -235,63 +238,68 @@ namespace game_framework {
 	CBallon::CBallon(int x, int y) : CGhost::CGhost(x, y) {}
 	CBallon::~CBallon() {}
 	void CBallon::LoadBitmap() {
-		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
 
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_up.AddBitmap(IDB_BALLOON5, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON4, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
+		
+		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON3, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
 
-		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+
+		fork1.LoadBitmap(IDB_FORK, WHITE);
+		fork2.LoadBitmap(IDB_FORK, WHITE);
+		fork3.LoadBitmap(IDB_FORK, WHITE);
+		fork4.LoadBitmap(IDB_FORK, WHITE);
 	}
 
 	CBat::CBat(int x, int y) : CGhost::CGhost(x, y) {}
 	CBat::~CBat() {}
 	void CBat::LoadBitmap() {
-		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON2, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
 
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
 
-		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+
+		fork1.LoadBitmap(IDB_FORK, WHITE);
+		fork2.LoadBitmap(IDB_FORK, WHITE);
+		fork3.LoadBitmap(IDB_FORK, WHITE);
+		fork4.LoadBitmap(IDB_FORK, WHITE);
 	}
 
 	CPumpkin::CPumpkin(int x, int y) : CGhost::CGhost(x, y) {}
 	CPumpkin::~CPumpkin() {}
 	void CPumpkin::LoadBitmap() {
-		ghost.AddBitmap(IDB_BALLOON1, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON3, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON2, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON4, RGB(255, 255, 255));
-		ghost.AddBitmap(IDB_BALLOON5, RGB(255, 255, 255));
+		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON2, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
 
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, RGB(255, 255, 255));
+		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
 
-		fork1.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork2.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork3.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
-		fork4.LoadBitmap(IDB_FORK, RGB(255, 255, 255));
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+
+		fork1.LoadBitmap(IDB_FORK, WHITE);
+		fork2.LoadBitmap(IDB_FORK, WHITE);
+		fork3.LoadBitmap(IDB_FORK, WHITE);
+		fork4.LoadBitmap(IDB_FORK, WHITE);
 	}
 }

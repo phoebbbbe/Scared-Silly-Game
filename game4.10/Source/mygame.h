@@ -77,7 +77,7 @@ namespace game_framework {
 		
 		CGameMap		*gamemap;
 		vector<CGhost*> ghost;
-		CApu            apu;		// 阿噗
+		CApu            *apu;		// 阿噗
 
 		int				overCounter;	// 倒數計時數
 		int				curKeyState;
@@ -100,8 +100,9 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		CApu apu;
+		//CAnimation apu_relive;
 		int  counter;	// 倒數之計數器
+		int  curLevel;
 	};
 
 }

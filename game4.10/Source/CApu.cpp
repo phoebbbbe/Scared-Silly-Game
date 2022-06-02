@@ -23,8 +23,6 @@ namespace game_framework {
 		curState = 0;			// initApu
 		curMode = 1;			// still
 		isMoved = false;
-		isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
-		isFightLeft = isFightRight = isFightUp = isFightDown = false;
 	}
 
 	int CApu::GetX1() { return pos.x; }
@@ -49,6 +47,7 @@ namespace game_framework {
 			return pos.y + initRight.Height();
 		}
 	}
+	POINT CApu::GetXY() { return pos; }
 	int CApu::GetMode() { return curMode; }
 	int CApu::GetState() { return curState; }
 	bool CApu::GetMoved() { return isMoved; }
@@ -112,74 +111,26 @@ namespace game_framework {
 		pos.x = nx; pos.y = ny;
 	}
 	void CApu::SetXY(int stepSize) {
-		if (isMovingLeft) {
+		if (curState == 3) {
 			pos.x -= stepSize;
 		}
-		if (isMovingRight) {
+		if (curState == 4) {
 			pos.x += stepSize;
 		}
-		if (isMovingUp) {
+		if (curState == 1) {
 			pos.y -= stepSize;
 		}
-		if (isMovingDown) {
+		if (curState == 2) {
 			pos.y += stepSize;
 		}
 	}
 
-	void CApu::SetMovingUp(bool flag) {
-		isMovingUp = flag;
-		if (flag)
-			curState = 1;
-	}
-	void CApu::SetMovingDown(bool flag) {
-		isMovingDown = flag;
-		if (flag)
-			curState = 2;
-	}
-	void CApu::SetMovingLeft(bool flag) {
-		isMovingLeft = flag;
-		if (flag)
-			curState = 3;
-	}
-	void CApu::SetMovingRight(bool flag) {
-		isMovingRight = flag;
-		if (flag)
-			curState = 4;
-	}
-	void CApu::SetFightUp(bool flag) {
-		isFightUp = flag;
-		if (flag)
-			curState = 5;
-	}
-	void CApu::SetFightDown(bool flag) {
-		isFightDown = flag;
-		if (flag)
-			curState = 6;
-	}
-	void CApu::SetFightLeft(bool flag) {
-		isFightLeft = flag;
-		if (flag)
-			curState = 7;
-	}
-	void CApu::SetFightRight(bool flag) {
-		isFightRight = flag;
-		if (flag)
-			curState = 8;
-	}
+	void CApu::SetMoving(int action) { curState = action; }
+	void CApu::SetMoved(bool flag) { isMoved = flag; }
 
-	void CApu::SetAllAction(bool flag) {
-		isMovingUp = flag;
-		isMovingDown = flag;
-		isMovingLeft = flag;
-		isMovingRight = flag;
-		isFightUp = flag;
-		isFightDown = flag;
-		isFightLeft = flag;
-		isFightRight = flag;
-	}
 	void CApu::SetMode(int flag) { curMode = flag; }
 	void CApu::SetState(int flag) { curState = flag; }
-	void CApu::SetMoved(bool flag) { isMoved = flag; }
+
 	void CApu::SetFail(bool flag) { curState = 9; }
 	void CApu::SetSucceed(bool flag) { curState = 10; }
 	void CApu::SetRelive(bool flag) { curState = 11; }
@@ -255,13 +206,6 @@ namespace game_framework {
 		fail.AddBitmap(IDB_APU_LOSE6, WHITE);
 		fail.AddBitmap(IDB_APU_LOSE6, WHITE);
 
-		relive.AddBitmap(IDB_APU_RELIVE1, WHITE);
-		relive.AddBitmap(IDB_APU_RELIVE2, WHITE);
-		relive.AddBitmap(IDB_APU_RELIVE3, WHITE);
-		relive.AddBitmap(IDB_APU_RELIVE4, WHITE);
-		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
-		relive.AddBitmap(IDB_APU_RELIVE5, WHITE);
-
 		success.AddBitmap(IDB_APU_SUCCESS1, WHITE);
 		success.AddBitmap(IDB_APU_SUCCESS2, WHITE);
 		success.AddBitmap(IDB_APU_SUCCESS3, WHITE);
@@ -277,11 +221,18 @@ namespace game_framework {
 	void CApu::OnMove(CGameMap *map) {
 		const int STEP = 1;
 		if (curMode == 2) {
-			if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
-				ResetCurAnimation();
-				curMode = 1;
-				SetAllAction(false);
+			if (curState < 9) {
+				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
+					ResetCurAnimation();
+					curMode = 1;
+				}
 			}
+			else {
+				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
+					curMode = 1;
+				}
+			}
+
 			switch (curState) {
 			case 1:
 				if (map->IsEmpty(pos.x, pos.y - 1)) {
@@ -356,9 +307,6 @@ namespace game_framework {
 				break;
 			case 10:
 				success.OnMove();
-				break;
-			case 11:
-				relive.OnMove();
 				break;
 			default:
 				break;

@@ -489,6 +489,11 @@ void CGame::OnInit()	// OnInit() 只在程式一開始時執行一次
 	gameState->OnBeginState();
 	CSpecialEffect::SetCurrentTime();
 	running = true;
+	level = 1;
+	for (int i = 0; i < 3; i++) {
+		dead[i] = false;
+		finish[i] = false;
+	}
 }
 
 void CGame::OnInitStates()
@@ -595,24 +600,33 @@ void CGame::SetLevel(int level) {
 	this->level = level;
 }
 
-void CGame::SetDead(bool dead) {
-	this->dead = dead;
+void CGame::SetDead(int level) {
+	this->dead[level] = true;
 }
 
-void CGame::SetFinish(bool finish) {
-	this->finish = finish;
+void CGame::SetFinish(int level) {
+	this->finish[level] = true;
+}
+
+void CGame::SetApuXY(POINT xy) {
+	apu_xy.x = xy.x;
+	apu_xy.y = xy.y;
 }
 
 int CGame::GetLevel() {
 	return level;
 }
 
-bool CGame::GetDead() {
-	return dead;
+bool CGame::GetDead(int level) {
+	return dead[level];
 }
 
-bool CGame::GetFinish() {
-	return finish;
+bool CGame::GetFinish(int level) {
+	return finish[level];
+}
+
+POINT CGame::GetApuXY() {
+	return apu_xy;
 }
 
 /////////////////////////////////////////////////////////////////////////////

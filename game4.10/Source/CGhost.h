@@ -45,7 +45,8 @@ namespace game_framework {
 		void OnShow(CGameMap *map);
 
 	protected:
-		CAnimation ghost;
+		CAnimation ghost_up;
+		CAnimation ghost_down;
 		CAnimation ghost_die;
 		CMovingBitmap fork1;
 		CMovingBitmap fork2;
@@ -59,7 +60,8 @@ namespace game_framework {
 		int  curMode;								// 鬼怪現在的狀態:1(靜止), 2(移動)
 		int  curState;								// 鬼怪現在的模樣:1(不動), 2(攻擊), 3(死亡)
 		int  curDirect;
-		int  counter;
+		int  moveCounter;
+		int  dieCounter;
 	};
 
 	class CBallon : public CGhost {
