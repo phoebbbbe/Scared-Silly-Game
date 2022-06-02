@@ -19,27 +19,29 @@ namespace game_framework {
 		int  GetY1();
 		int  GetX2();
 		int  GetY2();
+		int  GetCurAnimationNum();
+		int  GetCurAnimationLastNum();
+		void ResetCurAnimation();
 
-		void SetXY(int nx, int ny);			// 設定中心的座標
-		void SetIsAlive(bool alive);		// 設定是否活著
-		void SetIsFighted(bool fighted);
+		void SetXY(int nx, int ny);	
+		void SetAlive(bool alive);
+		void SetFighted(bool fighted);
 		void SetMode(int mode);
 		void SetState(int state);
 		void SetFork();
 
-		bool IsAlive();						// 是否活著
-		bool IsFighted();					// 是否被攻擊
-		bool HitApu(CApu *apu);				// 是否碰到阿噗
+		bool IsAlive();
+		bool IsFighted();
+		bool HitApu(CApu *apu);
 
 		/* Apu Function */
-		void SwitchMode();
+		void SwitchState();
 		int  WhereIsApu(CApu *apu);
-		void FollowApu(CApu *apu, int stepsize);
+		void FollowApu(CApu *apu);
 
 		void Initialize(int x, int y);
-		virtual void LoadBitmap() = 0;					// 載入圖形
+		virtual void LoadBitmap() = 0;
 		void OnMove(CGameMap *map, CApu *apu);
-		void OnShow();						// 將圖形貼到畫面
 		void OnShow(CGameMap *map);
 
 	protected:
@@ -49,13 +51,15 @@ namespace game_framework {
 		CMovingBitmap fork2;
 		CMovingBitmap fork3;
 		CMovingBitmap fork4;
-		POINT pos;					// 鬼怪的座標
-		bool isAlive;				// 是否活著
+		POINT pos;
+		bool isAlive;
 		bool isFighted;
-		int  curMode;				// 鬼怪現在的狀態:1(靜止), 2(移動)
-		int  curState;				// 鬼怪現在的模樣:1(活著), 2(死亡)
-	private:
-		bool HitRectangle(int tx1, int ty1, int tx2, int ty2);	// 是否碰到參數範圍的矩形
+		bool switchState;
+		bool followApu;
+		int  curMode;								// 鬼怪現在的狀態:1(靜止), 2(移動)
+		int  curState;								// 鬼怪現在的模樣:1(不動), 2(攻擊), 3(死亡)
+		int  curDirect;
+		int  counter;
 	};
 
 	class CBallon : public CGhost {

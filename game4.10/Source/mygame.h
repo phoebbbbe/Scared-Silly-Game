@@ -78,7 +78,8 @@ namespace game_framework {
 		CGameMap		*gamemap;
 		vector<CGhost*> ghost;
 		CApu            apu;		// 糚
-		int				counter;	// 计璸计
+
+		int				overCounter;	// 计璸计
 		int				curKeyState;
 		int				curLevel;
 		bool			isFinish;

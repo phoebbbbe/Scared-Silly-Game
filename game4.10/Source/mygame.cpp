@@ -215,7 +215,7 @@ CGameStateRun::~CGameStateRun() {
 
 void CGameStateRun::OnBeginState() {
 	GHOSTNUM = 1;
-	counter = 30 * 1;									// 5 seconds
+	overCounter = 30 * 1;									// 5 seconds
 	curLevel = CGame::Instance()->GetLevel();
 	isFinish = false;
 	isDead = false;
@@ -306,17 +306,23 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	int apuX2 = apu.GetX2();
 	int apuY2 = apu.GetY2();
 	int exist = -1;
-	int RANGE = 25;
+	int RANGE = 20;
 
-	if (apu.GetMode() == 1) apu.SetMode(2);
-	else return;
+	if (apu.GetMode() == 1) {
+		apu.SetMode(2);
+		TRACE("Apu'mode = 2\n");
+	}
+	else {
+		TRACE("Apu'mode = 1\n");
+		return;
+	}
 
 	if (nChar == KEY_UP) {
 		curKeyState = 1;
 		exist = TheGhostNearbyApu(apuX1, apuY1-RANGE, apuX2, apuY2-RANGE);
 		if (exist != -1) {
 			apu.SetFightUp(true);
-			ghost[exist]->SetIsFighted(true);
+			ghost[exist]->SetFighted(true);
 		}
 		else {
 			apu.SetMovingUp(true);
@@ -327,7 +333,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		exist = TheGhostNearbyApu(apuX1, apuY1+RANGE, apuX2, apuY2+RANGE);
 		if (exist != -1) {
 			apu.SetFightDown(true);
-			ghost[exist]->SetIsFighted(true);
+			ghost[exist]->SetFighted(true);
 		}
 		else {
 			apu.SetMovingDown(true);
@@ -338,7 +344,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		exist = TheGhostNearbyApu(apuX1-RANGE, apuY1, apuX2-RANGE, apuY2);
 		if (exist != -1) {
 			apu.SetFightLeft(true);
-			ghost[exist]->SetIsFighted(true);
+			ghost[exist]->SetFighted(true);
 		}
 		else {
 			apu.SetMovingLeft(true);
@@ -349,7 +355,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		exist = TheGhostNearbyApu(apuX1+RANGE, apuY1, apuX2+RANGE, apuY2);
 		if (exist != -1) {
 			apu.SetFightRight(true);
-			ghost[exist]->SetIsFighted(true);
+			ghost[exist]->SetFighted(true);
 		}
 		else {
 			apu.SetMovingRight(true);
@@ -413,10 +419,8 @@ void CGameStateRun::OnMove() {
 	/*  鬼怪動作 */
 	for (int i = 0; i < GHOSTNUM; i++) {
 		ghost[i]->OnMove(gamemap, &apu);
-		//ghost[i]->SwitchMode();
-			//ghost[i]->SetState(0);
 		if (ghost[i]->IsFighted()) {
-			ghost[i]->SetIsAlive(false);
+			ghost[i]->SetAlive(false);
 			//CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
 				//if (hits_left.GetInteger() <= 0) {
 				//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
@@ -429,17 +433,18 @@ void CGameStateRun::OnMove() {
 				
 			}
 	}
+
 	/* 判斷成功與失敗 */
 	if (apu.IsSucceed()) {
 		apu.OnMove(gamemap);
-		counter--;
-		if (counter < 0)
+		overCounter--;
+		if (overCounter < 0)
 			GotoGameState(GAME_STATE_OVER);
 	}
 	else if (apu.IsFail()) {
 		apu.OnMove(gamemap);
-		counter--;
-		if (counter < 0)
+		overCounter--;
+		if (overCounter < 0)
 			GotoGameState(GAME_STATE_OVER);
 	}
 }

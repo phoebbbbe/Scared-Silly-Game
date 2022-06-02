@@ -19,6 +19,7 @@ namespace game_framework {
 		bool GetMoved();
 		int  GetCurAnimationNum();
 		int  GetCurAnimationLastNum();
+		void ResetCurAnimation();
 
 		void SetXY(int nx, int ny);		// 設定阿噗左上角座標
 		void SetXY(int stepSize);
@@ -38,7 +39,6 @@ namespace game_framework {
 		void SetSucceed(bool flag);
 		void SetFail(bool flag);
 		void SetRelive(bool flag);
-		void ResetCurAnimation();
 
 		bool IsSucceed();
 		bool IsFail();
