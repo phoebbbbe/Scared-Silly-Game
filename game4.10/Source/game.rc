@@ -108,16 +108,6 @@ IDB_GRASS1              BITMAP                  "..\\res\\grass1.bmp"
 
 IDB_GRASS2              BITMAP                  "..\\res\\grass2.bmp"
 
-IDB_MAP1                BITMAP                  "..\\res\\map1.bmp"
-
-IDB_MAP2                BITMAP                  "..\\res\\map2.bmp"
-
-IDB_MAP3                BITMAP                  "..\\res\\map3.bmp"
-
-IDB_MAP4                BITMAP                  "..\\res\\map4.bmp"
-
-IDB_MAP5                BITMAP                  "..\\res\\map5.bmp"
-
 IDB_TRAP                BITMAP                  "..\\res\\trap.bmp"
 
 IDB_MAP_FINAL           BITMAP                  "..\\res\\map_final.bmp"

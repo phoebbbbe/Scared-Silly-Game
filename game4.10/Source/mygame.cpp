@@ -86,12 +86,16 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point) {
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
 	if (curPage == 1) {
 		if (isBeginButtonDown) {
+			CAudio::Instance()->Play(AUDIO_BUTTON);
+			Sleep(500);
 			curPage = 2;
 			isBeginButtonDown = false;
 			beginButtonHasDown = false;
 		}
 	}
 	else if (curPage == 2) {
+		CAudio::Instance()->Play(AUDIO_BUTTON);
+		Sleep(500);
 		CGame::Instance()->SetLevel(curLevel);
 		GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 	}
@@ -137,6 +141,7 @@ void CGameStateInit::OnShow()
 void CGameStateInit::OnMove() {
 	page_begin.OnMove();
 	if (isBeginButtonDown && !(beginButtonHasDown)) {
+		button_begin.OnMove();
 		button_begin.OnMove();
 		beginButtonHasDown = true;
 		isBeginButtonDown = false;
@@ -251,10 +256,10 @@ void CGameStateRun::OnBeginState() {
 	ghost.clear();
 	switch (curLevel) {
 	case 1:
-		apu = new CApu(150, 200);
+		apu = new CApu(132, 264);
 		gamemap = new CGameMap_1();
 		for (int i = 0; i < GHOSTNUM; i++) {
-			AddGhost(1, 450 * (i + 1), 200);
+			AddGhost(1, 715, 264);
 		}
 		break;
 	case 2:
@@ -308,11 +313,18 @@ void CGameStateRun::OnInit() { 								// 遊戲的初值及圖形設定
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				// 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
 	corner.ShowBitmap(background);							// 將corner貼到background
-	hits_left.LoadBitmap();									
-	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
-	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+	hits_left.LoadBitmap();	
 	*/
+	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
+	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+	
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
+	CAudio::Instance()->Load(AUDIO_BGM, "sounds\\bgm.mp3");
+	CAudio::Instance()->Load(AUDIO_WIN, "sounds\\win.mp3");
+	CAudio::Instance()->Load(AUDIO_LOSE, "sounds\\lose.mp3");
+	CAudio::Instance()->Load(AUDIO_FIGHT, "sounds\\fight.mp3");
+	CAudio::Instance()->Load(AUDIO_BUTTON, "sounds\\button.mp3");
+	CAudio::Instance()->Play(AUDIO_BGM, true);
 	gamemap = nullptr;
 	apu = nullptr;	
 }
@@ -322,6 +334,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	const char KEY_UP = 0x26;
 	const char KEY_RIGHT = 0x27;
 	const char KEY_DOWN = 0x28;
+	const char KEY_Q = 0x51;
 	int apuX1 = apu->GetX1();
 	int apuY1 = apu->GetY1();
 	int apuX2 = apu->GetX2();
@@ -331,13 +344,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 	if (apu->GetMode() == 1) {
 		apu->SetMode(2);
-		TRACE("Apu'mode = 2\n");
 	}
-	else {
-		TRACE("Apu'mode = 1\n");
-		return;
-	}
+	else { return; }
 
+	if (nChar == KEY_Q) {
+		curKeyState = 11;
+		apu->SetSpace(true);
+	}
 	if (nChar == KEY_UP) {
 		curKeyState = 1;
 		exist = TheGhostNearbyApu(apuX1, apuY1-RANGE, apuX2, apuY2-RANGE);
@@ -410,15 +423,14 @@ void CGameStateRun::OnMove() {
 	// SetCursor(AfxGetApp()->LoadCursor(IDC_GAMECURSOR));
 
 	/* 阿噗動作 */
-	for (int i = 0; i < 4; i++)
-		apu->OnMove(gamemap);
+	apu->OnMove(gamemap);
 	
 	/* 鬼怪動作 */
 	for (int i = 0; i < GHOSTNUM; i++)
 		ghost[i]->OnMove(gamemap, apu);
 
 	/* 音效 */
-	//CAudio::Instance()->Play(AUDIO_DING); // 擊中的聲音
+	//CAudio::Instance()->Play(AUDIO_DING);
 	//if (hits_left.GetInteger() <= 0) {
 	//	CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
 	//	CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
@@ -427,6 +439,7 @@ void CGameStateRun::OnMove() {
 
 	/* 判斷成功與失敗 */
 	if (apu->IsSucceed()) {
+		CAudio::Instance()->Play(AUDIO_WIN);
 		CGame::Instance()->SetFinish(curLevel);
 		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);
@@ -435,6 +448,7 @@ void CGameStateRun::OnMove() {
 			GotoGameState(GAME_STATE_OVER);
 	}
 	else if (apu->IsFail()) {
+		CAudio::Instance()->Play(AUDIO_LOSE);
 		CGame::Instance()->SetDead(curLevel);
 		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);

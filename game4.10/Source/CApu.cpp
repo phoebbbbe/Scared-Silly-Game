@@ -6,6 +6,7 @@
 #include "gamelib.h"
 #include "CApu.h"
 #include "CGameMap.h"
+#include "mygame.h"
 #define WHITE RGB(255, 255, 255)
 
 namespace game_framework {
@@ -20,6 +21,10 @@ namespace game_framework {
 	void CApu::Initialize(int x, int y) {
 		pos.x = x;
 		pos.y = y;
+		pos_init.x = x;
+		pos_init.y = y;
+		pos_show.x = pos.x - 5;
+		pos_show.y = pos.y - 58;
 		curState = 0;			// initApu
 		curMode = 1;			// still
 		isMoved = false;
@@ -130,7 +135,11 @@ namespace game_framework {
 
 	void CApu::SetMode(int flag) { curMode = flag; }
 	void CApu::SetState(int flag) { curState = flag; }
-
+	void CApu::SetSpace(bool flag) {
+		isSpace = flag;
+		if (flag)
+			curState = 11;
+	}
 	void CApu::SetFail(bool flag) { curState = 9; }
 	void CApu::SetSucceed(bool flag) { curState = 10; }
 	void CApu::SetRelive(bool flag) { curState = 11; }
@@ -219,7 +228,9 @@ namespace game_framework {
 		initRight.LoadBitmap(IDB_APU_RIGHT1, WHITE);
 	}
 	void CApu::OnMove(CGameMap *map) {
-		const int STEP = 1;
+		const int STEP = 5;
+		const int RANGE1 = 10;
+		const int RANGE2 = 60;
 		if (curMode == 2) {
 			if (curState < 9) {
 				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
@@ -235,129 +246,134 @@ namespace game_framework {
 
 			switch (curState) {
 			case 1:
-				if (map->IsEmpty(pos.x, pos.y - 1)) {
+				if (map->IsEmpty(pos.x, pos.y - RANGE1)) {
 					pos.y -= STEP;
-					map->SetSY(pos.y - 200);
-					moveUp.OnMove();
+					map->SetSY(pos.y - pos_init.y);
+					for (int i = 0; i < 4; i++) moveUp.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
-				}
-				else {
-					//map->SetSY(pos.y - 200);
-					moveUp.OnMove();
+				} else {
+					for (int i = 0; i < 4; i++) moveUp.OnMove();
 				}
 				break;
 			case 2:
-				if (map->IsEmpty(pos.x, pos.y + 40)) {
+				if (map->IsEmpty(pos.x, pos.y + RANGE2)) {
 					pos.y += STEP;
-					map->SetSY(pos.y - 200);
-					moveDown.OnMove();
+					map->SetSY(pos.y - pos_init.y);
+					for (int i = 0; i < 4; i++) moveDown.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
-				}
-				else {
-					//map->SetSY(pos.y - 200);
-					moveDown.OnMove();
+				} else {
+					for (int i = 0; i < 4; i++) moveDown.OnMove();
 				}
 				break;
 			case 3:
-				if (map->IsEmpty(pos.x - 30, pos.y)) {
+				if (map->IsEmpty(pos.x - RANGE1, pos.y)) {
 					pos.x -= STEP;
-					map->SetSX(pos.x - 150);
-					moveLeft.OnMove();
+					map->SetSX(pos.x - pos_init.x);
+					for (int i = 0; i < 4; i++) moveLeft.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
-				}
-				else {
-					//map->SetSX(pos.x - 150);
-					moveLeft.OnMove();
+				} else {
+					for (int i = 0; i < 4; i++) moveLeft.OnMove();
 				}
 				break;
 			case 4:
-				if (map->IsEmpty(pos.x + 30, pos.y)) {
+				if (map->IsEmpty(pos.x + RANGE2, pos.y)) {
 					pos.x += STEP;
-					map->SetSX(pos.x - 150);
-					moveRight.OnMove();
+					map->SetSX(pos.x - pos_init.x);
+					for (int i = 0; i < 4; i++) moveRight.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
+						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
-				}
-				else {
-					//map->SetSX(pos.x - 150);
-					moveRight.OnMove();
+				} else {
+					for (int i = 0; i < 4; i++) moveRight.OnMove();
 				}
 				break;
 			case 5:
-				fightUp.OnMove();
+				for (int i = 0; i < 4; i++) fightUp.OnMove();
 				break;
 			case 6:
-				fightDown.OnMove();
+				for (int i = 0; i < 4; i++) fightDown.OnMove();
 				break;
 			case 7:
-				fightLeft.OnMove();
+				for (int i = 0; i < 4; i++) fightLeft.OnMove();
 				break;
 			case 8:
-				fightRight.OnMove();
+				for (int i = 0; i < 4; i++) fightRight.OnMove();
 				break;
 			case 9:
-				fail.OnMove();
+				for (int i = 0; i < 2; i++) fail.OnMove();
 				break;
 			case 10:
-				success.OnMove();
+				for (int i = 0; i < 2; i++) success.OnMove();
 				break;
+			case 11:
+				pos.x = 65 * 17; // pieceªº¦ì¸m
+				pos.y = 65 * 4;
+				map->SetSX(pos.x - pos_init.x);
+				map->SetSY(pos.y - pos_init.y);
+				curState = 10;
 			default:
 				break;
 			}
 		}
 	}
 	void CApu::OnShow(CGameMap *map) {
+		pos_show.x = pos.x - 5;
+		pos_show.y = pos.y - 58;
 		switch (curState) {
 		case 0:
-			initApu.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			initApu.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			initApu.ShowBitmap();
 			break;
 		case 1:
-			moveUp.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			moveUp.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			moveUp.OnShow();
 			break;
 		case 2:
-			moveDown.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			moveDown.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			moveDown.OnShow();
 			break;
 		case 3:
-			moveLeft.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			moveLeft.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			moveLeft.OnShow();
 			break;
 		case 4:
-			moveRight.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			moveRight.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			moveRight.OnShow();
 			break;
 		case 5:
-			fightUp.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			fightUp.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			fightUp.OnShow();
 			break;
 		case 6:
-			fightDown.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			fightDown.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			fightDown.OnShow();
 			break;
 		case 7:
-			fightLeft.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			fightLeft.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			fightLeft.OnShow();
 			break;
 		case 8:
-			fightRight.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			fightRight.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			fightRight.OnShow();
 			break;
 		case 9:
-			fail.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			fail.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 			fail.OnShow();
 			break;
 		case 10:
-			success.SetTopLeft(map->ScreenX(pos.x), map->ScreenY(pos.y));
+			success.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y - 50));
 			success.OnShow();
+			break;
 		default:
 			break;
 		}

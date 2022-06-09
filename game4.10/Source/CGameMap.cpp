@@ -7,7 +7,6 @@
 #include "CGameMap.h"
 #include "CData.h"
 
-#define CELL 52
 #define N 24
 #define M 12
 #define Twenty 20
@@ -17,15 +16,17 @@ using namespace std;
 
 namespace game_framework {
 
-	CGameMap::CGameMap() :X(0), Y(0), MW(50), MH(60), sx(0), sy(0) {				// 給予地圖左上角座標以及每張小圖寬高度
+	CGameMap::CGameMap() 
+		:X(0), Y(0), MW(65), MH(65), sx(0), sy(0) {				// 給予地圖左上角座標以及每張小圖寬高度
+		
 	}
 	
 	CGameMap::~CGameMap() {}
 
 	POINT CGameMap::GetPieceXY() {
 		POINT p = POINT();
-		p.x = 50 * 18;
-		p.y = 60 * 4;
+		p.x = MW * 18;
+		p.y = MH * 4;
 		return p;
 	}
 	POINT CGameMap::GetSXY() {
@@ -48,8 +49,8 @@ namespace game_framework {
 	}
 
 	bool CGameMap::IsEmpty(int x, int y) {
-		int gx = x / 47;
-		int gy = y / 50;
+		int gx = x / MW;
+		int gy = y / MH;
 		return (map[gx][gy] == 1) || (map[gx][gy] == 2);
 	}
 	bool CGameMap::HasPiece(int x1, int y1, int x2, int y2) {
@@ -63,8 +64,8 @@ namespace game_framework {
 	/* CGameMap_1 */
 	CGameMap_1::CGameMap_1() : CGameMap::CGameMap()
 	{
-		for (int i = 0; i < 30; i++)
-			for (int j = 0; j < 30; j++)
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
 				map[i][j] = LEVEL1_MAP[i][j];
 	}
 	CGameMap_1::~CGameMap_1() {}
@@ -83,10 +84,10 @@ namespace game_framework {
 	}
 	void CGameMap_1::OnMove(){}
 	void CGameMap_1::OnShow() {
-		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
-			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
-				int x = i * 50 - sx;
-				int y = j * 60 - sy;
+		for (int i = 0; i < N; i++) {							// 往右顯示N張圖
+			for (int j = 0; j < M; j++) {						// 往下顯示M張圖
+				int x = i * MW - sx;
+				int y = j * MH - sy;
 
 				switch (map[i][j]) {
 				case 0:
@@ -122,7 +123,7 @@ namespace game_framework {
 			grass[i].SetTopLeft(LEVEL1_GRASS[i][0] - sx, LEVEL1_GRASS[i][1] - sy);
 			//grass[i].ShowBitmap();
 		}
-		piece.SetTopLeft(50 * 18 - sx, 60 * 4 - sy);
+		piece.SetTopLeft(MW * 18 - sx, MH * 4 - sy);
 		piece.ShowBitmap();
 		explination.SetTopLeft(90 - sx, 120 - sy);
 		explination.ShowBitmap();
@@ -131,8 +132,8 @@ namespace game_framework {
 	/* CGameMap_2 */
 	CGameMap_2::CGameMap_2() : CGameMap::CGameMap()
 	{
-		for (int i = 0; i < 30; i++)
-			for (int j = 0; j < 30; j++)
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
 				map[i][j] = LEVEL2_MAP[i][j];
 	}
 	CGameMap_2::~CGameMap_2() {}
@@ -153,10 +154,10 @@ namespace game_framework {
 	}
 	void CGameMap_2::OnMove() {}
 	void CGameMap_2::OnShow() {
-		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
-			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
-				int x = i * 50 - sx;
-				int y = j * 60 - sy;
+		for (int i = 0; i < N; i++) {							// 往右顯示N張圖
+			for (int j = 0; j < M; j++) {						// 往下顯示M張圖
+				int x = i * MW - sx;
+				int y = j * MH - sy;
 
 				switch (map[i][j]) {
 				case 0:
@@ -192,15 +193,15 @@ namespace game_framework {
 			tree[i].SetTopLeft(LEVEL2_TREE[i][0] - sx, LEVEL2_TREE[i][1] - sy);
 			tree[i].ShowBitmap();
 		}
-		piece.SetTopLeft(50 * 18 - sx, 60 * 4 - sy);
+		piece.SetTopLeft(MW * 18 - sx, MH * 4 - sy);
 		piece.ShowBitmap();
 	}
 
 	/* CGameMap_3 */
 	CGameMap_3::CGameMap_3() : CGameMap::CGameMap()
 	{
-		for (int i = 0; i < 30; i++)
-			for (int j = 0; j < 30; j++)
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
 				map[i][j] = LEVEL3_MAP[i][j];
 	}
 	CGameMap_3::~CGameMap_3() {}
@@ -222,10 +223,10 @@ namespace game_framework {
 	}
 	void CGameMap_3::OnMove() {}
 	void CGameMap_3::OnShow() {
-		for (int i = 0; i < 30; i++) {							// 往右顯示N張圖
-			for (int j = 0; j < 30; j++) {						// 往下顯示M張圖
-				int x = i * 50 - sx;
-				int y = j * 60 - sy;
+		for (int i = 0; i < N; i++) {							// 往右顯示N張圖
+			for (int j = 0; j < M; j++) {						// 往下顯示M張圖
+				int x = i * MW - sx;
+				int y = j * MH - sy;
 
 				switch (map[i][j]) {
 				case 0:

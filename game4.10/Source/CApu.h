@@ -30,7 +30,7 @@ namespace game_framework {
 		void  SetMoved(bool flag);
 		void  SetMode(int flag);
 		void  SetState(int flag);
-
+		void  SetSpace(bool flag);
 		void  SetSucceed(bool flag);
 		void  SetFail(bool flag);
 		void  SetRelive(bool flag);
@@ -60,9 +60,12 @@ namespace game_framework {
 		CMovingBitmap initLeft;
 		CMovingBitmap initRight;
 		POINT pos;
+		POINT pos_init;
+		POINT pos_show;
 		int curState;				// 阿噗現在的方向:1(上)2(下)3(左)4(右)5(打上)6(打下)7(打左)8(打右)
 		int curMode;				// 阿噗現在的狀態:1(靜止), 2(移動)
 		bool isMoved;
+		bool isSpace;
 	};
 }
 

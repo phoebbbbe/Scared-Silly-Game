@@ -37,7 +37,7 @@ namespace game_framework {
 		/* Apu Function */
 		void SwitchState();
 		int  WhereIsApu(CApu *apu);
-		void FollowApu(CApu *apu);
+		void FollowApu(CGameMap *map, CApu *apu);
 
 		void Initialize(int x, int y);
 		virtual void LoadBitmap() = 0;
@@ -53,8 +53,10 @@ namespace game_framework {
 		CMovingBitmap fork3;
 		CMovingBitmap fork4;
 		POINT pos;
+		POINT pos_show;
 		bool isAlive;
 		bool isFighted;
+		bool isMoving;
 		bool switchState;
 		bool followApu;
 		int  curMode;								// 鬼怪現在的狀態:1(靜止), 2(移動)

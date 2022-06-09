@@ -40,11 +40,6 @@
 #define IDB_GRASS                       176
 #define IDB_GRASS1                      176
 #define IDB_GRASS2                      177
-#define IDB_MAP1                        179
-#define IDB_MAP2                        180
-#define IDB_MAP3                        181
-#define IDB_MAP4                        182
-#define IDB_MAP5                        183
 #define IDB_PAGE1                       184
 #define IDB_PAGE2                       186
 #define IDB_TRAP                        187
