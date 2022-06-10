@@ -229,24 +229,25 @@ namespace game_framework {
 	}
 	void CApu::OnMove(CGameMap *map) {
 		const int STEP = 5;
-		const int RANGE1 = 10;
-		const int RANGE2 = 60;
+		const int RANGE = 65;
 		if (curMode == 2) {
 			if (curState < 9) {
 				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
 					ResetCurAnimation();
 					curMode = 1;
+					return;
 				}
 			}
 			else {
 				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
 					curMode = 1;
+					return;
 				}
 			}
 
 			switch (curState) {
 			case 1:
-				if (map->IsEmpty(pos.x, pos.y - RANGE1)) {
+				if (map->IsEmpty(pos.x, pos.y - 13)) {
 					pos.y -= STEP;
 					map->SetSY(pos.y - pos_init.y);
 					for (int i = 0; i < 4; i++) moveUp.OnMove();
@@ -259,7 +260,7 @@ namespace game_framework {
 				}
 				break;
 			case 2:
-				if (map->IsEmpty(pos.x, pos.y + RANGE2)) {
+				if (map->IsEmpty(pos.x, pos.y + RANGE)) {
 					pos.y += STEP;
 					map->SetSY(pos.y - pos_init.y);
 					for (int i = 0; i < 4; i++) moveDown.OnMove();
@@ -272,7 +273,7 @@ namespace game_framework {
 				}
 				break;
 			case 3:
-				if (map->IsEmpty(pos.x - RANGE1, pos.y)) {
+				if (map->IsEmpty(pos.x - 13, pos.y)) {
 					pos.x -= STEP;
 					map->SetSX(pos.x - pos_init.x);
 					for (int i = 0; i < 4; i++) moveLeft.OnMove();
@@ -285,7 +286,7 @@ namespace game_framework {
 				}
 				break;
 			case 4:
-				if (map->IsEmpty(pos.x + RANGE2, pos.y)) {
+				if (map->IsEmpty(pos.x + RANGE, pos.y)) {
 					pos.x += STEP;
 					map->SetSX(pos.x - pos_init.x);
 					for (int i = 0; i < 4; i++) moveRight.OnMove();

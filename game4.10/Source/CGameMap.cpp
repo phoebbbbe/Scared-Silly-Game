@@ -53,6 +53,7 @@ namespace game_framework {
 		int gy = y / MH;
 		return (map[gx][gy] == 1) || (map[gx][gy] == 2);
 	}
+
 	bool CGameMap::HasPiece(int x1, int y1, int x2, int y2) {
 		int x3 = GetPieceXY().x;
 		int y3 = GetPieceXY().y;

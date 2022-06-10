@@ -24,6 +24,7 @@ namespace game_framework {
 		void ResetCurAnimation();
 
 		void SetXY(int nx, int ny);	
+		void SetMoving();
 		void SetAlive(bool alive);
 		void SetFighted(bool fighted);
 		void SetMode(int mode);
@@ -35,7 +36,7 @@ namespace game_framework {
 		bool HitApu(CApu *apu);
 
 		/* Apu Function */
-		void SwitchState();
+		void SwitchState(CGameMap *map, CApu *apu);
 		int  WhereIsApu(CApu *apu);
 		void FollowApu(CGameMap *map, CApu *apu);
 
@@ -62,7 +63,6 @@ namespace game_framework {
 		int  curMode;								// 鬼怪現在的狀態:1(靜止), 2(移動)
 		int  curState;								// 鬼怪現在的模樣:1(不動), 2(攻擊), 3(死亡)
 		int  curDirect;
-		int  moveCounter;
 		int  dieCounter;
 	};
 

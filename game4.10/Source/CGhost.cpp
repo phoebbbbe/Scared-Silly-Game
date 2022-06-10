@@ -21,8 +21,8 @@ namespace game_framework {
 	void CGhost::Initialize(int x, int y) {
 		pos.x = x;
 		pos.y = y;
-		pos_show.x = pos.x - 5;
-		pos_show.y = pos.y - 60;
+		pos_show.x = pos.x;
+		pos_show.y = pos.y - 50;
 		isAlive = true;
 		isFighted = false;
 		isMoving = true;
@@ -31,7 +31,6 @@ namespace game_framework {
 		curMode = 1;
 		curState = 1;
 		curDirect = 1;
-		moveCounter = 30;
 		dieCounter = 18;
 	}
 
@@ -66,6 +65,19 @@ namespace game_framework {
 	void CGhost::SetXY(int nx, int ny) {
 		pos.x = nx; pos.y = ny;
 	}
+	void CGhost::SetMoving() {
+		const int STEP = 5;
+		if (curDirect == 1)
+			pos.y -= STEP;
+		else if (curDirect == 2)
+			pos.y += STEP;
+		else if (curDirect == 3)
+			pos.x -= STEP;
+		else if (curDirect == 4)
+			pos.x += STEP;
+		else
+			;
+	}
 	void CGhost::SetAlive(bool alive) { isAlive = alive; }
 	void CGhost::SetFighted(bool fighted) { isFighted = fighted; }
 	void CGhost::SetMode(int mode) { curMode = mode; }
@@ -88,76 +100,65 @@ namespace game_framework {
 	//	int y4 = pos.y + ghost.Height();
 	//	return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
 	//}
+
 	bool CGhost::HitApu(CApu *apu) {
 		int x1 = apu->GetX1();
 		int y1 = apu->GetY1();
-		int x2 = apu->GetX2();
-		int y2 = apu->GetY2();
-		int x3 = pos.x;
-		int y3 = pos.y + 5;
-		int x4 = pos.x + ghost_up.Width();
-		int y4 = pos.y + ghost_up.Height();
-		return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
+		//int x2 = apu->GetX1() + 64;//apu->GetX2();
+		//int y2 = apu->GetY1() + 64;// apu->GetY2();
+		int x3 = this->GetX1();
+		int y3 = this->GetY1();
+		int x4 = this->GetX1() + 64;
+		int y4 = this->GetY1() + 64;
+		//return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
+		return (x1 >= x3 && y1 >= y3 && x1 <= x4 && y1 <= y4);
 	}
+
 	void CGhost::FollowApu(CGameMap *map, CApu *apu) {
-		const int STEP = 3;
-		const int RANGE1 = 10;
-		const int RANGE2 = 60;
-		int xUp = pos.x, yUp = pos.y - STEP;
-		int xDown = pos.x, yDown = pos.y + STEP;
-		int xLeft = pos.x - STEP, yLeft = pos.y;
-		int xRight = pos.x + STEP, yRight = pos.y;
+		const int RANGE = 65;
+		int xUp = pos.x, yUp = pos.y - RANGE;
+		int xDown = pos.x, yDown = pos.y + RANGE;
+		int xLeft = pos.x - RANGE, yLeft = pos.y;
+		int xRight = pos.x + RANGE, yRight = pos.y;
 		float disUp = (float)sqrt((double)((xUp - apu->GetX1())*(xUp - apu->GetX1()) + (yUp - apu->GetY1())*(yUp - apu->GetY1())));
 		float disDown = (float)sqrt((double)((xDown - apu->GetX1())*(xDown - apu->GetX1()) + (yDown - apu->GetY1())*(yDown - apu->GetY1())));
 		float disLeft = (float)sqrt((double)((xLeft - apu->GetX1())*(xLeft - apu->GetX1()) + (yLeft - apu->GetY1())*(yLeft - apu->GetY1())));
 		float disRight = (float)sqrt((double)((xRight - apu->GetX1())*(xRight - apu->GetX1()) + (xRight - apu->GetY1())*(xRight - apu->GetY1())));
-		if (isMoving) {
-			switch (WhereIsApu(apu)) {
-			case 1:
-				if (disUp <= disRight && map->IsEmpty(pos.x, pos.y - RANGE1)) curDirect = 1;
-				else if (map->IsEmpty(pos.x + RANGE2, pos.y)) curDirect = 4;
-				else if (map->IsEmpty(pos.x, pos.y + RANGE2)) curDirect = 2;
-				else if (map->IsEmpty(pos.x - RANGE1, pos.y)) curDirect = 3;
-				else curDirect = 0;
-				break;
-			case 2:
-				if (disUp <= disLeft && map->IsEmpty(pos.x, pos.y - RANGE1)) curDirect = 1;
-				else if (map->IsEmpty(pos.x - RANGE1, pos.y)) curDirect = 3;
-				else if (map->IsEmpty(pos.x, pos.y + RANGE2)) curDirect = 2;
-				else if (map->IsEmpty(pos.x + RANGE2, pos.y)) curDirect = 4;
-				else curDirect = 0;
-				break;
-			case 3:
-				if (disDown <= disLeft && map->IsEmpty(pos.x, pos.y + RANGE2)) curDirect = 2;
-				else if (map->IsEmpty(pos.x - RANGE1, pos.y)) curDirect = 3;
-				else if (map->IsEmpty(pos.x, pos.y - RANGE1)) curDirect = 1;
-				else if (map->IsEmpty(pos.x + RANGE2, pos.y)) curDirect = 4;
-				else curDirect = 0;
-				break;
-			case 4:
-				if (disDown <= disRight && map->IsEmpty(pos.x, pos.y + RANGE2)) curDirect = 2;
-				else if (map->IsEmpty(pos.x + RANGE2, pos.y)) curDirect = 4;
-				else if (map->IsEmpty(pos.x, pos.y - RANGE1)) curDirect = 1;
-				else if (map->IsEmpty(pos.x - RANGE1, pos.y)) curDirect = 3;
-				else curDirect = 0;
-				break;
-			}
+		switch (WhereIsApu(apu)) {
+		case 0:
+			curDirect = 0;
+			break;
+		case 1:
+			if (disUp <= disRight && map->IsEmpty(pos.x, pos.y - RANGE)) curDirect = 1;
+			else if (map->IsEmpty(pos.x + RANGE, pos.y)) curDirect = 4;
+			else if (map->IsEmpty(pos.x, pos.y + RANGE)) curDirect = 2;
+			else if (map->IsEmpty(pos.x - RANGE, pos.y)) curDirect = 3;
+			else curDirect = 0;
+			break;
+		case 2:
+			if (disUp <= disLeft && map->IsEmpty(pos.x, pos.y - RANGE)) curDirect = 1;
+			else if (map->IsEmpty(pos.x - RANGE, pos.y)) curDirect = 3;
+			else if (map->IsEmpty(pos.x, pos.y + RANGE)) curDirect = 2;
+			else if (map->IsEmpty(pos.x + RANGE, pos.y)) curDirect = 4;
+			else curDirect = 0;
+			break;
+		case 3:
+			if (disDown <= disLeft && map->IsEmpty(pos.x, pos.y + RANGE)) curDirect = 2;
+			else if (map->IsEmpty(pos.x - RANGE, pos.y)) curDirect = 3;
+			else if (map->IsEmpty(pos.x, pos.y - RANGE)) curDirect = 1;
+			else if (map->IsEmpty(pos.x + RANGE, pos.y)) curDirect = 4;
+			else curDirect = 0;
+			break;
+		case 4:
+			if (disDown <= disRight && map->IsEmpty(pos.x, pos.y + RANGE)) curDirect = 2;
+			else if (map->IsEmpty(pos.x + RANGE, pos.y)) curDirect = 4;
+			else if (map->IsEmpty(pos.x, pos.y - RANGE)) curDirect = 1;
+			else if (map->IsEmpty(pos.x - RANGE, pos.y)) curDirect = 3;
+			else curDirect = 0;
+			break;
+		default:
+			break;
 		}
-		if (followApu) {
-			if (curDirect == 1)
-				SetXY(xUp, yUp);
-			else if (curDirect == 2)
-				SetXY(xDown, yDown);
-			else if (curDirect == 3)
-				SetXY(xLeft, yLeft);
-			else if (curDirect == 4)
-				SetXY(xRight, yRight);
-		}
-		if (moveCounter < 0) {
-			followApu = false;
-			isMoving = true;
-		}
-		isMoving = false;
 	}
 	int CGhost::WhereIsApu(CApu *apu) {
 		int X1 = pos.x, Y1 = pos.y;
@@ -167,21 +168,21 @@ namespace game_framework {
 			return 0;
 		X2 -= X1;
 		Y2 -= Y1;
-		if (X2 >= 0 && Y2 <= 0) return 1;
-		else if (X2 <= 0 && Y2 <= 0) return 2;
-		else if (X2 <= 0 && Y2 >= 0) return 3;
-		else if (X2 >= 0 && Y2 >= 0) return 4;
+		if (X2 >= 0 && Y2 <= 0) return 1;       // 右上
+		else if (X2 <= 0 && Y2 <= 0) return 2;  // 左上
+		else if (X2 <= 0 && Y2 >= 0) return 3;  // 左下
+		else if (X2 >= 0 && Y2 >= 0) return 4;  // 右下
 		else return 0;
 	}
-	
-	void CGhost::SwitchState() {
+	void CGhost::SwitchState(CGameMap *map, CApu *apu) {
 		if (switchState) {
 			curMode = 2;
 			ResetCurAnimation();
 			if (curState == 1) {
 				curState = 2;
-				moveCounter = 30;
-				followApu = true;
+				FollowApu(map, apu);
+				//followApu = true;
+				//isMoving = true;
 			}
 			else if (curState == 2)  curState = 1;
 			else if (curState == 3) dieCounter = 18;
@@ -190,14 +191,11 @@ namespace game_framework {
 	}
 
 	void CGhost::OnMove(CGameMap *map, CApu *apu) {
-		if (isAlive)
-		{
+		if (isAlive) {
 			if (isFighted) {
 				curState = 3;
-				CAudio::Instance()->Play(AUDIO_FIGHT);
-			}
-			else {
-				if (apu->GetMode() == 2) SwitchState();
+			} else {
+				if (apu->GetMode() == 2) SwitchState(map, apu);
 				else switchState = true;
 
 				if (HitApu(apu)) {
@@ -209,22 +207,20 @@ namespace game_framework {
 			if (curMode == 2) {
 				if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
 					curMode = 1;
-					//isMoving = true;
+					return;
 				}
 				if (curState == 1) {
-					ghost_up.OnMove();
-					ghost_up.OnMove();
+					for (int i = 0; i < 4; i++) ghost_up.OnMove();
 				}
 				else if (curState == 2) {
-					ghost_down.OnMove();
-					ghost_down.OnMove();
-					FollowApu(map, apu);
+					for (int i = 0; i < 4; i++) ghost_down.OnMove();
+					SetMoving();
+					TRACE("ghost pos.x, pos.y = %d, %d\n", pos.x, pos.y);
 				}
 			}
 
 			if (curState == 3) {
-				ghost_die.OnMove();
-				ghost_die.OnMove();
+				for (int i = 0; i < 2; i++) ghost_die.OnMove();
 			}
 		}
 	}
@@ -239,7 +235,6 @@ namespace game_framework {
 				ghost_up.OnShow();
 				break;
 			case 2:
-				moveCounter--;
 				ghost_down.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 				ghost_down.OnShow();
 				fork1.SetTopLeft(map->ScreenX(pos_show.x - 50), map->ScreenY(pos_show.y));
@@ -274,13 +269,16 @@ namespace game_framework {
 		ghost_up.AddBitmap(IDB_BALLOON4, WHITE);
 		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
 		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
+		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
 		
 		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
 		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
 		ghost_down.AddBitmap(IDB_BALLOON3, WHITE);
 		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
 		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
+		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
 
+		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
 		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
 		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
 		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);

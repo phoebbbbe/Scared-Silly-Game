@@ -256,10 +256,10 @@ void CGameStateRun::OnBeginState() {
 	ghost.clear();
 	switch (curLevel) {
 	case 1:
-		apu = new CApu(132, 264);
+		apu = new CApu(130, 260);
 		gamemap = new CGameMap_1();
 		for (int i = 0; i < GHOSTNUM; i++) {
-			AddGhost(1, 715, 264);
+			AddGhost(1, 715, 260);
 		}
 		break;
 	case 2:
@@ -283,9 +283,9 @@ void CGameStateRun::OnBeginState() {
 		break;
 	}
 	gamemap->LoadBitmap();
-	apu->LoadBitmap();
 	for (int i = 0; i < GHOSTNUM; i++)
 		ghost[i]->LoadBitmap();
+	apu->LoadBitmap();
 
 	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	/*
@@ -340,7 +340,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	int apuX2 = apu->GetX2();
 	int apuY2 = apu->GetY2();
 	int exist = -1;
-	int RANGE = 20;
+	int RANGE = 65;
 
 	if (apu->GetMode() == 1) {
 		apu->SetMode(2);
@@ -369,11 +369,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 
 	if (exist != -1) {
-		apu->SetMoving(curKeyState+4);
+		apu->SetMoving(curKeyState + 4);
 		ghost[exist]->SetFighted(true);
 	}
 	else {
 		apu->SetMoving(curKeyState);
+
+
 	}
 }
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
@@ -396,9 +398,11 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point) {	// 處理滑鼠的動作
 
 int CGameStateRun::TheGhostNearbyApu(int x1, int y1, int x2, int y2) {
 	for (int i = 0; i < GHOSTNUM; i++) {
-		if (x2 >= ghost[i]->GetX1() && x1 <= ghost[i]->GetX2() && y2 >= ghost[i]->GetY1() && y1 <= ghost[i]->GetY2())
+		if (ghost[i]->GetX1() == x1 && ghost[i]->GetY1() == y1) {
+		//if (x2 >= ghost[i]->GetX1() && x1 <= (ghost[i]->GetX1()+64) && y2 >= ghost[i]->GetY1()  && y1 <= (ghost[i]->GetY1()+64)) {
 			if (ghost[i]->IsAlive()) return i;
 			else break;
+		}
 	}
 	return -1;
 }
@@ -439,7 +443,6 @@ void CGameStateRun::OnMove() {
 
 	/* 判斷成功與失敗 */
 	if (apu->IsSucceed()) {
-		CAudio::Instance()->Play(AUDIO_WIN);
 		CGame::Instance()->SetFinish(curLevel);
 		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);
@@ -448,7 +451,6 @@ void CGameStateRun::OnMove() {
 			GotoGameState(GAME_STATE_OVER);
 	}
 	else if (apu->IsFail()) {
-		CAudio::Instance()->Play(AUDIO_LOSE);
 		CGame::Instance()->SetDead(curLevel);
 		CGame::Instance()->SetApuXY(gamemap->ScreenXY(apu->GetXY()));
 		apu->OnMove(gamemap);
