@@ -335,6 +335,7 @@
   <ItemGroup>
     <Image Include="..\..\game4.10\RES\beginPage.BMP" />
     <Image Include="..\..\game4.10\RES\beginPage2.BMP" />
+    <Image Include="RES\aboutPage.bmp" />
     <Image Include="RES\apu_down1.bmp" />
     <Image Include="RES\apu_down2.bmp" />
     <Image Include="RES\apu_down3.bmp" />
@@ -384,6 +385,7 @@
     <Image Include="RES\bat2.bmp" />
     <Image Include="res\beginPage.BMP" />
     <Image Include="res\beginPage2.BMP" />
+    <Image Include="res\bitmap10.bmp" />
     <Image Include="res\bitmap3.bmp" />
     <Image Include="res\bitmap4.bmp" />
     <Image Include="res\brick1.bmp" />
@@ -392,8 +394,12 @@
     <Image Include="RES\brick4.BMP" />
     <Image Include="RES\brick5.BMP" />
     <Image Include="RES\brick6.BMP" />
+    <Image Include="RES\button_aboutus.bmp" />
+    <Image Include="RES\button_back.bmp" />
     <Image Include="RES\button_begin1.BMP" />
     <Image Include="RES\button_begin2.BMP" />
+    <Image Include="RES\button_explain.bmp" />
+    <Image Include="RES\explainPage.bmp" />
     <Image Include="RES\explination.BMP" />
     <Image Include="RES\fight_back1.bmp" />
     <Image Include="RES\fight_back2.bmp" />

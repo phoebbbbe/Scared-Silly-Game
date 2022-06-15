@@ -9,6 +9,7 @@
 
 #define N 24
 #define M 12
+#define Fourty 40
 #define Twenty 20
 #define Ten 10
 #define WHITE RGB(255, 255, 255)
@@ -78,7 +79,7 @@ namespace game_framework {
 		brick3.LoadBitmap(IDB_BRICK2);
 		brick4.LoadBitmap(IDB_BRICK4);
 		explination.LoadBitmap(IDB_EXPLINATION, WHITE);
-		for (int i = 0; i < Twenty; i++)
+		for (int i = 0; i < Fourty; i++)
 			tree[i].LoadBitmap(IDB_TREE1, WHITE);
 		for (int i = 0; i < Ten; i++)
 			grass[i].LoadBitmap(IDB_GRASS4, WHITE);
@@ -116,7 +117,7 @@ namespace game_framework {
 				}
 			}
 		}
-		for (int i = 0; i < Twenty; i++) {
+		for (int i = 0; i < Fourty; i++) {
 			tree[i].SetTopLeft(LEVEL1_TREE[i][0] - sx, LEVEL1_TREE[i][1] - sy);
 			tree[i].ShowBitmap();
 		}

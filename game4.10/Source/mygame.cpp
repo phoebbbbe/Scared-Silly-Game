@@ -26,8 +26,13 @@ void CGameStateInit::OnInit() {
 	/* Begin Page */
 	page_begin.AddBitmap(IDB_BEGIN_PAGE1);
 	page_begin.AddBitmap(IDB_BEGIN_PAGE2);
+	page_aboutus.LoadBitmap(IDB_ABOUT_PAGE);
+	page_explain.LoadBitmap(IDB_EXPLAIN_PAGE);
 	button_begin.AddBitmap(IDB_BUTTON_BEGIN1, WHITE);
 	button_begin.AddBitmap(IDB_BUTTON_BEGIN2, WHITE);
+	button_aboutus.LoadBitmap(IDB_BUTTON_ABOUTUS, WHITE);
+	button_explain.LoadBitmap(IDB_BUTTON_EXPLAIN, WHITE);
+	button_back.LoadBitmap(IDB_BUTTON_BACK);
 	
 	/* Level Page */
 	page_level.LoadBitmap(IDB_LEVEL_PAGE, WHITE);
@@ -37,6 +42,9 @@ void CGameStateInit::OnInit() {
 
 	isBeginButtonDown = false;
 	beginButtonHasDown = false;
+	isAboutusButtonDown = false;
+	isExplainButtonDown = false;
+	isBackButtonDown = false;
 	curPage = 1;
 	curLevel = 0;
 	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
@@ -60,15 +68,31 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point) {
 	int x1 = point.x, y1 = point.y;
 	int x2, y2, x3, y3;
+	int x4, y4, x5, y5; // about
+	int x6, y6, x7, y7; // explain
+	// add music button
 	if (curPage == 1) {									// 處於BeginPage
 		x2 = button_begin.Left();							// button左上角x
 		y2 = button_begin.Top();							// button左上角y
 		x3 = x2 + button_begin.Width();						// button右下角x
 		y3 = x2 + button_begin.Height();					// button右下角y
+		x4 = button_aboutus.Left();
+		y4 = button_aboutus.Top();
+		x5 = x4 + button_aboutus.Width();
+		y5 = y4 + button_aboutus.Height();
+		x6 = button_explain.Left();
+		y6 = button_explain.Top();
+		x7 = x6 + button_explain.Width();
+		y7 = y6 + button_explain.Height();
 		if (x1 >= x2 && x1 <= x3 && y1 >= y2 && y1 <= y3) {
-			//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 			isBeginButtonDown = true;
 			beginButtonHasDown = true;
+		}
+		else if (x1 >= x4 && x1 <= x5 && y1 >= y4 && y1 <= y5) {
+			isAboutusButtonDown = true;
+		}
+		else if (x1 >= x6 && x1 <= x7 && y1 >= y6 && y1 <= y7) {
+			isExplainButtonDown = true;
 		}
 	}
 	else if (curPage == 2) {								// 處於LevelPage
@@ -81,6 +105,16 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point) {
 				curLevel = i+1;
 		}
 	}
+	else if (curPage == 3 || curPage == 4) {							// AboutPage
+		x2 = button_back.Left();
+		y2 = button_back.Top();
+		x3 = x2 + button_back.Width();
+		y3 = y2 + button_back.Height();
+		if (x1 >= x2 && x1 <= x3 && y1 >= y2 && y1 <= y3) {
+			isBackButtonDown = true;
+		}
+	}
+
 }
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
@@ -92,12 +126,36 @@ void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point) {
 			isBeginButtonDown = false;
 			beginButtonHasDown = false;
 		}
+		if (isAboutusButtonDown) {
+			CAudio::Instance()->Play(AUDIO_BUTTON);
+			curPage = 3;
+			isAboutusButtonDown = false;
+		}
+		if (isExplainButtonDown) {
+			CAudio::Instance()->Play(AUDIO_BUTTON);
+			curPage = 4;
+			isExplainButtonDown = false;
+		}
 	}
 	else if (curPage == 2) {
 		CAudio::Instance()->Play(AUDIO_BUTTON);
 		Sleep(500);
 		CGame::Instance()->SetLevel(curLevel);
 		GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+	}
+	else if (curPage == 3) {
+		if (isBackButtonDown) {
+			CAudio::Instance()->Play(AUDIO_BUTTON);
+			curPage = 1;
+			isBackButtonDown = false;
+		}
+	}
+	else if (curPage == 4) {
+		if (isBackButtonDown) {
+			CAudio::Instance()->Play(AUDIO_BUTTON);
+			curPage = 1;
+			isBackButtonDown = false;
+		}
 	}
 }
 
@@ -107,6 +165,10 @@ void CGameStateInit::OnShow()
 		//page_begin.SetTopLeft((SIZE_X - page_begin.Width())/2, SIZE_Y/8);
 		page_begin.SetTopLeft(0,0);
 		page_begin.OnShow();
+		button_aboutus.SetTopLeft(590, 30);
+		button_aboutus.ShowBitmap();
+		button_explain.SetTopLeft(590, 150);
+		button_explain.ShowBitmap();
 		button_begin.SetTopLeft(590, 260);
 		button_begin.OnShow();
 	}
@@ -119,7 +181,18 @@ void CGameStateInit::OnShow()
 		levels[0].ShowBitmap();
 		levels[1].ShowBitmap();
 		levels[2].ShowBitmap();
-
+	}
+	else if (curPage == 3) {
+		page_aboutus.SetTopLeft(0, 80);
+		page_aboutus.ShowBitmap();
+		button_back.SetTopLeft(20, 400);
+		button_back.ShowBitmap();
+	}
+	else if (curPage == 4) {
+		page_explain.SetTopLeft(20, 30);
+		page_explain.ShowBitmap();
+		button_back.SetTopLeft(20, 420);
+		button_back.ShowBitmap();
 	}
 
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好

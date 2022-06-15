@@ -558,5 +558,23 @@
     <Image Include="RES\explination.BMP">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\bitmap10.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\aboutPage.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_explain.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\explainPage.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_back.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_aboutus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

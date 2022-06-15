@@ -67,7 +67,7 @@ namespace game_framework {
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
 		CMovingBitmap explination;
-		CMovingBitmap tree[20];
+		CMovingBitmap tree[40];
 		CMovingBitmap grass[10];
 
 	};

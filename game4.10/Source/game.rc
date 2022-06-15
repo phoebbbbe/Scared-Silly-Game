@@ -292,6 +292,16 @@ IDB_BRICK6              BITMAP                  "..\\res\\brick6.BMP"
 
 IDB_EXPLINATION         BITMAP                  "..\\res\\explination.BMP"
 
+IDB_ABOUT_PAGE          BITMAP                  "..\\res\\aboutPage.bmp"
+
+IDB_BUTTON_EXPLAIN      BITMAP                  "..\\res\\button_explain.bmp"
+
+IDB_EXPLAIN_PAGE        BITMAP                  "..\\res\\explainPage.bmp"
+
+IDB_BUTTON_BACK         BITMAP                  "..\\res\\button_back.bmp"
+
+IDB_BUTTON_ABOUTUS      BITMAP                  "..\\res\\button_aboutus.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

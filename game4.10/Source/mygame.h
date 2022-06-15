@@ -36,11 +36,20 @@ namespace game_framework {
 		void OnMove();
 		bool isBeginButtonDown;
 		bool beginButtonHasDown;
+		bool isAboutusButtonDown;
+		bool isExplainButtonDown;
+		bool isBackButtonDown;
 	
 	private:
 		CAnimation page_begin;
-		CAnimation button_begin;
+		CMovingBitmap page_aboutus;
+		CMovingBitmap page_explain;
 		CMovingBitmap page_level;
+		CAnimation button_begin;
+		CMovingBitmap button_aboutus;
+		CMovingBitmap button_explain;
+		CMovingBitmap button_back;
+
 		CMovingBitmap levels[12];
 		int curPage;									// 1(begin) 2(level)
 		int curLevel;
