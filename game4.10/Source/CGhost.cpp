@@ -15,7 +15,6 @@ namespace game_framework {
 		Initialize(x, y);
 	}
 	CGhost::~CGhost() {
-		Initialize(0, 0);
 	}
 
 	void CGhost::Initialize(int x, int y) {
@@ -55,12 +54,9 @@ namespace game_framework {
 		}
 	}
 	void CGhost::ResetCurAnimation() {
-		if (curState == 1)
-			ghost_up.Reset();
-		else if (curState == 2)
-			ghost_down.Reset();
-		else if (curState == 3)
-			ghost_die.Reset();
+		if (curState == 1) ghost_up.Reset();
+		else if (curState == 2) ghost_down.Reset();
+		else if (curState == 3) ghost_die.Reset();
 	}
 	void CGhost::SetXY(int nx, int ny) {
 		pos.x = nx; pos.y = ny;

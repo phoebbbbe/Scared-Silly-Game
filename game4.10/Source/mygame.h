@@ -3,6 +3,7 @@
 #include "CBouncingBall.h"
 #include "CApu.h"
 #include "CGhost.h"
+#include "CTrap.h"
 #include "CGameMap.h"
 
 namespace game_framework {

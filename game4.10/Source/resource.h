@@ -42,7 +42,6 @@
 #define IDB_GRASS2                      177
 #define IDB_PAGE1                       184
 #define IDB_PAGE2                       186
-#define IDB_TRAP                        187
 #define IDB_MAP_FINAL                   188
 #define IDB_BITMAP6                     189
 #define IDB_APU_FRONT1                  190
@@ -159,8 +158,21 @@
 #define IDB_BUTTON_EXPLAIN              313
 #define IDB_EXPLAIN_PAGE                314
 #define IDB_BUTTON_BACK                 315
-#define IDB_BITMAP10                    319
 #define IDB_BUTTON_ABOUTUS              319
+#define IDB_CLAW1                       320
+#define IDB_CLAW2                       321
+#define IDB_CLAW3                       322
+#define IDB_CLAW4                       323
+#define IDB_CLAW5                       324
+#define IDB_CLAW6                       325
+#define IDB_CLAW7                       326
+#define IDB_SPIKE1                      327
+#define IDB_SPIKE2                      328
+#define IDB_SPIKE3                      329
+#define IDB_SPIKE4                      330
+#define IDB_SPIKE5                      331
+#define IDB_BITMAP10                    332
+#define IDB_SPIKE6                      332
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -173,7 +185,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        320
+#define _APS_NEXT_RESOURCE_VALUE        333
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

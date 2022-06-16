@@ -264,7 +264,7 @@
     <ClCompile Include="Source\CBall.cpp" />
     <ClCompile Include="Source\CBouncingBall.cpp" />
     <ClCompile Include="Source\CEraser.cpp" />
-    <ClCompile Include="Source\CItem.cpp" />
+    <ClCompile Include="Source\CTrap.cpp" />
     <ClCompile Include="Source\game.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -315,7 +315,7 @@
     <ClInclude Include="Source\CBall.h" />
     <ClInclude Include="Source\CBouncingBall.h" />
     <ClInclude Include="Source\CEraser.h" />
-    <ClInclude Include="Source\CItem.h" />
+    <ClInclude Include="Source\CTrap.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gameDoc.h" />
     <ClInclude Include="Source\gameView.h" />
@@ -399,6 +399,13 @@
     <Image Include="RES\button_begin1.BMP" />
     <Image Include="RES\button_begin2.BMP" />
     <Image Include="RES\button_explain.bmp" />
+    <Image Include="RES\claw1.BMP" />
+    <Image Include="RES\claw2.BMP" />
+    <Image Include="RES\claw3.BMP" />
+    <Image Include="RES\claw4.BMP" />
+    <Image Include="RES\claw5.BMP" />
+    <Image Include="RES\claw6.BMP" />
+    <Image Include="RES\claw7.BMP" />
     <Image Include="RES\explainPage.bmp" />
     <Image Include="RES\explination.BMP" />
     <Image Include="RES\fight_back1.bmp" />
@@ -445,6 +452,12 @@
     <Image Include="RES\map_final.bmp" />
     <Image Include="res\page_begin1.bmp" />
     <Image Include="res\page_begin2.bmp" />
+    <Image Include="RES\spike1.BMP" />
+    <Image Include="RES\spike2.BMP" />
+    <Image Include="RES\spike3.BMP" />
+    <Image Include="RES\spike4.BMP" />
+    <Image Include="RES\spike5.BMP" />
+    <Image Include="RES\spike6.BMP" />
     <Image Include="RES\trap.bmp" />
     <Image Include="RES\tree.bmp" />
     <Image Include="res\tree1.bmp" />

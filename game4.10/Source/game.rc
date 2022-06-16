@@ -108,8 +108,6 @@ IDB_GRASS1              BITMAP                  "..\\res\\grass1.bmp"
 
 IDB_GRASS2              BITMAP                  "..\\res\\grass2.bmp"
 
-IDB_TRAP                BITMAP                  "..\\res\\trap.bmp"
-
 IDB_MAP_FINAL           BITMAP                  "..\\res\\map_final.bmp"
 
 IDB_APU_RIGHT1          BITMAP                  "..\\res\\apu_right1.bmp"
@@ -301,6 +299,32 @@ IDB_EXPLAIN_PAGE        BITMAP                  "..\\res\\explainPage.bmp"
 IDB_BUTTON_BACK         BITMAP                  "..\\res\\button_back.bmp"
 
 IDB_BUTTON_ABOUTUS      BITMAP                  "..\\res\\button_aboutus.bmp"
+
+IDB_CLAW1               BITMAP                  "..\\res\\claw1.BMP"
+
+IDB_CLAW2               BITMAP                  "..\\res\\claw2.BMP"
+
+IDB_CLAW3               BITMAP                  "..\\res\\claw3.BMP"
+
+IDB_CLAW4               BITMAP                  "..\\res\\claw4.BMP"
+
+IDB_CLAW5               BITMAP                  "..\\res\\claw5.BMP"
+
+IDB_CLAW6               BITMAP                  "..\\res\\claw6.BMP"
+
+IDB_CLAW7               BITMAP                  "..\\res\\claw7.BMP"
+
+IDB_SPIKE1              BITMAP                  "..\\res\\spike1.BMP"
+
+IDB_SPIKE2              BITMAP                  "..\\res\\spike2.BMP"
+
+IDB_SPIKE3              BITMAP                  "..\\res\\spike3.BMP"
+
+IDB_SPIKE4              BITMAP                  "..\\res\\spike4.BMP"
+
+IDB_SPIKE5              BITMAP                  "..\\res\\spike5.BMP"
+
+IDB_SPIKE6              BITMAP                  "..\\res\\spike6.BMP"
 
 
 /////////////////////////////////////////////////////////////////////////////
