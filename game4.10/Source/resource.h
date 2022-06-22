@@ -171,8 +171,26 @@
 #define IDB_SPIKE3                      329
 #define IDB_SPIKE4                      330
 #define IDB_SPIKE5                      331
-#define IDB_BITMAP10                    332
 #define IDB_SPIKE6                      332
+#define IDB_SPIKE                       333
+#define IDB_BAT1                        334
+#define IDB_BAT2                        335
+#define IDB_BAT3                        336
+#define IDB_PUMPKIN_DOWN                337
+#define IDB_PUMPKIN_LEFT                338
+#define IDB_PUMPKIN_RIGHT               339
+#define IDB_PUMPKIN_UP                  340
+#define IDB_BAT_DIE1                    341
+#define IDB_BAT_DIE2                    342
+#define IDB_BAT_DIE3                    343
+#define IDB_PUMPKIN_DIE1                344
+#define IDB_PUMPKIN_DIE2                345
+#define IDB_PUMPKIN_DIE3                346
+#define IDB_BUTTON_MENU1                347
+#define IDB_BUTTON_MENU2                348
+#define IDB_BUTTON_HOME1                349
+#define IDB_BITMAP10                    350
+#define IDB_BUTTON_HOME2                350
 #define IDC_README                      1001
 #define ID_FILE_PAUSE                   32771
 #define ID_TOGGLE_FULLSCREEN            32772
@@ -185,7 +203,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        333
+#define _APS_NEXT_RESOURCE_VALUE        351
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101

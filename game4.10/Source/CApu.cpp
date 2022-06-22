@@ -29,7 +29,8 @@ namespace game_framework {
 		curMode = 1;			// still
 		isMoved = false;
 	}
-
+	int CApu::GetInitX1() { return pos_init.x; }
+	int CApu::GetInitY1() { return pos_init.y; }
 	int CApu::GetX1() { return pos.x; }
 	int CApu::GetY1() { return pos.y; }
 	int CApu::GetX2() {
@@ -135,14 +136,6 @@ namespace game_framework {
 
 	void CApu::SetMode(int flag) { curMode = flag; }
 	void CApu::SetState(int flag) { curState = flag; }
-	void CApu::SetSpace(bool flag) {
-		isSpace = flag;
-		if (flag)
-			curState = 11;
-	}
-	void CApu::SetFail(bool flag) { curState = 9; }
-	void CApu::SetSucceed(bool flag) { curState = 10; }
-	void CApu::SetRelive(bool flag) { curState = 11; }
 
 	bool CApu::IsFail() {
 		if (curState == 9) return true;
@@ -247,12 +240,11 @@ namespace game_framework {
 
 			switch (curState) {
 			case 1:
-				if (map->IsEmpty(pos.x, pos.y - 13)) {
+				if (map->IsEmpty(pos.x, pos.y - 5)) {
 					pos.y -= STEP;
 					map->SetSY(pos.y - pos_init.y);
 					for (int i = 0; i < 4; i++) moveUp.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
-						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
 				} else {
@@ -265,7 +257,6 @@ namespace game_framework {
 					map->SetSY(pos.y - pos_init.y);
 					for (int i = 0; i < 4; i++) moveDown.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
-						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
 				} else {
@@ -273,12 +264,11 @@ namespace game_framework {
 				}
 				break;
 			case 3:
-				if (map->IsEmpty(pos.x - 13, pos.y)) {
+				if (map->IsEmpty(pos.x - 5, pos.y)) {
 					pos.x -= STEP;
 					map->SetSX(pos.x - pos_init.x);
 					for (int i = 0; i < 4; i++) moveLeft.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
-						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
 				} else {
@@ -291,7 +281,6 @@ namespace game_framework {
 					map->SetSX(pos.x - pos_init.x);
 					for (int i = 0; i < 4; i++) moveRight.OnMove();
 					if (map->HasPiece(GetX1(), GetY1(), GetX2(), GetY2())) {
-						CAudio::Instance()->Play(AUDIO_WIN);
 						curState = 10;
 					}
 				} else {
@@ -314,14 +303,11 @@ namespace game_framework {
 				for (int i = 0; i < 2; i++) fail.OnMove();
 				break;
 			case 10:
-				for (int i = 0; i < 2; i++) success.OnMove();
-				break;
-			case 11:
-				pos.x = 65 * 17; // pieceªº¦ì¸m
-				pos.y = 65 * 4;
+				CAudio::Instance()->Play(AUDIO_WIN);
 				map->SetSX(pos.x - pos_init.x);
 				map->SetSY(pos.y - pos_init.y);
-				curState = 10;
+				for (int i = 0; i < 2; i++) success.OnMove();
+				break;
 			default:
 				break;
 			}

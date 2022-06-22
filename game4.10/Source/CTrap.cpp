@@ -12,17 +12,10 @@
 namespace game_framework {
 	
 	CTrap::CTrap(int x, int y) {
-		Initialize(x, y);
+		
 	}
 	CTrap::~CTrap() {}
-	void CTrap::Initialize(int x, int y) {
-		pos.x = x;
-		pos.y = y;
-		switchState = true;
-		curMode = 1;
-		curState = 1;
-		counter = 30;
-	}
+	
 	int  CTrap::GetX1() { return pos.x; }
 	int  CTrap::GetY1() { return pos.y; }
 
@@ -51,14 +44,20 @@ namespace game_framework {
 	void CTrap::SetMode(int mode) { curMode = mode; }
 	void CTrap::SetState(int state) { curState = state; }
 
-	void CTrap::SwitchState() {};
-
 	CClaw::CClaw(int x, int y) : CTrap::CTrap(x, y) {
-		pos_show.x = pos.x;
-		pos_show.y = pos.y - 50;
+		Initialize(x, y);
 	}
 	CClaw::~CClaw() {}
-
+	void CClaw::Initialize(int x, int y) {
+		pos.x = x;
+		pos.y = y;
+		pos_show.x = pos.x;
+		pos_show.y = pos.y - 50;
+		switchState = true;
+		curMode = 1;
+		curState = 1;
+		counter = 30;
+	}
 	void CClaw::LoadBitmap() {
 		trap_up.AddBitmap(IDB_CLAW1, WHITE);
 		trap_up.AddBitmap(IDB_CLAW2, WHITE);
@@ -76,16 +75,28 @@ namespace game_framework {
 		trap_down.AddBitmap(IDB_CLAW2, WHITE);
 		trap_down.AddBitmap(IDB_CLAW1, WHITE);
 	}
+	void CClaw::SwitchState() {
+		/* if apu hit ghost then curMode = 2*/
+		if (curMode == 1) curMode = 2;
 
-	/*void CClaw::OnMove(CGameMap *map, CApu *apu) {};
-	void CClaw::OnShow(CGameMap *map) {};*/
+	};
+	void CClaw::OnMove(CGameMap *map, CApu *apu) {};
+	void CClaw::OnShow(CGameMap *map) {};
 
 	CSpike::CSpike(int x, int y) : CTrap::CTrap(x, y) {
-		pos_show.x = pos.x;
-		pos_show.y = pos.y - 50;
+		Initialize(x, y);
 	}
 	CSpike::~CSpike() {}
-
+	void CSpike::Initialize(int x, int y) {
+		pos.x = x;
+		pos.y = y;
+		pos_show.x = pos.x;
+		pos_show.y = pos.y - 50;
+		switchState = true;
+		curMode = 1;
+		curState = 1;
+		counter = 30;
+	}
 	void CSpike::LoadBitmap() {
 		trap_up.AddBitmap(IDB_SPIKE1, WHITE);
 		trap_up.AddBitmap(IDB_SPIKE2, WHITE);
@@ -101,16 +112,42 @@ namespace game_framework {
 		trap_down.AddBitmap(IDB_SPIKE2, WHITE);
 		trap_down.AddBitmap(IDB_SPIKE1, WHITE);
 	}
-
-	/*void CSpike::OnMove(CGameMap *map, CApu *apu) {};
-	void CSpike::OnShow(CGameMap *map) {};*/
+	void CSpike::SwitchState() {
+		/* if apu hit ghost then curMode = 2*/
+		
+	
+	};
+	void CSpike::OnMove(CGameMap *map, CApu *apu) {
+		if (curMode == 2) {
+			if (GetCurAnimationNum() == GetCurAnimationLastNum()) {
+				ResetCurAnimation();
+				curMode = 1;
+				return;
+			}
+			if (curState == 1) {
+				for (int i = 0; i < 4; i++) trap_up.OnMove();
+			}
+		}
+	};
+	void CSpike::OnShow(CGameMap *map) {
+		trap_up.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
+		trap_up.OnShow();
+	};
 
 	CBouncingBrick::CBouncingBrick(int x, int y) : CTrap::CTrap(x, y) {
-		pos_show.x = pos.x;
-		pos_show.y = pos.y - 50;
+		Initialize(x, y);
 	}
 	CBouncingBrick::~CBouncingBrick() {}
-
+	void CBouncingBrick::Initialize(int x, int y) {
+		pos.x = x;
+		pos.y = y;
+		pos_show.x = pos.x;
+		pos_show.y = pos.y - 50;
+		switchState = true;
+		curMode = 1;
+		curState = 1;
+		counter = 30;
+	}
 	void CBouncingBrick::LoadBitmap() {
 		/*trap_up.AddBitmap(IDB_SPIKE1, WHITE);
 		trap_up.AddBitmap(IDB_SPIKE2, WHITE);
@@ -126,7 +163,11 @@ namespace game_framework {
 		trap_down.AddBitmap(IDB_SPIKE2, WHITE);
 		trap_down.AddBitmap(IDB_SPIKE1, WHITE);*/
 	}
+	void CBouncingBrick::SwitchState() {
+		/* if apu hit ghost then curMode = 2*/
+		if (curMode == 1) curMode = 2;
 
-	/*void CBouncingBrick::OnMove(CGameMap *map, CApu *apu) {};
-	void CBouncingBrick::OnShow(CGameMap *map) {};*/
+	};
+	void CBouncingBrick::OnMove(CGameMap *map, CApu *apu) {};
+	void CBouncingBrick::OnShow(CGameMap *map) {};
 }

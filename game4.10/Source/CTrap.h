@@ -24,12 +24,12 @@ namespace game_framework {
 		void SetMode(int mode);
 		void SetState(int state);
 
-		void SwitchState();
+		virtual void SwitchState() = 0;
 
-		void Initialize(int x, int y);
+		virtual void Initialize(int x, int y) = 0;
 		virtual void LoadBitmap() = 0;
-		/*virtual void OnMove(CGameMap *map, CApu *apu);
-		virtual void OnShow(CGameMap *map);*/
+		virtual void OnMove(CGameMap *map, CApu *apu) = 0;
+		virtual void OnShow(CGameMap *map) = 0;
 	protected:
 		CAnimation trap_up;
 		CAnimation trap_down;
@@ -45,24 +45,34 @@ namespace game_framework {
 	public:
 		CClaw(int x, int y);
 		~CClaw();
+
+		void SwitchState() override;
+		void Initialize(int x, int y) override;
 		void LoadBitmap() override;
-		/*void OnMove(CGameMap *map, CApu *apu) override;
-		void OnShow(CGameMap *map) override;*/
+		void OnMove(CGameMap *map, CApu *apu) override;
+		void OnShow(CGameMap *map) override;
 	};
 	class CSpike : public CTrap {
+	public:
 		CSpike(int x, int y);
 		~CSpike();
+
+		void SwitchState() override;
+		void Initialize(int x, int y) override;
 		void LoadBitmap() override;
-		/*void OnMove(CGameMap *map, CApu *apu) override;
-		void OnShow(CGameMap *map) override;*/
+		void OnMove(CGameMap *map, CApu *apu) override;
+		void OnShow(CGameMap *map) override;
 	};
 	class CBouncingBrick : public CTrap {
+	public:
 		CBouncingBrick(int x, int y);
 		~CBouncingBrick();
 
+		void SwitchState() override;
+		void Initialize(int x, int y) override;
 		void LoadBitmap() override;
-		/*void OnMove(CGameMap *map, CApu *apu) override;
-		void OnShow(CGameMap *map) override;*/
+		void OnMove(CGameMap *map, CApu *apu) override;
+		void OnShow(CGameMap *map) override;
 	};
 }
 #endif

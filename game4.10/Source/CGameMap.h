@@ -1,6 +1,11 @@
 #ifndef CGAMEMAP_H
 #define CGAMEMAP_H
 
+#define Fourty 40
+#define Twenty 20
+#define Ten 10
+#define WHITE RGB(255, 255, 255)
+
 namespace game_framework {
 
 	/* Map : 1248*624  (24*12)
@@ -25,7 +30,8 @@ namespace game_framework {
 		int *GetMap();
 		POINT GetPieceXY();
 		POINT GetSXY();
-
+		int GetSX();
+		int GetSY();
 		void SetSX(int x);
 		void SetSY(int y);
 		int ScreenX(int x);
@@ -46,7 +52,7 @@ namespace game_framework {
 		CMovingBitmap brick4;
 		CMovingBitmap piece;
 		
-		int map[30][30];						// 地圖
+		int map[30][16];						// 地圖
 		int sx, sy;								// 螢幕左上角座標
 		const int X, Y;							// 在地圖上的座標
 		const int MW, MH;						// 每隔長寬大小
@@ -67,7 +73,7 @@ namespace game_framework {
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
 		CMovingBitmap explination;
-		CMovingBitmap tree[40];
+		CMovingBitmap tree[Fourty];
 		CMovingBitmap grass[10];
 
 	};
@@ -87,7 +93,7 @@ namespace game_framework {
 		CMovingBitmap brick3;
 		CMovingBitmap brick4;
 		CMovingBitmap wall;
-		CMovingBitmap tree[20];
+		CMovingBitmap tree[40];
 		CMovingBitmap grass[20];
 	};
 

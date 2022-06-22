@@ -36,11 +36,11 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 		void OnMove();
 		bool isBeginButtonDown;
-		bool beginButtonHasDown;
+		bool isHomeButtonDown;
 		bool isAboutusButtonDown;
 		bool isExplainButtonDown;
 		bool isBackButtonDown;
-	
+		bool isLevelButtonDown[3];
 	private:
 		CAnimation page_begin;
 		CMovingBitmap page_aboutus;
@@ -50,8 +50,8 @@ namespace game_framework {
 		CMovingBitmap button_aboutus;
 		CMovingBitmap button_explain;
 		CMovingBitmap button_back;
-
-		CMovingBitmap levels[12];
+		CAnimation button_home;
+		CMovingBitmap levels[3];
 		int curPage;									// 1(begin) 2(level)
 		int curLevel;
 	};	
@@ -76,20 +76,16 @@ namespace game_framework {
 		
 		int  TheGhostNearbyApu(int x1, int y1, int x2, int y2);
 		void AddGhost(int type, int x, int y);
-
+		bool isMenuButtonDown;
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	
 	private:
-		/*
-		CMovingBitmap	background;	// 背景圖
-		CMovingBitmap	help;		// 說明圖
-		CMovingBitmap	corner;		// 角落圖
-		CInteger		hits_left;	// 剩下的撞擊數
-		*/
-		int				GHOSTNUM;
-		
+		int				GHOSTNUM1;
+		int				GHOSTNUM2;
+		int				GHOSTNUM3;
+		CAnimation		button_menu;
 		CGameMap		*gamemap;
 		vector<CGhost*> ghost;
 		CApu            *apu;		// 阿噗

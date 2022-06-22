@@ -85,18 +85,6 @@ namespace game_framework {
 	bool CGhost::IsAlive() { return isAlive; }
 	bool CGhost::IsFighted() { return isFighted; }
 
-	//bool CGhost::HitRectangle(int tx1, int ty1, int tx2, int ty2) {
-	//	int x1 = tx1;
-	//	int y1 = ty1;
-	//	int x2 = tx2;
-	//	int y2 = ty2;
-	//	int x3 = pos.x;
-	//	int y3 = pos.y + 5;
-	//	int x4 = pos.x + ghost.Width();
-	//	int y4 = pos.y + ghost.Height();
-	//	return (x2 >= x3 && x1 <= x4 && y2 >= y3 && y1 <= y4);
-	//}
-
 	bool CGhost::HitApu(CApu *apu) {
 		int x1 = apu->GetX1();
 		int y1 = apu->GetY1();
@@ -195,8 +183,9 @@ namespace game_framework {
 				else switchState = true;
 
 				if (HitApu(apu)) {
+					CAudio::Instance()->Play(AUDIO_LOSE);
 					curMode = 1;
-					apu->SetFail(true);
+					apu->SetState(9);
 				}
 			}	
 
@@ -211,7 +200,6 @@ namespace game_framework {
 				else if (curState == 2) {
 					for (int i = 0; i < 4; i++) ghost_down.OnMove();
 					SetMoving();
-					TRACE("ghost pos.x, pos.y = %d, %d\n", pos.x, pos.y);
 				}
 			}
 
@@ -231,16 +219,13 @@ namespace game_framework {
 				ghost_up.OnShow();
 				break;
 			case 2:
+
 				ghost_down.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y));
 				ghost_down.OnShow();
-				fork1.SetTopLeft(map->ScreenX(pos_show.x - 50), map->ScreenY(pos_show.y));
-				fork2.SetTopLeft(map->ScreenX(pos_show.x + 50), map->ScreenY(pos_show.y));
-				fork3.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y - 80));
-				fork4.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y + 80));
-				//fork1.ShowBitmap();
-				//fork2.ShowBitmap();
-				//fork3.ShowBitmap();
-				//fork4.ShowBitmap();
+				//fork1.SetTopLeft(map->ScreenX(pos_show.x - 50), map->ScreenY(pos_show.y));
+				//fork2.SetTopLeft(map->ScreenX(pos_show.x + 50), map->ScreenY(pos_show.y));
+				//fork3.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y - 80));
+				//fork4.SetTopLeft(map->ScreenX(pos_show.x), map->ScreenY(pos_show.y + 80));
 				break;
 			case 3:
 				dieCounter--;
@@ -289,17 +274,25 @@ namespace game_framework {
 	CBat::CBat(int x, int y) : CGhost::CGhost(x, y) {}
 	CBat::~CBat() {}
 	void CBat::LoadBitmap() {
-		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
-		ghost_up.AddBitmap(IDB_BALLOON2, WHITE);
-		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
+		ghost_up.AddBitmap(IDB_BAT1, WHITE);
+		ghost_up.AddBitmap(IDB_BAT1, WHITE);
+		ghost_up.AddBitmap(IDB_BAT2, WHITE);
+		ghost_up.AddBitmap(IDB_BAT2, WHITE);
+		ghost_up.AddBitmap(IDB_BAT3, WHITE);
+		ghost_up.AddBitmap(IDB_BAT3, WHITE);
 
-		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
-		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
-		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
+		ghost_down.AddBitmap(IDB_BAT3, WHITE);
+		ghost_down.AddBitmap(IDB_BAT3, WHITE);
+		ghost_down.AddBitmap(IDB_BAT2, WHITE);
+		ghost_down.AddBitmap(IDB_BAT2, WHITE);
+		ghost_down.AddBitmap(IDB_BAT1, WHITE);
+		ghost_down.AddBitmap(IDB_BAT1, WHITE);
 
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+		ghost_die.AddBitmap(IDB_BAT_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_BAT_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_BAT_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_BAT_DIE3, WHITE);
+		ghost_die.AddBitmap(IDB_BAT_DIE3, WHITE);
 
 		fork1.LoadBitmap(IDB_FORK, WHITE);
 		fork2.LoadBitmap(IDB_FORK, WHITE);
@@ -310,18 +303,46 @@ namespace game_framework {
 	CPumpkin::CPumpkin(int x, int y) : CGhost::CGhost(x, y) {}
 	CPumpkin::~CPumpkin() {}
 	void CPumpkin::LoadBitmap() {
-		ghost_up.AddBitmap(IDB_BALLOON1, WHITE);
-		ghost_up.AddBitmap(IDB_BALLOON2, WHITE);
-		ghost_up.AddBitmap(IDB_BALLOON3, WHITE);
+		/*ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_UP, WHITE);*/
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_up.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
 
-		ghost_down.AddBitmap(IDB_BALLOON1, WHITE);
-		ghost_down.AddBitmap(IDB_BALLOON4, WHITE);
-		ghost_down.AddBitmap(IDB_BALLOON5, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
+		ghost_down.AddBitmap(IDB_PUMPKIN_DOWN, WHITE);
 
-		ghost_die.AddBitmap(IDB_BALLOON_DIE1, WHITE);
-		ghost_die.AddBitmap(IDB_BALLOON_DIE2, WHITE);
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
-		ghost_die.AddBitmap(IDB_BALLOON_DIE3, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+		ghost_left.AddBitmap(IDB_PUMPKIN_LEFT, WHITE);
+
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+		ghost_right.AddBitmap(IDB_PUMPKIN_RIGHT, WHITE);
+
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE1, WHITE);
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE2, WHITE);
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE3, WHITE);
+		ghost_die.AddBitmap(IDB_PUMPKIN_DIE3, WHITE);
 
 		fork1.LoadBitmap(IDB_FORK, WHITE);
 		fork2.LoadBitmap(IDB_FORK, WHITE);

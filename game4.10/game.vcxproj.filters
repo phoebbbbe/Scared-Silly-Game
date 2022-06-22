@@ -210,9 +210,6 @@
     <Image Include="RES\apu_lose.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RES\bat.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="RES\grass.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -613,6 +610,57 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\spike6.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\spike.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\bat1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\bat3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_down.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_left.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_right.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_up.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\bat_die1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\bat_die2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\bat_die3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_die1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_die2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\pumpkin_die3.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_menu1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_menu2.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_home1.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\button_home2.BMP">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

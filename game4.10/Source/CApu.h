@@ -9,7 +9,8 @@ namespace game_framework {
 		CApu();
 		CApu(int x, int y);
 		~CApu();
-
+		int	  GetInitX1();
+		int	  GetInitY1();
 		int	  GetX1();					// ªü¼P¥ª¤W¨¤ x ®y¼Ð
 		int   GetY1();					// ªü¼P¥ª¤W¨¤ y ®y¼Ð
 		int   GetX2();					// ªü¼P¥k¤U¨¤ x ®y¼Ð
@@ -30,10 +31,6 @@ namespace game_framework {
 		void  SetMoved(bool flag);
 		void  SetMode(int flag);
 		void  SetState(int flag);
-		void  SetSpace(bool flag);
-		void  SetSucceed(bool flag);
-		void  SetFail(bool flag);
-		void  SetRelive(bool flag);
 
 		bool  IsSucceed();
 		bool  IsFail();

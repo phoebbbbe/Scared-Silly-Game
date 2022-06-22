@@ -84,6 +84,8 @@ namespace game_framework {
 	public:
 		CPumpkin(int x, int y);
 		~CPumpkin();
+		CAnimation ghost_left;
+		CAnimation ghost_right;
 		void LoadBitmap() override;
 	};
 }
